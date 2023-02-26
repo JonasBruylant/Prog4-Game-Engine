@@ -1,6 +1,7 @@
 #pragma once
-#include <memory>
+//#include "MiniginPCH.h"
 #include "GameObject.h"
+#include <memory>
 
 
 namespace dae 
@@ -8,14 +9,22 @@ namespace dae
 	class Component
 	{
 	public:
-		Component() {};
-		virtual ~Component() {}
+		Component() = default;
+		Component(std::shared_ptr<GameObject> owner ) {
+			m_pComponentOwner = owner;
+		}
 
-		virtual void Update(float deltaTime) = 0;
+		virtual ~Component() = default;
+		Component(const Component& other) = delete;
+		Component(Component&& other) = delete;
+		Component& operator=(const Component& other) = delete;
+		Component& operator=(Component&& other) = delete;
 
-	private:
+		void Render() {};
+		void Update(float deltaTime) {};
+	protected:
 
-		std::shared_ptr<GameObject> m_ComponentOwner;
+		std::shared_ptr<GameObject> m_pComponentOwner;
 	};
 
 }

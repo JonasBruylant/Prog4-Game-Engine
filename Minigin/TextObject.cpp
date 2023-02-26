@@ -5,12 +5,14 @@
 #include "Font.h"
 #include "Texture2D.h"
 
-dae::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font) 
+dae::TextObjectComponent::TextObjectComponent(const std::string& text, std::shared_ptr<Font> font)
 	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
-{ }
+{ 
+}
 
-void dae::TextObject::Update()
+void dae::TextObjectComponent::Update(float deltaTime)
 {
+	deltaTime;
 	if (m_needsUpdate)
 	{
 		const SDL_Color color = { 255,255,255 }; // only white text is supported now
@@ -30,25 +32,25 @@ void dae::TextObject::Update()
 	}
 }
 
-void dae::TextObject::Render() const
+void dae::TextObjectComponent::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_transform.GetPosition();
-		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
-	}
+		//const auto& pos = m_transform.GetPosition();
+		//Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
+	}	
 }
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextObject::SetText(const std::string& text)
+void dae::TextObjectComponent::SetText(const std::string& text)
 {
 	m_text = text;
 	m_needsUpdate = true;
 }
 
-void dae::TextObject::SetPosition(const float x, const float y)
-{
-	m_transform.SetPosition(x, y, 0.0f);
-}
+//void dae::TextObjectComponent::SetPosition(const float x, const float y)
+//{
+//	//m_transform.SetPosition(x, y, 0.0f);
+//}
 
 
