@@ -1,20 +1,22 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <type_traits>
+#include <iostream>
+#include <algorithm>
 
 namespace dae
 {
-
 	class Component;
 
-	class GameObject final
+	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
 	public:
 		void Update(float deltaTime);
 		void Render() const;
 
-		template <typename T> T* AddComponent();
-		template <typename T> T* GetComponent();
+		template <typename T> std::shared_ptr<T> AddComponent();
+		template <typename T> std::shared_ptr<T> GetComponent();
 		template <typename T> void RemoveComponent();
 
 		GameObject() = default;
@@ -25,7 +27,51 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	protected:
-		std::vector<std::weak_ptr<Component>> m_pComponentList;
+		std::vector<std::shared_ptr<Component>> m_pComponentList;
 
 	};
+
+
+	template<typename T>
+	inline std::shared_ptr<T> GameObject::AddComponent()
+	{
+		auto test = std::make_shared<T>();
+
+		m_pComponentList.push_back(test);
+		return test;
+	}
+
+	template<typename T>
+	inline std::shared_ptr<T> GameObject::GetComponent()
+	{
+		auto it = std::find_if(m_pComponentList.begin(), m_pComponentList.end(),
+			[&](std::shared_ptr<Component> component)
+			{
+				//auto componentName = typeid(*component.get()).name();
+				//auto templateName = typeid(T).name();
+				//std::cout << componentName << " " << templateName << '\n';
+
+				return typeid(*component.get()).name() == typeid(T).name();
+				//return std::is_same<decltype(*component.get()), decltype(T)>::value;
+			});
+
+		if (it == m_pComponentList.end())
+			return nullptr;
+
+		return std::static_pointer_cast<T>(*it);
+	}
+
+	template<typename T>
+	inline void GameObject::RemoveComponent()
+	{
+		auto lambda = [&](std::shared_ptr<Component> component)
+		{
+			return typeid(*component.get()).name() == typeid(T).name();
+			//return std::is_same<decltype(*component.get()), decltype(T)>::value;
+		};
+		m_pComponentList.erase(std::remove_if(m_pComponentList.begin(), m_pComponentList.end(),lambda), m_pComponentList.end());
+
+	}
+
+	
 }

@@ -1,19 +1,19 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "GameObject.h"
 #include "Component.h"
+#include "GameObject.h"
 
 namespace dae
 {
 	class Font;
 	class Texture2D;
-	class Component;
+	//class Component;
 
 	class TextObjectComponent final : public Component
 	{
 	public:
-
+		TextObjectComponent();
 		TextObjectComponent(const std::string& text, std::shared_ptr<Font> font);
 		virtual ~TextObjectComponent() = default;
 
@@ -24,10 +24,11 @@ namespace dae
 		TextObjectComponent& operator=(TextObjectComponent&& other) = delete;
 
 
-		virtual void Update(float deltaTime);
-		virtual void Render() const;
+		void Render() const override;
+		void Update(float deltaTime) override;
 
 		void SetText(const std::string& text);
+		void SetFont(std::shared_ptr<dae::Font> font);
 		//void SetPosition(float x, float y);
 	private:
 		bool m_needsUpdate;

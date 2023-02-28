@@ -6,8 +6,7 @@
 namespace dae
 {
 
-
-	class Transform final : public Component
+	class TransformComponent final : public Component
 	{
 	public:
 		const glm::vec3& GetPosition() const { return m_position; }

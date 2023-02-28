@@ -10,7 +10,7 @@ void dae::GameObject::Update(float deltaTime)
 {
 	for (auto& component : m_pComponentList)
 	{
-		component.lock()->Update(deltaTime);
+		component.get()->Update(deltaTime);
 	}
 }
 
@@ -18,21 +18,6 @@ void dae::GameObject::Render() const
 {
 	for (auto& component : m_pComponentList)
 	{
-		component.lock()->Render();
+		component.get()->Render();
 	}
-}
-
-
-template <typename T> T* dae::GameObject::AddComponent()
-{
-	m_pComponentList.push_back();
-	return m_pComponentList.end();
-}
-template <typename T> T* dae::GameObject::GetComponent()
-{
-	//Code for getting component
-}
-template <typename T> void dae::GameObject::RemoveComponent()
-{
-	//m_ComponentList.
 }

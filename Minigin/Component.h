@@ -1,5 +1,4 @@
 #pragma once
-//#include "MiniginPCH.h"
 #include "GameObject.h"
 #include <memory>
 
@@ -10,7 +9,7 @@ namespace dae
 	{
 	public:
 		Component() = default;
-		Component(std::shared_ptr<GameObject> owner ) {
+		Component(std::weak_ptr<GameObject> owner ) {
 			m_pComponentOwner = owner;
 		}
 
@@ -20,11 +19,11 @@ namespace dae
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
 
-		void Render() {};
-		void Update(float deltaTime) {};
+		virtual void Render() const {};
+		virtual void Update(float deltaTime) { (void)deltaTime; }
 	protected:
 
-		std::shared_ptr<GameObject> m_pComponentOwner;
+		std::weak_ptr<GameObject> m_pComponentOwner;
 	};
 
 }

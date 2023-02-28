@@ -5,6 +5,11 @@
 #include "Font.h"
 #include "Texture2D.h"
 
+dae::TextObjectComponent::TextObjectComponent() : Component(), m_needsUpdate{true}
+{
+
+}
+
 dae::TextObjectComponent::TextObjectComponent(const std::string& text, std::shared_ptr<Font> font)
 	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
 { 
@@ -12,7 +17,11 @@ dae::TextObjectComponent::TextObjectComponent(const std::string& text, std::shar
 
 void dae::TextObjectComponent::Update(float deltaTime)
 {
-	deltaTime;
+
+	//This component does not use deltatime
+	(void)deltaTime;
+
+
 	if (m_needsUpdate)
 	{
 		const SDL_Color color = { 255,255,255 }; // only white text is supported now
@@ -48,9 +57,11 @@ void dae::TextObjectComponent::SetText(const std::string& text)
 	m_needsUpdate = true;
 }
 
-//void dae::TextObjectComponent::SetPosition(const float x, const float y)
-//{
-//	//m_transform.SetPosition(x, y, 0.0f);
-//}
+
+void dae::TextObjectComponent::SetFont(std::shared_ptr<dae::Font> font)
+{
+	m_font = font;
+
+}
 
 
