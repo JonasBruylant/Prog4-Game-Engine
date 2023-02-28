@@ -8,7 +8,6 @@ namespace dae
 	class RenderComponent final : public Component
 	{
 	public:
-		RenderComponent();
 		RenderComponent(std::weak_ptr<GameObject> pOwner);
 
 		~RenderComponent();
@@ -21,8 +20,6 @@ namespace dae
 
 
 	private:
-		const Renderer& m_Renderer;
-		std::weak_ptr<GameObject> m_pOwner;
 	};
 
 

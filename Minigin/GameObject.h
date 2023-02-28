@@ -35,10 +35,20 @@ namespace dae
 	template<typename T>
 	inline std::shared_ptr<T> GameObject::AddComponent()
 	{
-		auto test = std::make_shared<T>();
+		auto gottenComponent = GetComponent<T>();
 
-		m_pComponentList.push_back(test);
-		return test;
+		if (gottenComponent == nullptr)
+		{
+			auto newComponent = std::make_shared<T>(shared_from_this());
+
+			m_pComponentList.push_back(newComponent);
+
+			return newComponent;
+		}
+
+		return gottenComponent;
+	
+
 	}
 
 	template<typename T>

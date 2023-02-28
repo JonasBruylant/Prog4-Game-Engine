@@ -13,8 +13,7 @@ namespace dae
 	class TextObjectComponent final : public Component
 	{
 	public:
-		TextObjectComponent();
-		TextObjectComponent(const std::string& text, std::shared_ptr<Font> font);
+		TextObjectComponent(std::weak_ptr<GameObject> pOwner);
 		virtual ~TextObjectComponent() = default;
 
 
@@ -29,6 +28,7 @@ namespace dae
 
 		void SetText(const std::string& text);
 		void SetFont(std::shared_ptr<dae::Font> font);
+		std::shared_ptr<Texture2D> GetTexture() { return m_textTexture; }
 		//void SetPosition(float x, float y);
 	private:
 		bool m_needsUpdate;

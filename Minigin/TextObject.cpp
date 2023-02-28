@@ -5,15 +5,12 @@
 #include "Font.h"
 #include "Texture2D.h"
 
-dae::TextObjectComponent::TextObjectComponent() : Component(), m_needsUpdate{true}
+dae::TextObjectComponent::TextObjectComponent(std::weak_ptr<GameObject> pOwner):
+	Component(pOwner),
+	m_needsUpdate{false}
 {
-
 }
 
-dae::TextObjectComponent::TextObjectComponent(const std::string& text, std::shared_ptr<Font> font)
-	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
-{ 
-}
 
 void dae::TextObjectComponent::Update(float deltaTime)
 {
@@ -43,11 +40,7 @@ void dae::TextObjectComponent::Update(float deltaTime)
 
 void dae::TextObjectComponent::Render() const
 {
-	if (m_textTexture != nullptr)
-	{
-		//const auto& pos = m_transform.GetPosition();
-		//Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
-	}	
+
 }
 
 // This implementation uses the "dirty flag" pattern
@@ -61,7 +54,7 @@ void dae::TextObjectComponent::SetText(const std::string& text)
 void dae::TextObjectComponent::SetFont(std::shared_ptr<dae::Font> font)
 {
 	m_font = font;
-
+	m_needsUpdate = true;
 }
 
 

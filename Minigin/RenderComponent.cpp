@@ -1,14 +1,9 @@
 #include "RenderComponent.h"
-
-dae::RenderComponent::RenderComponent() :
-	m_Renderer{ Renderer::GetInstance() }, 
-	m_pOwner{}
-{
-}
+#include "Transform.h"
+#include "TextObject.h"
 
 dae::RenderComponent::RenderComponent(std::weak_ptr<GameObject> pOwner) : 
-	m_Renderer{ Renderer::GetInstance() }, 
-	m_pOwner{pOwner}
+	Component(pOwner)
 {
 
 }
@@ -20,5 +15,7 @@ dae::RenderComponent::~RenderComponent()
 
 void dae::RenderComponent::Render() const
 {
-	m_Renderer.Render();
+	auto transformPosition = m_pComponentOwner.lock()->GetComponent<TransformComponent>()->GetPosition();
+	auto texture = m_pComponentOwner.lock()->GetComponent<TextObjectComponent>()->GetTexture();
+	Renderer::GetInstance().RenderTexture(*texture, transformPosition.x, transformPosition.y);
 }

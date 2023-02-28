@@ -7,7 +7,6 @@ namespace dae
 	class FPSCountComponent final : public Component
 	{
 	public:
-		FPSCountComponent();
 		FPSCountComponent(std::weak_ptr<GameObject> pOwner);
 
 		~FPSCountComponent();
@@ -22,9 +21,8 @@ namespace dae
 		FPSCountComponent& operator=(FPSCountComponent&& other) = delete;
 
 	private:
-		std::weak_ptr<GameObject> m_pOwner;
 		float m_FPS;
-
+		float m_UpdateTime;
 	};
 }
 
