@@ -26,7 +26,7 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-	protected:
+	private:
 		std::vector<std::shared_ptr<Component>> m_pComponentList;
 
 	};
@@ -57,12 +57,7 @@ namespace dae
 		auto it = std::find_if(m_pComponentList.begin(), m_pComponentList.end(),
 			[&](std::shared_ptr<Component> component)
 			{
-				//auto componentName = typeid(*component.get()).name();
-				//auto templateName = typeid(T).name();
-				//std::cout << componentName << " " << templateName << '\n';
-
 				return typeid(*component.get()).name() == typeid(T).name();
-				//return std::is_same<decltype(*component.get()), decltype(T)>::value;
 			});
 
 		if (it == m_pComponentList.end())
@@ -77,7 +72,6 @@ namespace dae
 		auto lambda = [&](std::shared_ptr<Component> component)
 		{
 			return typeid(*component.get()).name() == typeid(T).name();
-			//return std::is_same<decltype(*component.get()), decltype(T)>::value;
 		};
 		m_pComponentList.erase(std::remove_if(m_pComponentList.begin(), m_pComponentList.end(),lambda), m_pComponentList.end());
 

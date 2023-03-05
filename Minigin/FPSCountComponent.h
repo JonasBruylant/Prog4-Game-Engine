@@ -22,7 +22,6 @@ namespace dae
 
 	private:
 		float m_FPS;
-		float m_UpdateTime;
 	};
 }
 

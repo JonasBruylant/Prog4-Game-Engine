@@ -7,6 +7,15 @@ dae::TransformComponent::TransformComponent(std::weak_ptr<GameObject> pOwner):
 {
 }
 
+const glm::vec3 dae::TransformComponent::GetWorldPosition() const
+{
+	if (!m_pParent.expired())
+	{
+		return m_pParent.lock()->GetComponent<TransformComponent>()->GetWorldPosition() + GetLocalPosition();
+	}
+	return GetLocalPosition();
+}
+
 void dae::TransformComponent::SetPosition(const float x, const float y, const float z)
 {
 	m_position.x = x;

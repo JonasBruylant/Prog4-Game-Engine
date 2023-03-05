@@ -9,9 +9,6 @@ namespace dae
 	{
 	public:
 		Component() = default;
-		Component(std::weak_ptr<GameObject> owner ) {
-			m_pComponentOwner = owner;
-		}
 
 		virtual ~Component() = default;
 		Component(const Component& other) = delete;
@@ -21,8 +18,12 @@ namespace dae
 
 		virtual void Render() const {};
 		virtual void Update(float deltaTime) { (void)deltaTime; }
+	
 	protected:
+		explicit Component(std::weak_ptr<GameObject> owner) : m_pComponentOwner{owner}{}
+		std::weak_ptr<GameObject> GetOwner() const { return m_pComponentOwner; }
 
+	private:
 		std::weak_ptr<GameObject> m_pComponentOwner;
 	};
 
