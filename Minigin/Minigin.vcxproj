@@ -179,9 +179,11 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCountComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="ImageObjectComponent.h" />
     <ClInclude Include="ImageRenderComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Minigin.h" />
+    <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="TextRenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -196,10 +198,12 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCountComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImageObjectComponent.cpp" />
     <ClCompile Include="ImageRenderComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
+    <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="TextRenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

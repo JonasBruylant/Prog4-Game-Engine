@@ -8,16 +8,24 @@
 namespace dae
 {
 	class Component;
+	class TransformComponent;
 
 	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
 	public:
 		void Update(float deltaTime);
 		void Render() const;
+		void Initialize();
+		void AddChild(std::shared_ptr<GameObject> pChild);
+		void RemoveChild(std::shared_ptr<GameObject> pChild);
 
 		template <typename T> std::shared_ptr<T> AddComponent();
 		template <typename T> std::shared_ptr<T> GetComponent();
 		template <typename T> void RemoveComponent();
+
+		void SetParent(std::weak_ptr<GameObject> pParent, bool keepWorldPosition);
+		std::weak_ptr<GameObject> GetParent() const { return m_pParent; }
+		std::shared_ptr<TransformComponent> GetTransform() { return m_pPosition; }
 
 		GameObject() = default;
 		~GameObject();
@@ -28,7 +36,9 @@ namespace dae
 
 	private:
 		std::vector<std::shared_ptr<Component>> m_pComponentList;
-
+		std::weak_ptr<GameObject> m_pParent;
+		std::vector<std::shared_ptr<GameObject>> m_pChildrenList;
+		std::shared_ptr<TransformComponent> m_pPosition;
 	};
 
 

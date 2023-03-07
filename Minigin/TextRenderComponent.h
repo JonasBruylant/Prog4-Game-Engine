@@ -4,6 +4,8 @@
 
 namespace dae
 {
+	class TransformComponent;
+	class TextObjectComponent;
 
 	class TextRenderComponent final : public Component
 	{
@@ -20,6 +22,8 @@ namespace dae
 
 
 	private:
+		std::weak_ptr<TransformComponent> m_transformPosition;
+		std::weak_ptr<TextObjectComponent> m_textTexture;
 	};
 
 

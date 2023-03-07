@@ -4,6 +4,7 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
+#include "Gameobject.h"
 
 dae::TextObjectComponent::TextObjectComponent(std::weak_ptr<GameObject> pOwner):
 	Component(pOwner),

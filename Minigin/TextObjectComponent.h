@@ -2,13 +2,12 @@
 #include <string>
 #include <memory>
 #include "Component.h"
-#include "GameObject.h"
 
 namespace dae
 {
 	class Font;
 	class Texture2D;
-	//class Component;
+	class GameObject;
 
 	class TextObjectComponent final : public Component
 	{
