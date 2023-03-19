@@ -14,6 +14,10 @@ void dae::GameObject::Update(float deltaTime)
 	{
 		component.get()->Update(deltaTime);
 	}
+	for (auto& child : m_pChildrenList)
+	{
+		child->Update(deltaTime);
+	}
 }
 
 void dae::GameObject::Render() const
@@ -21,6 +25,12 @@ void dae::GameObject::Render() const
 	for (auto& component : m_pComponentList)
 	{
 		component.get()->Render();
+		component.get()->RenderImGUI();
+	}
+
+	for (auto& child : m_pChildrenList)
+	{
+		child->Render();
 	}
 }
 

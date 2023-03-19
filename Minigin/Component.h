@@ -15,6 +15,7 @@ namespace dae
 		Component& operator=(Component&& other) = delete;
 
 		virtual void Render() const {};
+		virtual void RenderImGUI(){};
 		virtual void Update(float deltaTime) { (void)deltaTime; }
 	
 	protected:
