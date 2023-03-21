@@ -51,7 +51,7 @@ namespace dae {
 	
 	private:
 		int m_sampleAmount = 10;
-		const int m_arrayAmount = 20'000'000;
+		const int m_arrayAmount = 10'000'000;
 
 		bool m_clickedEx01Button = false;
 		bool m_isEx01Done = false;

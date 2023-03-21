@@ -116,6 +116,30 @@ void dae::TrashTheCacheComponent::DoExercise02()
 		ImGui::Plot("Trashed the GameObjectAlts", config);
 	}
 
+
+	if (m_isEx02Done && m_isEx03Done)
+	{
+		const float* y_data[] = { m_Ex02recordedTimesAverage.data(), m_Ex03recordedTimesAverage.data()};
+		ImU32 colors[2] = { ImColor(0, 255, 0), ImColor(255, 0, 0)};
+		ImGui::PlotConfig config;
+		config.values.xs = m_stepsizes.data();
+		config.values.ys_list = y_data;
+		config.values.count = static_cast<int>(m_Ex03recordedTimesAverage.size());
+		config.values.ys_count = 2;
+		config.values.colors = colors;
+		config.scale.min = -1;
+		config.scale.max = 40'000;
+		config.tooltip.show = true;
+		config.tooltip.format = "x=%.2f, y=%.2f";
+		config.grid_x.show = true;
+		config.grid_y.show = true;
+		config.frame_size = ImVec2(200, 200);
+		config.line_thickness = 2.f;
+
+		ImGui::Plot("Combined", config);
+	}
+
+
 	ImGui::End();
 }
 
