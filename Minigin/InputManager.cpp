@@ -28,3 +28,17 @@ bool dae::InputManager::ProcessInput()
 
 	return true;
 }
+
+
+/// <summary>
+/// This method adds a controller to the list for the inputManager to check up on.
+/// </summary>
+/// <returns>The index of the controller added.</returns>
+unsigned int dae::InputManager::AddController()
+{
+	//Adds a controller to the list with the index of the current list size.
+	std::unique_ptr currentController = std::make_unique<ControllerInput>(static_cast<unsigned int>(m_controllers.size()));
+	m_controllers.push_back(currentController);
+
+	return static_cast<unsigned int>(m_controllers.size()) - 1;
+}

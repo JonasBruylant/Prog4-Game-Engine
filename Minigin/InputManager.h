@@ -3,6 +3,7 @@
 #include <map>
 #include <memory>
 #include <vector>
+
 #include "Singleton.h"
 #include "ControllerInput.h"
 #include "Command.h"
@@ -24,7 +25,20 @@ namespace dae
 	public:
 		bool ProcessInput();
 
+		unsigned int AddController();
 
+		template <typename T>
+		T* AddCommand(unsigned int controllerIdx, GameObject* actor, ControllerInput::ControllerButton input);
 	};
+
+	template<typename T>
+	inline T* InputManager::AddCommand(unsigned int controllerIdx, GameObject* actor, ControllerInput::ControllerButton input)
+	{
+		while (controllerIdx >= m_controllers.size())
+		{
+			AddController();
+		}
+
+	}
 
 }

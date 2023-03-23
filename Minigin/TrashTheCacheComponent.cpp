@@ -252,11 +252,10 @@ void dae::TrashTheCacheComponent::DoEX03TrashingGameObjectAlts()
 std::vector<float> dae::TrashTheCacheComponent::RemoveHighestAndLowest(const std::vector<float>& timedVector)
 {
 	//Gets the vector with the all the elapsed times and remove the highest and lowest
-	std::vector<float> newVec = timedVector;
 
 
-	std::sort(newVec.begin(), newVec.end());
-	return std::vector<float>(&newVec[1], &newVec[newVec.size() - 1]);
+	std::sort(timedVector.begin(), timedVector.end());
+	return std::vector<float>(&timedVector[1], &timedVector[timedVector.size() - 1]);
 }
 
 float dae::TrashTheCacheComponent::GetAverageTime(const std::vector<float>& timedVector)
