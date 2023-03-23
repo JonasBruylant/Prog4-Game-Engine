@@ -11,16 +11,18 @@ namespace dae
 		XINPUT_STATE m_previousState{};
 		XINPUT_STATE m_currentState{};
 
-		WORD buttonsPessedThisFrame;
-		WORD buttonsReleasedThisFrame;
+		WORD m_buttonsPessedThisFrame;
+		WORD m_buttonsReleasedThisFrame;
 
-		int _controllerIndex;
+		int m_controllerIndex;
 
 	public:
-		ControllerInputImpl([[maybe_unused]] int controllerIndex)
+		ControllerInputImpl(unsigned int controllerIndex)
 		{
 			ZeroMemory(&m_previousState, sizeof(XINPUT_STATE));
 			ZeroMemory(&m_currentState, sizeof(XINPUT_STATE));
+
+			m_controllerIndex = controllerIndex;
 		}
 
 		void Update()
@@ -28,20 +30,20 @@ namespace dae
 			CopyMemory(&m_previousState, &m_currentState, sizeof(XINPUT_STATE));
 			ZeroMemory(&m_currentState, sizeof(XINPUT_STATE));
 
-			XInputGetState(_controllerIndex, &m_currentState);
+			XInputGetState(m_controllerIndex, &m_currentState);
 
 			auto buttonChanges = m_currentState.Gamepad.wButtons ^ m_previousState.Gamepad.wButtons;
-			buttonsPessedThisFrame = buttonChanges & m_currentState.Gamepad.wButtons;
-			buttonsReleasedThisFrame = buttonChanges & (~m_currentState.Gamepad.wButtons);
+			m_buttonsPessedThisFrame = buttonChanges & m_currentState.Gamepad.wButtons;
+			m_buttonsReleasedThisFrame = buttonChanges & (~m_currentState.Gamepad.wButtons);
 		}
 
-		bool IsDownThisFrame(unsigned int button) const { return buttonsPessedThisFrame & button; }
-		bool IsUpThisFrame(unsigned int button)const { return buttonsReleasedThisFrame & button; }
+		bool IsDownThisFrame(unsigned int button) const { return m_buttonsPessedThisFrame & button; }
+		bool IsUpThisFrame(unsigned int button)const { return m_buttonsReleasedThisFrame & button; }
 		bool IsPressed(unsigned int button) const { return m_currentState.Gamepad.wButtons & button; }
 
 	};
 
-	ControllerInput::ControllerInput(int controllerIndex)
+	ControllerInput::ControllerInput(unsigned int controllerIndex)
 	{
 		//Change to something other than Raw Pointer
 		pImpl = new ControllerInputImpl(controllerIndex);

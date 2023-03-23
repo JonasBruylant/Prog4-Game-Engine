@@ -33,7 +33,7 @@ namespace dae {
 		bool IsUp(ControllerButton button) const;
 		bool IsPressed(ControllerButton button) const;
 
-		explicit ControllerInput(int controllerIndex);
+		explicit ControllerInput(unsigned int controllerIndex);
 		~ControllerInput();
 
 	};
