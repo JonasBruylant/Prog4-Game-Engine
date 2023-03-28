@@ -17,10 +17,11 @@ namespace dae
 		int _controllerIndex;
 
 	public:
-		ControllerInputImpl([[maybe_unused]] int controllerIndex)
+		ControllerInputImpl(int controllerIndex)
 		{
 			ZeroMemory(&m_previousState, sizeof(XINPUT_STATE));
 			ZeroMemory(&m_currentState, sizeof(XINPUT_STATE));
+			_controllerIndex = controllerIndex;
 		}
 
 		void Update()
