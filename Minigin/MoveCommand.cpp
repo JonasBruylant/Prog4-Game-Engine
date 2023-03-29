@@ -4,37 +4,17 @@
 namespace dae
 {
 	MoveCommand::MoveCommand(std::weak_ptr<GameObject> pOwner) :
-		Command(pOwner)
+		Command(), m_pOwner{pOwner}
 	{
-		auto pCommandOwner = GetOwner().lock().get();
+		auto pCommandOwner = m_pOwner.lock().get();
 		m_pTransformComponent = pCommandOwner->GetComponent<TransformComponent>().get();
 
 		m_movementSpeed = 10;
-		m_movementDirection = Direction::Up;
+		m_movementDirection = glm::vec2{0,0};
 	}
 	void MoveCommand::Execute(float deltaTime)
 	{
-		float x{}, y{};
-
-		switch (m_movementDirection)
-		{
-		case dae::MoveCommand::Direction::Up:
-			y = -(m_movementSpeed * deltaTime);
-			break;
-		case dae::MoveCommand::Direction::Down:
-			y = m_movementSpeed * deltaTime;
-			break;
-		case dae::MoveCommand::Direction::Left:
-			x = -(m_movementSpeed * deltaTime);
-			break;
-		case dae::MoveCommand::Direction::Right:
-			x = m_movementSpeed * deltaTime;
-			break;
-		default:
-			break;
-		}
-
-		auto goLocalPosition = m_pTransformComponent->GetLocalPosition();
-		m_pTransformComponent->SetLocalPosition(goLocalPosition.x+ x, goLocalPosition.y+y, 0);
+		auto movement = m_movementDirection * (m_movementSpeed * deltaTime);
+		m_pTransformComponent->AddToLocalPosition({ movement,0});
 	}
 }

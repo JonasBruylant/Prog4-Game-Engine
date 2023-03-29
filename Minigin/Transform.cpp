@@ -20,7 +20,7 @@ const glm::vec3& dae::TransformComponent::GetWorldPosition()
 	return m_WorldPosition;
 }
 
-const void dae::TransformComponent::SetLocalPosition(const float& x, const float& y, const float& z)
+void dae::TransformComponent::SetLocalPosition(const float x, const float y, const float z)
 {
 	m_LocalPosition.x = x;
 	m_LocalPosition.y = y;
@@ -29,13 +29,13 @@ const void dae::TransformComponent::SetLocalPosition(const float& x, const float
 	SetPositionDirty();
 }
 
-const void dae::TransformComponent::SetLocalPosition(const glm::vec3& position)
+void dae::TransformComponent::SetLocalPosition(const glm::vec3& position)
 {
 	SetLocalPosition(position.x, position.y, position.z);
 }
 
 
-const void dae::TransformComponent::SetPositionDirty()
+void dae::TransformComponent::SetPositionDirty()
 {
 	m_positionIsDirty = true;
 }
@@ -52,4 +52,18 @@ void dae::TransformComponent::UpdateWorldPosition()
 		m_WorldPosition = parentTransform->GetWorldPosition() + m_LocalPosition;
 	}
 	m_positionIsDirty = false;
+}
+
+void dae::TransformComponent::AddToLocalPosition(const glm::vec3& position)
+{
+	AddToLocalPosition(position.x, position.y, position.z);
+}
+
+void dae::TransformComponent::AddToLocalPosition(const float x, const float y, const float z)
+{
+	m_LocalPosition.x += x;
+	m_LocalPosition.y += y;
+	m_LocalPosition.z += z;
+
+	SetPositionDirty();
 }

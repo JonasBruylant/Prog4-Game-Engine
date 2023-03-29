@@ -28,11 +28,8 @@ public:
 
 
 protected:
-	explicit Command(std::weak_ptr<GameObject> pOwner) : m_pGameActor{ pOwner }, m_selectedButtonState{BoundButtonState::Pressed} {	}
-	std::weak_ptr<GameObject> GetOwner() const { return m_pGameActor; }
+	explicit Command() :m_selectedButtonState{BoundButtonState::Pressed} {	}
 private:
-
-	std::weak_ptr<GameObject> m_pGameActor;
 	BoundButtonState m_selectedButtonState;
 };
 }
