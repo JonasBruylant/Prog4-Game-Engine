@@ -5,7 +5,7 @@
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl2.h>
 
-bool dae::InputManager::ProcessInput(float deltaTime)
+bool dae::InputManager::ProcessInput()
 {
 	
 	SDL_Event e;
@@ -36,13 +36,13 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 	std::fill(m_upKeys.begin(), m_upKeys.end(), false);
 	std::fill(m_downKeys.begin(), m_downKeys.end(), false);
 
-	ProcessControllerInput(deltaTime);
-	ProcessKeyBoardInput(deltaTime);
+	ProcessControllerInput();
+	ProcessKeyBoardInput();
 
 	return true;
 }
 
-void dae::InputManager::ProcessControllerInput(float deltaTime)
+void dae::InputManager::ProcessControllerInput()
 {
 	for (auto& controller : m_controllers)
 	{
@@ -60,22 +60,22 @@ void dae::InputManager::ProcessControllerInput(float deltaTime)
 		auto commandButtonState = actualCommand->GetBoundButtonState();
 
 
-		if (commandButtonState == Command::Command::BoundButtonState::Down)
+		if (commandButtonState == Command::BoundButtonState::Down)
 		{
 			if (m_controllers[index]->IsDown(button))
-				actualCommand->Execute(deltaTime);
+				actualCommand->Execute();
 
 		}
-		else if (commandButtonState == Command::Command::BoundButtonState::Up)
+		else if (commandButtonState == Command::BoundButtonState::Up)
 		{
 			if (m_controllers[index]->IsUp(button))
-				actualCommand->Execute(deltaTime);
+				actualCommand->Execute();
 
 		}
-		else if (commandButtonState == Command::Command::BoundButtonState::Pressed)
+		else if (commandButtonState == Command::BoundButtonState::Pressed)
 		{
 			if (m_controllers[index]->IsPressed(button))
-				actualCommand->Execute(deltaTime);
+				actualCommand->Execute();
 
 		}
 	}
@@ -83,7 +83,7 @@ void dae::InputManager::ProcessControllerInput(float deltaTime)
 }
 
 
-void dae::InputManager::ProcessKeyBoardInput(float deltaTime)
+void dae::InputManager::ProcessKeyBoardInput()
 {
 	for (auto& command : m_keyboardCommands)
 	{
@@ -95,20 +95,20 @@ void dae::InputManager::ProcessKeyBoardInput(float deltaTime)
 		const auto& actualCommand = command.second.get();
 		auto commandButtonState = actualCommand->GetBoundButtonState();
 
-		if (commandButtonState == Command::Command::BoundButtonState::Down)
+		if (commandButtonState == Command::BoundButtonState::Down)
 		{
 			if (m_downKeys[keyboardInput])
-				actualCommand->Execute(deltaTime);
+				actualCommand->Execute();
 		}
-		else if (commandButtonState == Command::Command::BoundButtonState::Up)
+		else if (commandButtonState == Command::BoundButtonState::Up)
 		{
 			if (m_upKeys[keyboardInput])
-				actualCommand->Execute(deltaTime);
+				actualCommand->Execute();
 		}
-		else if (commandButtonState == Command::Command::BoundButtonState::Pressed)
+		else if (commandButtonState == Command::BoundButtonState::Pressed)
 		{
 			if (m_pressedKeys[keyboardInput])
-				actualCommand->Execute(deltaTime);
+				actualCommand->Execute();
 		}
 
 	}

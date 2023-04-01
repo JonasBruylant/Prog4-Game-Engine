@@ -16,7 +16,7 @@ namespace dae
 
 		virtual void Render() const {};
 		virtual void RenderImGUI(){};
-		virtual void Update(float deltaTime) { (void)deltaTime; }
+		virtual void Update() {}
 	
 	protected:
 		explicit Component(std::weak_ptr<GameObject> owner) : m_pComponentOwner{owner}{}

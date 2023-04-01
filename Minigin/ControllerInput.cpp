@@ -21,7 +21,7 @@ namespace dae
 		{
 			ZeroMemory(&m_previousState, sizeof(XINPUT_STATE));
 			ZeroMemory(&m_currentState, sizeof(XINPUT_STATE));
-			_controllerIndex = controllerIndex;
+			m_controllerIndex = controllerIndex;
 		}
 
 		void Update()

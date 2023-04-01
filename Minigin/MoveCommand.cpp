@@ -1,5 +1,6 @@
 #include "MoveCommand.h"
 #include "GameObject.h"
+#include "Timer.h"
 
 namespace dae
 {
@@ -12,9 +13,10 @@ namespace dae
 		m_movementSpeed = 10;
 		m_movementDirection = glm::vec2{0,0};
 	}
-	void MoveCommand::Execute(float deltaTime)
+	void MoveCommand::Execute()
 	{
-		auto movement = m_movementDirection * (m_movementSpeed * deltaTime);
+		auto& timer = Timer::GetInstance();
+		auto movement = m_movementDirection * (m_movementSpeed * timer.GetDeltaTime());
 		m_pTransformComponent->AddToLocalPosition({ movement,0});
 	}
 }

@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "Timer.h"
 #include <chrono>
 
 SDL_Window* g_window{};
@@ -83,27 +84,25 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& timer = Timer::GetInstance();
 
 	// todo: this update loop could use some work.
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
 
-	const int desiredFPS{ 144 };
-	const int frameTimeMS{1000 / desiredFPS };
 	while (doContinue)
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 
-		//I KNOW DELTATIME IS NOT SUPPOSED TO GO IN THERE!!
-		//I haven't implemented a Singleton<deltaTime> yet so this is the only way I can make the movement through command time bound for now.
-		doContinue = input.ProcessInput(deltaTime);
-		sceneManager.Update(deltaTime);
+		timer.SetDeltaTime(deltaTime);
+		doContinue = input.ProcessInput();
+		sceneManager.Update();
 		renderer.Render();
 
 		lastTime = currentTime;
 
-		const auto sleepTime = currentTime + std::chrono::milliseconds(frameTimeMS) - std::chrono::high_resolution_clock::now();
+		const auto sleepTime = currentTime + std::chrono::milliseconds(timer.GetFrameTimeMS()) - std::chrono::high_resolution_clock::now();
 		std::this_thread::sleep_for(sleepTime);
 	}
 }

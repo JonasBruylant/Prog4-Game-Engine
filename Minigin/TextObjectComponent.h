@@ -23,7 +23,7 @@ namespace dae
 
 
 		void Render() const override;
-		void Update(float deltaTime) override;
+		void Update() override;
 
 		void SetText(const std::string& text);
 		void SetFont(std::shared_ptr<dae::Font> font);

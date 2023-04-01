@@ -1,7 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
 #include "Component.h"
-
+#include "Timer.h"
 namespace dae 
 {
 	class TransformComponent;
@@ -18,7 +18,7 @@ namespace dae
 		RotatorComponent& operator=(const RotatorComponent& other) = delete;
 		RotatorComponent& operator=(RotatorComponent&& other) = delete;
 	
-		void Update(float deltaTime) override;
+		void Update() override;
 		void SetPivotPoint(glm::vec3 pivot);
 		void SetPivotPoint(float x, float y, float z);
 		void SetMovementSpeed(int speed);
@@ -31,6 +31,8 @@ namespace dae
 		float m_UnitCircleValue{0.f};
 		float m_CircleSize{30.f};
 		int m_MovementSpeed{5};
+
+		Timer& m_Timer = Timer::GetInstance();
 	};
 	
 }

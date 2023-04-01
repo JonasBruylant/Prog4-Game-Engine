@@ -207,6 +207,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="TextObjectComponent.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TrashTheCacheComponent.h" />
   </ItemGroup>
@@ -237,6 +238,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TextObjectComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TrashTheCacheComponent.cpp" />
   </ItemGroup>

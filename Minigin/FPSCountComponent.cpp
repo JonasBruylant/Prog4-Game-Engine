@@ -10,9 +10,9 @@ dae::FPSCountComponent::~FPSCountComponent()
 {
 }
 
-void dae::FPSCountComponent::Update(float deltaTime)
+void dae::FPSCountComponent::Update()
 {
-	m_FPS = 1.f / deltaTime;
+	m_FPS = 1.f / m_Timer.GetDeltaTime();
 	GetOwner().lock()->GetComponent<TextObjectComponent>()->SetText(std::to_string(int(m_FPS)));
 
 }

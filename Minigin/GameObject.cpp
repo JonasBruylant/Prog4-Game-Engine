@@ -8,15 +8,15 @@
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update(float deltaTime)
+void dae::GameObject::Update()
 {
 	for (auto& component : m_pComponentList)
 	{
-		component.get()->Update(deltaTime);
+		component.get()->Update();
 	}
 	for (auto& child : m_pChildrenList)
 	{
-		child->Update(deltaTime);
+		child->Update();
 	}
 }
 

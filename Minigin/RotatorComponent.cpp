@@ -7,9 +7,9 @@ dae::RotatorComponent::RotatorComponent(std::weak_ptr<GameObject> pOwner) : Comp
 	m_pTransformComponent = GetOwner().lock()->GetTransform();
 }
 
-void dae::RotatorComponent::Update(float deltaTime)
+void dae::RotatorComponent::Update()
 {
-	m_UnitCircleValue += deltaTime * m_MovementSpeed;
+	m_UnitCircleValue += m_Timer.GetDeltaTime() * m_MovementSpeed;
 	auto parent = GetOwner().lock()->GetParent();
 	glm::vec3 rotationPosition = {cos(m_UnitCircleValue) * m_CircleSize, sin(m_UnitCircleValue) * m_CircleSize, 0};
 	if (!parent.expired()) //If parent

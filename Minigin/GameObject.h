@@ -13,7 +13,7 @@ namespace dae
 	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
 	public:
-		void Update(float deltaTime);
+		void Update();
 		void Render() const;
 		void Initialize();
 		void AddChild(std::shared_ptr<GameObject> pChild);

@@ -33,15 +33,17 @@ namespace dae
 		//^ Sent to me by Aaron Frans. ^
 		std::vector<bool> m_pressedKeys = std::vector<bool>(322,false);
 		std::vector<bool> m_upKeys = std::vector<bool>(322, false);
+
 		std::vector<bool> m_downKeys = std::vector<bool>(322, false);
+
+		void ProcessControllerInput();
+		void ProcessKeyBoardInput();
+
+
 	public:
-		bool ProcessInput(float deltaTime);
+		bool ProcessInput();
 
-		void ProcessControllerInput(float deltaTime);
-		void ProcessKeyBoardInput(float deltaTime);
-
-		template<typename T>
-		T* AddControllerCommandToMap(unsigned int controllerIdx, ControllerInput::ControllerButton button, std::weak_ptr<GameObject> gameActor);
+		template<typename T> T* AddControllerCommandToMap(unsigned int controllerIdx, ControllerInput::ControllerButton button, std::weak_ptr<GameObject> gameActor);
 		template<typename T> T* AddKeyboardCommandToMap(SDL_Scancode keyboardButton, std::weak_ptr<GameObject> gameActor);
 		void AddController();
 	};

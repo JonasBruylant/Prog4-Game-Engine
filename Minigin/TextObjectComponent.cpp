@@ -1,6 +1,6 @@
+#include "TextObjectComponent.h"
 #include <stdexcept>
 #include <SDL_ttf.h>
-#include "TextObjectComponent.h"
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
@@ -13,13 +13,8 @@ dae::TextObjectComponent::TextObjectComponent(std::weak_ptr<GameObject> pOwner):
 }
 
 
-void dae::TextObjectComponent::Update(float deltaTime)
+void dae::TextObjectComponent::Update()
 {
-
-	//This component does not use deltatime
-	(void)deltaTime;
-
-
 	if (m_needsUpdate)
 	{
 		const SDL_Color color = { 255,255,255 }; // only white text is supported now

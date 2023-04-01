@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Timer.h"
 
 namespace dae
 
@@ -11,7 +12,7 @@ namespace dae
 
 		~FPSCountComponent();
 
-		void Update(float deltaTime) override;
+		void Update() override;
 
 		float GetFPS() { return m_FPS; }
 
@@ -22,6 +23,7 @@ namespace dae
 
 	private:
 		float m_FPS;
+		Timer& m_Timer = Timer::GetInstance();
 	};
 }
 

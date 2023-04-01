@@ -12,7 +12,7 @@ namespace dae {
 	
 		virtual ~MoveCommand() = default;
 	
-		void Execute(float deltaTime) override;
+		void Execute() override;
 
 		void SetDirection(float x, float y) { SetDirection({ x,y }); }
 		void SetDirection(glm::vec2 direction) { m_movementDirection = direction; }
