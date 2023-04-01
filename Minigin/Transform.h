@@ -13,11 +13,13 @@ namespace dae
 		const glm::vec3& GetLocalPosition() const;
 		const glm::vec3& GetWorldPosition();
 
-		const void SetLocalPosition(const float& x, const float& y, const float& z);
-		const void SetLocalPosition(const glm::vec3& position);
-		const void SetPositionDirty();
+		void SetLocalPosition(const float x, const float y, const float z);
+		void SetLocalPosition(const glm::vec3& position);
+		void SetPositionDirty();
 
 		void UpdateWorldPosition();
+		void AddToLocalPosition(const glm::vec3& position);
+		void AddToLocalPosition(const float x, const float y, const float z);
 
 	private:
 		glm::vec3 m_LocalPosition{0,0,0};
