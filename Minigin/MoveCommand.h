@@ -1,6 +1,7 @@
 #pragma once
 #include "Command.h"
 #include "Transform.h"
+#include "Timer.h"
 
 namespace dae {
 
@@ -23,6 +24,8 @@ namespace dae {
 		TransformComponent* m_pTransformComponent{nullptr};
 
 		std::weak_ptr<GameObject> m_pOwner;
+
+		Timer& m_Timer = Timer::GetInstance();
 	};
 
 }

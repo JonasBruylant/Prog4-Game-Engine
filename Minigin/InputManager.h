@@ -5,82 +5,128 @@
 #include <utility>
 
 #include "Singleton.h"
-#include "ControllerInput.h"
+#include "Controller.h"
 #include "Command.h"
 
 
 
 namespace dae
 {
+	enum ButtonState {
+		Up,
+		Down,
+		Pressed
+	};
+
+	struct ControllerInput
+	{
+		unsigned int controllerIdx;
+		Controller::ControllerButton button;
+		ButtonState buttonState;
+
+		bool operator<(const ControllerInput& other) const
+		{
+			if (controllerIdx < other.controllerIdx)
+				return true;
+			else if (controllerIdx > other.controllerIdx)
+				return false;
+
+			if (button < other.button)
+				return true;
+			else if (button > other.button)
+				return false;
+
+			if (buttonState < other.buttonState)
+				return true;
+			else
+				return false;
+
+		}
+	};
+
+	struct KeyBoardInput
+	{
+		SDL_Scancode keyboardButton;
+		ButtonState buttonState;
+
+		bool operator<(const KeyBoardInput& other) const
+		{
+			if (keyboardButton < other.keyboardButton)
+				return true;
+			else if (keyboardButton > other.keyboardButton)
+				return false;
+
+			if (buttonState < other.buttonState)
+				return true;
+			else
+				return false;
+
+		}
+	};
+
+	class GameObject;
+
 	class InputManager final : public Singleton<InputManager>
 	{
-		//Controller index will be connected to all the possible button presses
-		using ControllerKey = std::pair<unsigned int, ControllerInput::ControllerButton>;
 
 		//Link that button/ControllerKey to a command.
-		using ControllerCommandsMap = std::map<ControllerKey, std::unique_ptr<Command>>;
+		using ControllerCommandsMap = std::map<ControllerInput, std::unique_ptr<Command>>;
 		ControllerCommandsMap m_controllerCommands{};
-		
-		//Link a command with a key input from the keyboard/mouse.
-		using KeyboardCommandsMap = std::map<SDL_Scancode, std::unique_ptr<Command>>;
-		KeyboardCommandsMap m_keyboardCommands{ };
 
-		ControllerCommandsMap m_commands{};
 		//List of controllers to take input from.
-		std::vector<std::unique_ptr<ControllerInput>> m_controllers;
+		std::vector<std::unique_ptr<Controller>> m_controllers;
+
+		void ProcessControllerInput();
+
+
+		//Link a command with a key input from the keyboard/mouse.
+		using KeyboardCommandsMap = std::map<KeyBoardInput, std::unique_ptr<Command>>;
+		KeyboardCommandsMap m_keyboardCommands{ };
 
 		//https://stackoverflow.com/questions/3741055/inputs-in-sdl-on-key-pressed
 		//^ Sent to me by Aaron Frans. ^
-		std::vector<bool> m_pressedKeys = std::vector<bool>(322,false);
-		std::vector<bool> m_upKeys = std::vector<bool>(322, false);
 
-		std::vector<bool> m_downKeys = std::vector<bool>(322, false);
+		std::vector<bool> m_currentState= std::vector<bool>(322, false);
+		std::vector<bool> m_previousState= std::vector<bool>(322, false);
 
-		void ProcessControllerInput();
 		void ProcessKeyBoardInput();
 
 
 	public:
 		bool ProcessInput();
 
-		template<typename T> T* AddControllerCommandToMap(unsigned int controllerIdx, ControllerInput::ControllerButton button, std::weak_ptr<GameObject> gameActor);
-		template<typename T> T* AddKeyboardCommandToMap(SDL_Scancode keyboardButton, std::weak_ptr<GameObject> gameActor);
+		template<typename T> T* AddControllerCommandToMap(ControllerInput controllerInput, std::unique_ptr<T> command);
+		template<typename T> T* AddKeyboardCommandToMap(KeyBoardInput keyboardInput, std::unique_ptr<T> command);
 		void AddController();
 	};
 
 	template<typename T>
-	inline T* InputManager::AddControllerCommandToMap(unsigned int controllerIdx, ControllerInput::ControllerButton button, std::weak_ptr<GameObject> gameActor)
+	inline T* InputManager::AddControllerCommandToMap(ControllerInput controllerInput, std::unique_ptr<T> command)
 	{
 		//https://stackoverflow.com/questions/5084209/check-if-template-argument-is-inherited-from-class
 		//Check if T inherits from Command so only commands can be added.
 		static_assert(std::is_base_of<Command, T>::value && "T isn't inherited from Command.");
 
-		while (controllerIdx >= m_controllers.size())
+		while (controllerInput.controllerIdx >= m_controllers.size())
 		{
 			AddController();
 		}
 
-		ControllerKey currentControllerButton = std::make_pair(controllerIdx, button);
-		std::unique_ptr<T> uniqueCommandPtr = std::make_unique<T>(gameActor);
+		auto returnPtr = command.get();
+		m_controllerCommands.insert({ controllerInput, std::move(command) });
 
-		auto returnPtr = uniqueCommandPtr.get();
-		m_controllerCommands.insert({ currentControllerButton, std::move(uniqueCommandPtr) });
-	
 		return returnPtr;
 	}
 
 	template<typename T>
-	inline T* InputManager::AddKeyboardCommandToMap(SDL_Scancode keyboardButton, std::weak_ptr<GameObject> gameActor)
+	inline T* InputManager::AddKeyboardCommandToMap(KeyBoardInput keyboardInput, std::unique_ptr<T> command)
 	{
 		//https://stackoverflow.com/questions/5084209/check-if-template-argument-is-inherited-from-class
 		//Check if T inherits from Command so only commands can be added.
 		static_assert(std::is_base_of<Command, T>::value && "T isn't inherited from Command.");
 
-
-		std::unique_ptr<T> uniqueCommandPtr = std::make_unique<T>(gameActor);
-		auto returnPtr = uniqueCommandPtr.get();
-
-		m_keyboardCommands.insert({ keyboardButton , std::move(uniqueCommandPtr) });
+		auto returnPtr = command.get();
+		m_keyboardCommands.insert({ keyboardInput, std::move(command) });
 
 		return returnPtr;
 	}

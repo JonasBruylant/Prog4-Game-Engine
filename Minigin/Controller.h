@@ -2,10 +2,10 @@
 namespace dae {
 
 
-	class ControllerInput
+	class Controller
 	{
-		class ControllerInputImpl;
-		ControllerInputImpl* pImpl;
+		class ControllerImpl;
+		ControllerImpl* pImpl;
 
 	public:
 
@@ -33,8 +33,8 @@ namespace dae {
 		bool IsUp(ControllerButton button) const;
 		bool IsPressed(ControllerButton button) const;
 
-		explicit ControllerInput(unsigned int controllerIndex);
-		~ControllerInput();
+		explicit Controller(unsigned int controllerIndex);
+		~Controller();
 
 	};
 }

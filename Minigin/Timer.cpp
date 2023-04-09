@@ -21,7 +21,7 @@ float dae::Timer::GetDeltaTime() const
 
 void dae::Timer::SetDeltaTime(float deltaTime)
 {
-	deltaTime = m_DeltaTime;
+	m_DeltaTime = deltaTime;
 }
 
 int dae::Timer::GetFrameTimeMS() const

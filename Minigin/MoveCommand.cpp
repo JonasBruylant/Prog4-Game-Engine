@@ -13,10 +13,10 @@ namespace dae
 		m_movementSpeed = 10;
 		m_movementDirection = glm::vec2{0,0};
 	}
+
 	void MoveCommand::Execute()
 	{
-		auto& timer = Timer::GetInstance();
-		auto movement = m_movementDirection * (m_movementSpeed * timer.GetDeltaTime());
+		auto movement = m_movementDirection * (m_movementSpeed * m_Timer.GetDeltaTime());
 		m_pTransformComponent->AddToLocalPosition({ movement,0});
 	}
 }

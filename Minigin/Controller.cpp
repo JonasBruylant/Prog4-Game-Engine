@@ -3,10 +3,10 @@
 #include <XInput.h>
 #pragma comment(lib, "xinput.lib")
 
-#include "ControllerInput.h"
+#include "Controller.h"
 namespace dae 
 {
-	class ControllerInput::ControllerInputImpl
+	class Controller::ControllerImpl
 	{
 		XINPUT_STATE m_previousState{};
 		XINPUT_STATE m_currentState{};
@@ -17,7 +17,7 @@ namespace dae
 		int m_controllerIndex;
 
 	public:
-		ControllerInputImpl(int controllerIndex)
+		ControllerImpl(int controllerIndex)
 		{
 			ZeroMemory(&m_previousState, sizeof(XINPUT_STATE));
 			ZeroMemory(&m_currentState, sizeof(XINPUT_STATE));
@@ -42,30 +42,30 @@ namespace dae
 
 	};
 
-	ControllerInput::ControllerInput(unsigned int controllerIndex)
+	Controller::Controller(unsigned int controllerIndex)
 	{
 		//Change to something other than Raw Pointer
-		pImpl = new ControllerInputImpl(controllerIndex);
+		pImpl = new ControllerImpl(controllerIndex);
 	}
-	ControllerInput::~ControllerInput()
+	Controller::~Controller()
 	{
 		//Change to something other than Raw Pointer
 		delete pImpl;
 	}
 
-	void ControllerInput::Update()
+	void Controller::Update()
 	{
 		pImpl->Update();
 	}
-	bool ControllerInput::IsDown(ControllerButton button) const
+	bool Controller::IsDown(ControllerButton button) const
 	{
 		return pImpl->IsDownThisFrame(static_cast<unsigned int>(button));
 	}
-	bool ControllerInput::IsUp(ControllerButton button) const
+	bool Controller::IsUp(ControllerButton button) const
 	{
 		return pImpl->IsUpThisFrame(static_cast<unsigned int>(button));
 	}
-	bool ControllerInput::IsPressed(ControllerButton button) const
+	bool Controller::IsPressed(ControllerButton button) const
 	{
 		return pImpl->IsPressed(static_cast<unsigned int>(button));
 	}

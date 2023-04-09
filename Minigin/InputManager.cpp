@@ -7,7 +7,9 @@
 
 bool dae::InputManager::ProcessInput()
 {
-	
+	m_previousState = m_currentState;
+
+
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 
@@ -15,14 +17,10 @@ bool dae::InputManager::ProcessInput()
 			return false;
 		}
 		if (e.type == SDL_KEYDOWN) {
-
-			m_pressedKeys[SDL_GetScancodeFromKey(e.key.keysym.sym)] = true;
-			m_upKeys[SDL_GetScancodeFromKey(e.key.keysym.sym)] = true;
+			m_currentState[SDL_GetScancodeFromKey(e.key.keysym.sym)] = true;
 		}
 		if (e.type == SDL_KEYUP) {
-
-			m_pressedKeys[SDL_GetScancodeFromKey(e.key.keysym.sym)] = false;
-			m_upKeys[SDL_GetScancodeFromKey(e.key.keysym.sym)] = true;
+			m_currentState[SDL_GetScancodeFromKey(e.key.keysym.sym)] = false;
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN)
 		{
@@ -30,11 +28,9 @@ bool dae::InputManager::ProcessInput()
 		}
 		// etc...
 		ImGui_ImplSDL2_ProcessEvent(&e);
+
 	}
 
-	//Source: ChatGPT.
-	std::fill(m_upKeys.begin(), m_upKeys.end(), false);
-	std::fill(m_downKeys.begin(), m_downKeys.end(), false);
 
 	ProcessControllerInput();
 	ProcessKeyBoardInput();
@@ -52,32 +48,35 @@ void dae::InputManager::ProcessControllerInput()
 	for (auto& command : m_controllerCommands)
 	{
 		//Individual elements of the ControllerKey (pair) variable
-		const unsigned int& index = command.first.first;
-		const ControllerInput::ControllerButton& button = command.first.second;
-
+		const unsigned int& index = command.first.controllerIdx;
+		const Controller::ControllerButton& button = command.first.button;
+		const ButtonState buttonState = command.first.buttonState;
 		//Command is unique pointer, so it can't be copied, take a reference to the adress instead.
 		const auto& actualCommand = command.second.get();
-		auto commandButtonState = actualCommand->GetBoundButtonState();
-
-
-		if (commandButtonState == Command::BoundButtonState::Down)
+		
+		switch (buttonState)
 		{
-			if (m_controllers[index]->IsDown(button))
-				actualCommand->Execute();
+			case ButtonState::Down:
+			{
+				if (m_controllers[index]->IsDown(button))
+					actualCommand->Execute();
+				break;
+			}
+			case ButtonState::Up:
+			{
+				if (m_controllers[index]->IsUp(button))
+					actualCommand->Execute();
+				break;
+			}			
+			case ButtonState::Pressed:
+			{
+				if (m_controllers[index]->IsPressed(button))
+					actualCommand->Execute();
 
+				break;
+			}
 		}
-		else if (commandButtonState == Command::BoundButtonState::Up)
-		{
-			if (m_controllers[index]->IsUp(button))
-				actualCommand->Execute();
 
-		}
-		else if (commandButtonState == Command::BoundButtonState::Pressed)
-		{
-			if (m_controllers[index]->IsPressed(button))
-				actualCommand->Execute();
-
-		}
 	}
 
 }
@@ -87,29 +86,38 @@ void dae::InputManager::ProcessKeyBoardInput()
 {
 	for (auto& command : m_keyboardCommands)
 	{
-		//Individual elements of the ControllerKey (pair) variable		
-		const unsigned& keyboardInput = command.first;
+
+		const unsigned& keyboardInput = command.first.keyboardButton;
+		const ButtonState keyboardButtonState = command.first.buttonState;
 
 
 		//Command is unique pointer, so it can't be copied, take a reference to the adress instead.
 		const auto& actualCommand = command.second.get();
-		auto commandButtonState = actualCommand->GetBoundButtonState();
 
-		if (commandButtonState == Command::BoundButtonState::Down)
+		switch (keyboardButtonState)
 		{
-			if (m_downKeys[keyboardInput])
-				actualCommand->Execute();
+			case ButtonState::Down:
+			{
+				if (!m_previousState[keyboardInput] && m_currentState[keyboardInput])
+					actualCommand->Execute();
+				break;
+			}
+			case ButtonState::Up:
+			{
+				if (m_previousState[keyboardInput] && !m_currentState[keyboardInput])
+					actualCommand->Execute();
+				break;
+			}
+			case ButtonState::Pressed:
+			{
+				if (m_previousState[keyboardInput] && m_currentState[keyboardInput])
+					actualCommand->Execute();
+
+				break;
+			}
 		}
-		else if (commandButtonState == Command::BoundButtonState::Up)
-		{
-			if (m_upKeys[keyboardInput])
-				actualCommand->Execute();
-		}
-		else if (commandButtonState == Command::BoundButtonState::Pressed)
-		{
-			if (m_pressedKeys[keyboardInput])
-				actualCommand->Execute();
-		}
+
+
 
 	}
 }
@@ -117,5 +125,5 @@ void dae::InputManager::ProcessKeyBoardInput()
 void dae::InputManager::AddController()
 {
 	unsigned int controllerIndex = static_cast<unsigned int>(m_controllers.size());
-	m_controllers.push_back(std::make_unique<ControllerInput>(controllerIndex));
+	m_controllers.push_back(std::make_unique<Controller>(controllerIndex));
 }

@@ -189,7 +189,7 @@
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imstb_truetype.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ControllerInput.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCountComponent.h" />
     <ClInclude Include="GameObject.h" />
@@ -220,7 +220,7 @@
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_widgets.cpp" />
-    <ClCompile Include="ControllerInput.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSCountComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />

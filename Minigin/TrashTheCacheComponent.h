@@ -83,7 +83,7 @@ namespace dae {
 		void DoEX03TrashingGameObjectAlts();
 		
 
-		std::vector<float> RemoveHighestAndLowest(const std::vector<float>& timedVector);
+		std::vector<float> RemoveHighestAndLowest(std::vector<float>& timedVector);
 		float GetAverageTime(const std::vector<float>& timedVector);
 	};
 }

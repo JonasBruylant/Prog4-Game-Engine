@@ -164,7 +164,7 @@ void dae::TrashTheCacheComponent::DoEX01TrashingInts()
 		}
 	}
 
-	for (const auto& time : m_Ex01recordedTimes)
+	for (auto& time : m_Ex01recordedTimes)
 	{
 
 		//For every stepsize : 1,2,4,8,... get the amount of elapsedTimes in the vector and remove the highest & lowest values.
@@ -200,7 +200,7 @@ void dae::TrashTheCacheComponent::DoEX02TrashingGameObjects()
 		}
 	}
 
-	for (const auto& time : m_Ex02recordedTimes)
+	for (auto& time : m_Ex02recordedTimes)
 	{
 		//For every stepsize : 1,2,4,8,... get the amount of elapsedTimes in the vector and remove the highest & lowest values.
 		m_Ex02recordedTimesNoHighOrLow = RemoveHighestAndLowest(time.second);
@@ -234,7 +234,7 @@ void dae::TrashTheCacheComponent::DoEX03TrashingGameObjectAlts()
 		}
 	}
 
-	for (const auto& time : m_Ex03recordedTimes)
+	for (auto& time : m_Ex03recordedTimes)
 	{
 		//For every stepsize : 1,2,4,8,... get the amount of elapsedTimes in the vector and remove the highest & lowest values.
 		m_Ex03recordedTimesNoHighOrLow = RemoveHighestAndLowest(time.second);
@@ -249,7 +249,7 @@ void dae::TrashTheCacheComponent::DoEX03TrashingGameObjectAlts()
 	delete[] gameObjectArray;
 }
 
-std::vector<float> dae::TrashTheCacheComponent::RemoveHighestAndLowest(const std::vector<float>& timedVector)
+std::vector<float> dae::TrashTheCacheComponent::RemoveHighestAndLowest(std::vector<float>& timedVector)
 {
 	//Gets the vector with the all the elapsed times and remove the highest and lowest
 
