@@ -5,13 +5,12 @@ namespace dae
 {
 	class Font;
 	class Texture2D;
-	//class Component;
 
 	class ImageObjectComponent final : public Component
 	{
 	public:
 		ImageObjectComponent(std::weak_ptr<GameObject> pOwner);
-		virtual ~ImageObjectComponent() = default;
+		~ImageObjectComponent() = default;
 
 
 		ImageObjectComponent(const ImageObjectComponent& other) = delete;

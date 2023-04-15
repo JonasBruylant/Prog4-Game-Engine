@@ -1,6 +1,5 @@
 #include "TextObjectComponent.h"
 #include <stdexcept>
-#include <SDL_ttf.h>
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
@@ -10,6 +9,7 @@ dae::TextObjectComponent::TextObjectComponent(std::weak_ptr<GameObject> pOwner):
 	Component(pOwner),
 	m_needsUpdate{false}
 {
+	m_color = { static_cast<Uint8>(255), static_cast<Uint8>(255), static_cast<Uint8>(255) };
 }
 
 
@@ -17,8 +17,8 @@ void dae::TextObjectComponent::Update()
 {
 	if (m_needsUpdate)
 	{
-		const SDL_Color color = { 255,255,255 }; // only white text is supported now
-		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), color);
+		
+		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), m_color);
 		if (surf == nullptr) 
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -51,6 +51,11 @@ void dae::TextObjectComponent::SetFont(std::shared_ptr<dae::Font> font)
 {
 	m_font = font;
 	m_needsUpdate = true;
+}
+
+void dae::TextObjectComponent::SetColor(int r, int g, int b)
+{
+	m_color = {static_cast<Uint8>(r),static_cast<Uint8>(g),static_cast<Uint8>(b)};
 }
 
 

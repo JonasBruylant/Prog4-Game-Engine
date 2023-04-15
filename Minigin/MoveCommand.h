@@ -5,13 +5,13 @@
 
 namespace dae {
 
-	class MoveCommand : public Command
+	class MoveCommand final : public Command
 	{
 
 	public:
 		MoveCommand(std::weak_ptr<GameObject> pOwner);
 	
-		virtual ~MoveCommand() = default;
+		~MoveCommand() = default;
 	
 		void Execute() override;
 

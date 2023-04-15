@@ -12,7 +12,7 @@ namespace dae
 	public:
 		RotatorComponent(std::weak_ptr<GameObject> pOwner);
 	
-		virtual ~RotatorComponent() = default;
+		~RotatorComponent() = default;
 		RotatorComponent(const RotatorComponent& other) = delete;
 		RotatorComponent(RotatorComponent&& other) = delete;
 		RotatorComponent& operator=(const RotatorComponent& other) = delete;

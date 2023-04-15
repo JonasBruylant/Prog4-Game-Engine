@@ -8,7 +8,7 @@ namespace dae {
 	class ImageObjectComponent;
 
 
-	class ImageRenderComponent : public Component
+	class ImageRenderComponent final : public Component
 	{
 	public:
 		ImageRenderComponent(std::weak_ptr<GameObject> pOwner);

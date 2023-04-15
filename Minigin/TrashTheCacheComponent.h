@@ -41,7 +41,7 @@ namespace dae {
 		TrashTheCacheComponent(std::weak_ptr<GameObject> pOwner);
 	
 	
-		virtual ~TrashTheCacheComponent() = default;
+		~TrashTheCacheComponent() = default;
 		TrashTheCacheComponent(const TrashTheCacheComponent& other) = delete;
 		TrashTheCacheComponent(TrashTheCacheComponent&& other) = delete;
 		TrashTheCacheComponent& operator=(const TrashTheCacheComponent& other) = delete;
