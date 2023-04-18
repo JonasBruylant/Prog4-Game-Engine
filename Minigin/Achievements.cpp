@@ -14,7 +14,7 @@ m_CallbackAchievementStored(this, &SteamAchievements::OnAchievementStored)
 {
     m_iAppID = SteamUtils()->GetAppID();
     m_pAchievements = Achievements;
-    m_iNumAchievements = Achievements.size();
+    m_iNumAchievements = static_cast<int>(Achievements.size());
     RequestStats();
 }
 

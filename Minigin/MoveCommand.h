@@ -19,8 +19,8 @@ namespace dae {
 		void SetDirection(glm::vec2 direction) { m_movementDirection = direction; }
 		void SetMovementSpeed(int speed) { m_movementSpeed = speed; }
 	private:
-		glm::vec2 m_movementDirection;
-		int m_movementSpeed;
+		glm::vec2 m_movementDirection = glm::vec2{ 0,0 };
+		int m_movementSpeed = 10;
 		TransformComponent* m_pTransformComponent{nullptr};
 
 		std::weak_ptr<GameObject> m_pOwner;

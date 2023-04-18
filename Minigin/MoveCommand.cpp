@@ -10,8 +10,6 @@ namespace dae
 		auto pCommandOwner = m_pOwner.lock().get();
 		m_pTransformComponent = pCommandOwner->GetComponent<TransformComponent>().get();
 
-		m_movementSpeed = 10;
-		m_movementDirection = glm::vec2{0,0};
 	}
 
 	void MoveCommand::Execute()

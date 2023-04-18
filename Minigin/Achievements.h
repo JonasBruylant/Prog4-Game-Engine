@@ -11,7 +11,7 @@ namespace dae {
 	enum EAchievements
 	{
 		ACH_WIN_ONE_GAME = 0,
-		ACH_GAIN_500_POINTS = 1,
+		ACH_WIN_100_GAMES = 1,
 		ACH_TRAVEL_FAR_ACCUM = 2,
 		ACH_TRAVEL_FAR_SINGLE = 3,
 	};
@@ -20,8 +20,7 @@ namespace dae {
 	{
 		Achievement_t(int ID, const char* IDname): 
 			m_eAchievementID{ ID }, 
-			m_pchAchievementID{ IDname },
-			m_bAchieved{false}
+			m_pchAchievementID{ IDname }
 		{
 		};
 
@@ -44,12 +43,9 @@ namespace dae {
 		bool RequestStats();
 		bool SetAchievement(const char* ID);
 
-		STEAM_CALLBACK(SteamAchievements, OnUserStatsReceived, UserStatsReceived_t,
-			m_CallbackUserStatsReceived);
-		STEAM_CALLBACK(SteamAchievements, OnUserStatsStored, UserStatsStored_t,
-			m_CallbackUserStatsStored);
-		STEAM_CALLBACK(SteamAchievements, OnAchievementStored,
-			UserAchievementStored_t, m_CallbackAchievementStored);
+		STEAM_CALLBACK(SteamAchievements, OnUserStatsReceived, UserStatsReceived_t, m_CallbackUserStatsReceived);
+		STEAM_CALLBACK(SteamAchievements, OnUserStatsStored, UserStatsStored_t, m_CallbackUserStatsStored);
+		STEAM_CALLBACK(SteamAchievements, OnAchievementStored, UserAchievementStored_t, m_CallbackAchievementStored);
 
 
 	private:
