@@ -31,8 +31,9 @@ namespace dae
 
 		void RemoveObserver(Observer* observer)
 		{
-			Observer* observerToRemove = observer;
-			auto it = std::find(m_observers.begin(), m_observers.end(), observerToRemove);
+			//If no work use this.
+			//Erase(std::Remove(begin, end, parameter), end);
+			auto it = std::find(m_observers.begin(), m_observers.end(), observer);
 			if (it != m_observers.end()) {
 				m_observers.erase(it);
 			}
