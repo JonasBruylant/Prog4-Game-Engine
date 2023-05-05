@@ -11,7 +11,6 @@
 #include "ResourceManager.h"
 #include "Timer.h"
 #include <chrono>
-#include <steam_api.h>
 
 SDL_Window* g_window{};
 
@@ -102,7 +101,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		sceneManager.Update();
 		renderer.Render();
 
-		SteamAPI_RunCallbacks();
 		lastTime = currentTime;
 
 		const auto sleepTime = currentTime + std::chrono::milliseconds(timer.GetFrameTimeMS()) - std::chrono::high_resolution_clock::now();

@@ -89,11 +89,11 @@ namespace dae
 		std::vector<bool> m_currentState= std::vector<bool>(322, false);
 		std::vector<bool> m_previousState= std::vector<bool>(322, false);
 
-		void ProcessKeyBoardInput();
 
 
 	public:
 		bool ProcessInput();
+		void ProcessKeyBoardInput();
 
 		template<typename T> T* AddControllerCommandToMap(ControllerInput controllerInput, std::unique_ptr<T> command);
 		template<typename T> T* AddKeyboardCommandToMap(KeyBoardInput keyboardInput, std::unique_ptr<T> command);

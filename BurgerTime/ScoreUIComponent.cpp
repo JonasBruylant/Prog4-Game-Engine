@@ -16,10 +16,7 @@ void dae::ScoreUIComponent::Notify(Event event)
 		UpdateScore();
 }
 
-void dae::ScoreUIComponent::SetAchievement(std::shared_ptr<SteamAchievements> achievement)
-{
-	m_pAchievement = achievement;
-}
+
 
 void dae::ScoreUIComponent::UpdateScore()
 {
@@ -27,8 +24,4 @@ void dae::ScoreUIComponent::UpdateScore()
 	//How do I link the value of the display score to the score of the component?
 	m_pTextObjectHealthComponent->SetText("Score: " + std::to_string(m_displayScore));
 
-	if (m_displayScore <= 500)
-		return;
-
-	m_pAchievement->SetAchievement("ACH_WIN_ONE_GAME");
 }
