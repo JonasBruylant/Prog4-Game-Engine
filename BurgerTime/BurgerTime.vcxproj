@@ -171,7 +171,9 @@
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_widgets.cpp" />
+    <ClCompile Include="ChangeDirectionCommand.cpp" />
     <ClCompile Include="DieCommand.cpp" />
+    <ClCompile Include="DirectionComponent.cpp" />
     <ClCompile Include="GainScoreCommand.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="LivesRemainingUIComponent.cpp" />
@@ -192,13 +194,16 @@
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imstb_truetype.h" />
+    <ClInclude Include="ChangeDirectionCommand.h" />
     <ClInclude Include="DieCommand.h" />
+    <ClInclude Include="DirectionComponent.h" />
     <ClInclude Include="GainScoreCommand.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="LivesRemainingUIComponent.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreUIComponent.h" />
+    <ClInclude Include="Structs.h" />
     <ClInclude Include="TrashTheCacheComponent.h" />
     <ClInclude Include="TutorialComponent.h" />
   </ItemGroup>
