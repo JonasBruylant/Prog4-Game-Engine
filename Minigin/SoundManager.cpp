@@ -49,7 +49,13 @@ void dae::SoundManager::RunThread()
 		std::unique_lock<std::mutex> lock(m_mutex);
 
 		//Only do something when queue is not empty.
-		m_queueCondition.wait(lock, [&](){return !m_soundEventQueue.empty(); });
+		m_queueCondition.wait(lock, [&]()
+			{
+				if (!m_isThreadRunning)
+					return true;
+			
+				return !m_soundEventQueue.empty(); 
+			});
 		while (!m_soundEventQueue.empty())
 		{
 			auto playableSound = m_soundEventQueue.front();
