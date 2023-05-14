@@ -4,11 +4,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+
 #include "Minigin.h"
+
 #include "InputManager.h"
 #include "SceneManager.h"
-#include "Renderer.h"
+#include "SoundManager.h"
 #include "ResourceManager.h"
+
+#include "Renderer.h"
 #include "Timer.h"
 #include <chrono>
 
@@ -67,11 +71,14 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	SoundManager::GetInstance().Initialize(dataPath);
 }
 
 dae::Minigin::~Minigin()
 {
 	Renderer::GetInstance().Destroy();
+	SoundManager::GetInstance().Quit();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();
@@ -87,7 +94,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& input = InputManager::GetInstance();
 	auto& timer = Timer::GetInstance();
 
-	// todo: this update loop could use some work.
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
 

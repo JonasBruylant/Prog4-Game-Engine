@@ -233,6 +233,8 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextRenderComponent.h" />
     <ClInclude Include="Renderer.h" />
@@ -264,6 +266,8 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextRenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
