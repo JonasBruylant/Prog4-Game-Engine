@@ -1,11 +1,13 @@
 #include "SoundManager.h"
+#include "SDLSoundSystem.h"
 #include "SoundSystem.h"
+#include "NullSoundSystem.h"
 
 
 
 dae::SoundManager::SoundManager()
 {
-
+	m_pSoundSystem = std::make_unique<NullSoundSystem>();
 }
 
 dae::SoundManager::~SoundManager()
@@ -18,9 +20,6 @@ void dae::SoundManager::Initialize(const std::string& dataPath)
 {
 	m_dataPath = dataPath;
 
-	if (!m_pSoundSystem)
-		m_pSoundSystem = std::make_unique<SoundSystem>();
-
 	m_pSoundSystem->Init();
 
 	m_isThreadRunning = true;
@@ -31,6 +30,8 @@ void dae::SoundManager::Quit()
 {
 	m_pSoundSystem->Quit();
 	m_isThreadRunning = false;
+
+	m_queueCondition.notify_all();
 }
 
 void dae::SoundManager::NotifyQueue(SoundData data)				
@@ -40,7 +41,19 @@ void dae::SoundManager::NotifyQueue(SoundData data)
 	m_soundEventQueue.push(data);								
 																
 	m_queueCondition.notify_all();								
-}																
+}
+
+void dae::SoundManager::SetSoundSystem(std::unique_ptr<SoundSystem> soundsystem)
+{
+	m_pSoundSystem->Quit();
+
+	m_pSoundSystem = std::move(soundsystem);
+}
+
+dae::SoundSystem* dae::SoundManager::GetoundSystem()
+{
+	return m_pSoundSystem.get();
+}
 																
 void dae::SoundManager::RunThread()								
 {																
@@ -56,18 +69,18 @@ void dae::SoundManager::RunThread()
 			
 				return !m_soundEventQueue.empty(); 
 			});
-		while (!m_soundEventQueue.empty())
-		{
-			auto playableSound = m_soundEventQueue.front();
-			m_soundEventQueue.pop();
 
-			if (playableSound.loadFile)
-				LoadSound(playableSound);
-			else
-				PlaySound(playableSound);
-		}
+		
+		auto playableSound = m_soundEventQueue.front();
+		m_soundEventQueue.pop();
 
 		lock.unlock();
+
+		if (playableSound.loadFile)
+			LoadSound(playableSound);
+		else
+			PlaySound(playableSound);
+	
 	}
 }
 

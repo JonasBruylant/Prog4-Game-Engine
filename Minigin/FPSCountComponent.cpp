@@ -6,10 +6,6 @@ dae::FPSCountComponent::FPSCountComponent(std::weak_ptr<GameObject> pOwner): Com
 {
 }
 
-dae::FPSCountComponent::~FPSCountComponent()
-{
-}
-
 void dae::FPSCountComponent::Update()
 {
 	m_FPS = 1.f / m_Timer.GetDeltaTime();

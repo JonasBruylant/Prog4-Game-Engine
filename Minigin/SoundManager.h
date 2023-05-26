@@ -7,6 +7,7 @@
 
 namespace dae 
 {
+	class SDLSoundSystem;
 	class SoundSystem;
 	using soundId = unsigned short;
 	
@@ -32,7 +33,13 @@ namespace dae
 
 		void Initialize(const std::string& dataPath);
 		void Quit();
+
+		//Pass the sound in this method to play the sound in a given ID
+		//Call this when executing a command for attacking (Preferably on a component).
 		void NotifyQueue(SoundData data);
+
+		void SetSoundSystem(std::unique_ptr<SoundSystem> soundsystem);
+		SoundSystem* GetoundSystem();
 	private:
 		friend class Singleton<SoundManager>;
 

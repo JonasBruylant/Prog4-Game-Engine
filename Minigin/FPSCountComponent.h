@@ -10,7 +10,7 @@ namespace dae
 	public:
 		FPSCountComponent(std::weak_ptr<GameObject> pOwner);
 
-		~FPSCountComponent();
+		~FPSCountComponent() = default;
 
 		void Update() override;
 

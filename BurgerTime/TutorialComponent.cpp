@@ -16,14 +16,9 @@ void dae::TutorialComponent::RenderImGUI()
 {
 	ImGui::Begin("Control tutorial");
 
-	ImGui::Text("Player 1 Controls: ");
-	ImGui::Text("keyboard X or Controller A button to kill.");
-	ImGui::Text("keyboard Z or Controller B button to gain 100 score.");
+	ImGui::Text("Controls: ");
+	ImGui::Text("WASD to move");
+	ImGui::Text("X to gain score");
 
-	ImGui::Text("");
-
-	ImGui::Text("Player 2 Controls: ");
-	ImGui::Text("keyboard Q or Controller X button to kill.");
-	ImGui::Text("keyboard E or Controller Y button to gain 100 score.");
 	ImGui::End();
 }

@@ -15,6 +15,7 @@
 #include "Renderer.h"
 #include "Timer.h"
 #include <chrono>
+#include "SDLSoundSystem.h"
 
 SDL_Window* g_window{};
 
@@ -72,6 +73,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 
 	ResourceManager::GetInstance().Init(dataPath);
 
+	SoundManager::GetInstance().SetSoundSystem(std::make_unique<SDLSoundSystem>());
 	SoundManager::GetInstance().Initialize(dataPath);
 }
 

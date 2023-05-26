@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Subject.h"
-
+#include "SoundManager.h"
 namespace dae
 {
 	class ScoreComponent final : public Component
@@ -18,6 +18,9 @@ namespace dae
 		void GainScore() 
 		{ 
 			m_pActorGainedScoreEvent->NotifyObservers({ "Score Gained" });
+
+			SoundData soundToPlay{ 1, 0.1f,"Gain_score.mp3",dae::SoundData::SoundType::SoundEffect };
+			SoundManager::GetInstance().NotifyQueue(soundToPlay);
 		}
 
 		Subject* GetScoreGainedSubject() const { return m_pActorGainedScoreEvent.get(); }
