@@ -52,7 +52,7 @@ void dae::CollisionComponent::Render() const
 {
 
 #if _DEBUG
-	//auto ownerPos = m_pOwnerTransform.lock().get()->GetWorldPosition();
-	//Renderer::GetInstance().RenderCollisionRectangle(ownerPos.x, ownerPos.y, m_collisionBox.width, m_collisionBox.height, m_DebugRectColor.r, m_DebugRectColor.g, m_DebugRectColor.b);
+	auto ownerPos = m_pOwnerTransform.lock().get()->GetWorldPosition();
+	Renderer::GetInstance().RenderCollisionRectangle(ownerPos.x, ownerPos.y, m_collisionBox.width, m_collisionBox.height, m_DebugRectColor.r, m_DebugRectColor.g, m_DebugRectColor.b);
 #endif
 }

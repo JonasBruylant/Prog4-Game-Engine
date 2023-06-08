@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cassert>
 
 #include "Scene.h"
 #include "ImageObjectComponent.h"
@@ -27,85 +28,91 @@ dae::JsonLevelReader::JsonLevelReader()
 {
 }
 
-void dae::JsonLevelReader::ReadAndLoadLevel(std::string file)
+dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 {
 	auto filePath = m_BasePath + file;
-	if (std::ifstream is{ filePath }) //Will check if specified Input path exists, otherwise do nothing/throw exception
+	std::ifstream is{ filePath };
+
+	assert(!is.fail() && "File not found.");
+
+	rapidjson::IStreamWrapper isw{ is };
+
+	rapidjson::Document jsonDoc;			 
+	jsonDoc.ParseStream(isw);	
+
+
+	const rapidjson::Value& levelName = jsonDoc["LevelName"];
+	const rapidjson::Value& blockIDs = jsonDoc["Level"];
+	const rapidjson::Value& platformWidth = jsonDoc["PlatformWidth"];
+	const rapidjson::Value& ladderHeight = jsonDoc["LadderHeight"];
+	const rapidjson::Value& platformHeight = jsonDoc["PlatformHeight"];
+
+	int actualPlatformWidth = platformWidth.GetInt();
+	int actualPlatformHeight = platformHeight.GetInt();
+	int actualLadderHeight = ladderHeight.GetInt();
+
+
+	assert(blockIDs.IsArray() && "Level has no content.");
+
+	auto& sceneLevel = SceneManager::GetInstance().CreateScene(levelName.GetString());
+	auto& resourceManager = ResourceManager::GetInstance();
+	auto level = std::make_shared<GameObject>();
+	int totalHeightOffset{ 50 };
+	int initialWidthOffset{ 20 };
+	for (int row = 0; row < static_cast<int>(blockIDs.GetArray().Size()); ++row)
 	{
-		rapidjson::IStreamWrapper isw{ is };
+		if (!blockIDs[row].IsArray())
+			continue;
 
-		rapidjson::Document jsonDoc;			 
-		jsonDoc.ParseStream(isw);	
-
-
-		const rapidjson::Value& levelName = jsonDoc["LevelName"];
-		const rapidjson::Value& blockIDs = jsonDoc["Level"];
-		const rapidjson::Value& platformWidth = jsonDoc["PlatformWidth"];
-		const rapidjson::Value& ladderHeight = jsonDoc["LadderHeight"];
-
-		int actualPlatformWidth = platformWidth.GetInt();
-		int actualLadderHeight = ladderHeight.GetInt();
-
-
-
-		if (!blockIDs.IsArray())
-			return;
-
-		int rowCounter = 1;
-		auto& sceneLevel = SceneManager::GetInstance().CreateScene(levelName.GetString());
-		auto& resourceManager = ResourceManager::GetInstance();
-		auto level = std::make_shared<GameObject>();
-		for (auto& blockId : blockIDs.GetArray())
+		int heightOffset{ (row % 2 == 0) ? actualPlatformHeight : actualLadderHeight };
+		for (int col = 0; col < static_cast<int>(blockIDs[row].GetArray().Size()); ++col)
 		{
-			if (!blockId.IsArray())
+			//std::cout << currentId.GetInt() << ' ';
+			//Make object based on ID here.
+			if (blockIDs[row][col] == 0)
 				continue;
 
-			for (int i = 0; i < static_cast<int>(blockId.GetArray().Size()); ++i)
+			auto go = std::make_shared<GameObject>();
+			go->Initialize();
+			sceneLevel.Add(go);
+
+
+			auto imageObjComp = go->AddComponent<ImageObjectComponent>();
+			go->AddComponent<ImageRenderComponent>();
+			auto collisionComponent = go->AddComponent<CollisionComponent>();
+			collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
+			auto texture = resourceManager.LoadTexture("Platform.png");
+			
+			if (blockIDs[row][col] == 1)
 			{
-				//std::cout << currentId.GetInt() << ' ';
-				//Make object based on ID here.
-				if (blockId[i] == 0)
-					continue;
+				texture = resourceManager.LoadTexture("Platform.png");
+				collisionComponent->SetTag("LevelPlatform");
+				imageObjComp->SetTexture(texture);
 
-				auto go = std::make_shared<GameObject>();
-				go->Initialize();
-				sceneLevel.Add(go);
-
-
-				auto imageObjComp = go->AddComponent<ImageObjectComponent>();
-				go->AddComponent<ImageRenderComponent>();
-				auto collisionComponent = go->AddComponent<CollisionComponent>();
-				auto texture = resourceManager.LoadTexture("Platform.png");
-				
-				if (blockId[i] == 1)
-				{
-					texture = resourceManager.LoadTexture("Platform.png");
-					collisionComponent->SetTag("LevelPlatform");
-					imageObjComp->SetTexture(texture);
-				}
-				else if (blockId[i] == 2)
-				{
-					texture = resourceManager.LoadTexture("Slab.png");
-					imageObjComp->SetTexture(texture);
-
-					collisionComponent->SetTag("LevelPlatform");
-				}
-				else if (blockId[i] == 3)
-				{
-					texture = resourceManager.LoadTexture("Ladder.png");
-					imageObjComp->SetTexture(texture);
-
-					collisionComponent->SetTag("Ladder");
-				}
-				go->GetTransform()->SetLocalPosition({ actualPlatformWidth * i, actualLadderHeight * rowCounter, 0});
-
-				level->AddChild(go);
 			}
-			++rowCounter;
-			//std::cout << std::endl;
+			else if (blockIDs[row][col] == 2)
+			{
+				texture = resourceManager.LoadTexture("Slab.png");
+				imageObjComp->SetTexture(texture);
+
+				collisionComponent->SetTag("LevelPlatform");
+
+			}
+			else if (blockIDs[row][col] == 3)
+			{
+				texture = resourceManager.LoadTexture("Ladder.png");
+				collisionComponent->SetDebugColor({145,245,18});
+				imageObjComp->SetTexture(texture);
+
+				collisionComponent->SetTag("Ladder");
+			}
+			go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset , 0});
+
+			level->AddChild(go);
 		}
+		totalHeightOffset += heightOffset;
+		//std::cout << std::endl;
+	}
 
-
-
-	}											 
+	return sceneLevel;
 }

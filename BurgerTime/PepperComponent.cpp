@@ -14,9 +14,7 @@ void dae::PepperComponent::OnEnemyHit(dae::CollisionComponent* otherCollision, G
 {
 	if (otherCollision->GetTag() == "Enemy")
 	{
-		//TODO: Delete Owner / Set as marked for deletion
 		GetOwner().lock().get()->SetMarkedForDelete();
-		//TODO: Set Enemy state to stunned.
 		otherObject->GetComponent<StateComponent>()->SetCurrentState(State::Stunned);
 	}
 			
