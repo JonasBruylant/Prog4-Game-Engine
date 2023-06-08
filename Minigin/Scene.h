@@ -21,12 +21,12 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
+		std::vector<GameObject*> HandleCollision(GameObject* pGameObject);
 	private: 
 		explicit Scene(const std::string& name);
 
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
-
 		static unsigned int m_idCounter; 
 	};
 

@@ -1,9 +1,12 @@
 #pragma once
 #include "Component.h"
 #include "Subject.h"
+#include "Timer.h"
+
 
 namespace dae
 {
+	class CollisionComponent;
 
 	class HealthComponent final : public Component
 	{
@@ -18,22 +21,19 @@ namespace dae
 
 		int GetHealth() const { return m_Health; };
 		void SetHealth(int health) { m_Health = health; }
-		void DoDamage(int damage)
-		{
-			m_Health -= damage;
 
-			if (m_Health >= 0)
-			{
-				m_pGameObjectDiedEvent->NotifyObservers({ "Player Died" });
-				m_Health = m_MaxHealth;
-			}
+		void OnEnemyHit(dae::CollisionComponent* otherCollision);
 
-		}
 		Subject* GetPlayerDiedEventSubject() const { return m_pGameObjectDiedEvent.get(); }
 	private:
 		std::unique_ptr<Subject> m_pGameObjectDiedEvent = std::make_unique<Subject>();
 		int m_MaxHealth{ 1 };
 		int m_Health{ 1 };
+		float m_CooldownForNextHit{ 0.5f };
+		float m_HitTimer{ m_CooldownForNextHit };
+
+		Timer& m_Timer = Timer::GetInstance();
+		void TakeDamage(int damage);
 	};
 }
 

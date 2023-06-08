@@ -1,12 +1,14 @@
 #pragma once
 #include "Component.h"
 #include "Structs.h"
-#include "ImageObjectComponent.h"
-#include "Transform.h"
 #include "ResourceManager.h"
 #include "Timer.h"
 
 namespace dae {
+
+	class TransformComponent;
+	class ImageObjectComponent;
+	class StateComponent;
 
 	class DirectionComponent : public Component
 	{
@@ -29,8 +31,9 @@ namespace dae {
 	
 	private:
 		PlayerDirection m_CurrentDirection = PlayerDirection::None;
-		ImageObjectComponent* m_ImageObjectComponent = nullptr;
-		TransformComponent* m_TransformComponent = nullptr;
+		ImageObjectComponent* m_pImageObjectComponent = nullptr;
+		TransformComponent* m_pTransformComponent = nullptr;
+		StateComponent* m_pStateComponent = nullptr;
 	
 		std::weak_ptr<GameObject> m_pOwner;
 		std::vector<std::shared_ptr<Texture2D>> m_DirectionTextures;

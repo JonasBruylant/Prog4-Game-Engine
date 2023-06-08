@@ -1,4 +1,5 @@
 #include "SDLSoundSystem.h"
+#include "ResourceManager.h"
 
 #include "SDL.h"
 #include "SDL_mixer.h"
@@ -16,7 +17,7 @@ namespace dae
 		void Init();
 		void Quit();
 
-		void PlaySound(unsigned short id, SoundType soundType, float volume);
+		void PlaySound(unsigned short id, SoundData::SoundType soundType, float volume);
 		void LoadSound(unsigned short id, const std::string& filePath);
 		bool CheckIsSoundLoaded(unsigned short id);
 	private:
@@ -44,7 +45,7 @@ namespace dae
 		Mix_CloseAudio();
 	}
 
-	void SDLSoundSystem::SDLSoundSystemImpl::PlaySound(unsigned short id, SoundType soundType, float volume)
+	void SDLSoundSystem::SDLSoundSystemImpl::PlaySound(unsigned short id, SoundData::SoundType soundType, float volume)
 	{
 		if (!CheckIsSoundLoaded(id))
 			throw std::runtime_error(std::string("Failed to find sound at given ID."));
@@ -55,7 +56,7 @@ namespace dae
 
 		int channel = 0;
 		bool isRepeating = 1;
-		if (soundType == SoundType::SoundEffect)
+		if (soundType == SoundData::SoundType::SoundEffect)
 		{
 			//Check first available channel in the SFX group, if it's non-existent, overwrite the sound playing on channel 1
 			channel = Mix_GroupAvailable(1);
@@ -99,33 +100,85 @@ namespace dae
 #pragma region SoundSystem
 	SDLSoundSystem::SDLSoundSystem()
 	{
+		m_dataPath = ResourceManager::GetInstance().GetResourceDataPath();
 	}
 
 	SDLSoundSystem::~SDLSoundSystem()
 	{
 	}
 
-	void SDLSoundSystem::Init()
+	void SDLSoundSystem::Init(const std::string& dataPath)
 	{
+		m_dataPath = dataPath;
 		m_pSoundImpl = std::make_unique<SDLSoundSystemImpl>();
 
 		m_pSoundImpl->Init();
+
+		m_isThreadRunning = true;
+		m_soundThread = std::jthread(&SDLSoundSystem::RunThread, this);
 	}
 	void SDLSoundSystem::Quit()
 	{
 		m_pSoundImpl->Quit();
+		m_isThreadRunning = false;
+
+		m_queueCondition.notify_all();
+
 	}
-	void SDLSoundSystem::LoadSound(unsigned short id, const std::string& filePath)
+	void SDLSoundSystem::LoadSound(SoundData data)
 	{
-		m_pSoundImpl->LoadSound(id, filePath);
+		m_pSoundImpl->LoadSound(data.id, data.filePath);
 	}
-	void SDLSoundSystem::PlaySound(unsigned short id, SoundType soundType, float volume)
+	void SDLSoundSystem::PlaySound(SoundData data)
 	{
-		m_pSoundImpl->PlaySound(id, soundType, volume);
+		if (!CheckIsSoundLoaded(data.id))
+			m_pSoundImpl->LoadSound(data.id, data.filePath);
+
+		m_pSoundImpl->PlaySound(data.id, data.soundType, data.volume);
 	}
 	bool SDLSoundSystem::CheckIsSoundLoaded(unsigned short id)
 	{
 		return m_pSoundImpl->CheckIsSoundLoaded(id);
+	}
+
+	void SDLSoundSystem::NotifyQueue(SoundData data)
+	{
+		std::lock_guard<std::mutex> guardLock(m_mutex);
+		data.filePath = m_dataPath + data.filePath;
+		m_soundEventQueue.push(data);
+
+		m_queueCondition.notify_all();
+	}
+	
+	void dae::SDLSoundSystem::RunThread()
+	{
+		while (m_isThreadRunning)
+		{
+			std::unique_lock<std::mutex> lock(m_mutex);
+
+			//Only do something when queue is not empty.
+			m_queueCondition.wait(lock, [&]()
+			{
+				if (!m_isThreadRunning)
+					return true;
+
+				return !m_soundEventQueue.empty();
+			});
+
+			if(m_soundEventQueue.empty())
+				return ;
+
+			SoundData playableSound = m_soundEventQueue.front();
+			m_soundEventQueue.pop();
+
+			lock.unlock();
+
+			if (playableSound.loadFile)
+				LoadSound(playableSound);
+			else
+				PlaySound(playableSound);
+
+		}
 	}
 #pragma endregion
 

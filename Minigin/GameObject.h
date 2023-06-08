@@ -9,6 +9,7 @@ namespace dae
 {
 	class Component;
 	class TransformComponent;
+	class Scene;
 
 	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
@@ -26,6 +27,8 @@ namespace dae
 		void SetParent(std::weak_ptr<GameObject> pParent, bool keepWorldPosition);
 		std::weak_ptr<GameObject> GetParent() const { return m_pParent; }
 		std::shared_ptr<TransformComponent> GetTransform() { return m_pPosition; }
+		Scene* GetScene() { return m_pCurrentScene;}
+		void SetScene(Scene* scene) { m_pCurrentScene = scene; }
 
 		GameObject() = default;
 		~GameObject();
@@ -34,11 +37,17 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		void SetMarkedForDelete() { m_isMarkedForDelete = true; }
+		bool GetMarkedForDelete() { return m_isMarkedForDelete; }
+
 	private:
 		std::vector<std::shared_ptr<Component>> m_pComponentList;
 		std::weak_ptr<GameObject> m_pParent;
 		std::vector<std::shared_ptr<GameObject>> m_pChildrenList;
 		std::shared_ptr<TransformComponent> m_pPosition;
+
+		Scene* m_pCurrentScene;
+		bool m_isMarkedForDelete{ false };
 	};
 
 

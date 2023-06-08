@@ -8,5 +8,5 @@ dae::DieCommand::DieCommand(HealthComponent* pOwnerComponent):
 
 void dae::DieCommand::Execute()
 {
-	m_pOwnerComponent->DoDamage(1);
+	//m_pOwnerComponent->TakeDamage(1);
 }

@@ -1,13 +1,16 @@
 #pragma once
 #include "SoundSystem.h"
-#include <memory>
 #include <string>
+#include <memory>
+#include <queue>
+#include <mutex>
 
 namespace dae 
 {
 
 class SDLSoundSystem final : public SoundSystem
 {
+
 	class SDLSoundSystemImpl;
 	std::unique_ptr<SDLSoundSystemImpl> m_pSoundImpl = nullptr;
 public:
@@ -21,12 +24,26 @@ public:
 	SDLSoundSystem& operator=(SDLSoundSystem&& other) = delete;
 
 
-	void Init() override;
+	void Init(const std::string& dataPath) override;
 	void Quit() override;
 
-	void LoadSound(unsigned short id, const std::string& filePath) override;
-	void PlaySound(unsigned short id, SoundType soundType, float volume) override;
+	void LoadSound(SoundData data) override;
+	void PlaySound(SoundData data) override;
 	bool CheckIsSoundLoaded(unsigned short id) override;
+
+	void NotifyQueue(SoundData data);
+	void RunThread();
+
+private:
+
+	std::string m_dataPath;
+
+	std::queue<SoundData> m_soundEventQueue;
+	std::mutex m_mutex;
+	std::condition_variable m_queueCondition;
+	std::atomic<bool> m_isThreadRunning;
+
+	std::jthread m_soundThread;
 };
 }
 

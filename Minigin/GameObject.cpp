@@ -10,6 +10,9 @@ dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update()
 {
+	if (m_isMarkedForDelete)
+		return;
+
 	for (auto& component : m_pComponentList)
 	{
 		component.get()->Update();
@@ -22,6 +25,9 @@ void dae::GameObject::Update()
 
 void dae::GameObject::Render() const
 {
+	if (m_isMarkedForDelete)
+		return;
+
 	for (auto& component : m_pComponentList)
 	{
 		component.get()->Render();
@@ -41,6 +47,9 @@ void dae::GameObject::Initialize()
 
 void dae::GameObject::SetParent(std::weak_ptr<GameObject> pParent, bool keepWorldPosition)
 {
+	if (m_isMarkedForDelete)
+		return;
+
 	if (m_pParent.expired())
 		m_pPosition.get()->SetLocalPosition(m_pPosition.get()->GetWorldPosition());
 	else
@@ -58,10 +67,12 @@ void dae::GameObject::SetParent(std::weak_ptr<GameObject> pParent, bool keepWorl
 
 void dae::GameObject::RemoveChild(std::shared_ptr<GameObject> pChild)
 {
+
 	m_pChildrenList.erase(std::remove(m_pChildrenList.begin(), m_pChildrenList.end(), pChild));
 }
 
 void dae::GameObject::AddChild(std::shared_ptr<GameObject> pChild)
 {
+
 	m_pChildrenList.emplace_back(pChild);
 }

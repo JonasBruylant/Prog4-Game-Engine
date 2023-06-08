@@ -18,7 +18,7 @@ namespace dae
 		ImageObjectComponent& operator=(const ImageObjectComponent& other) = delete;
 		ImageObjectComponent& operator=(ImageObjectComponent&& other) = delete;
 
-		void SetTexture(std::shared_ptr<Texture2D> texture);
+		void SetTexture(std::shared_ptr<Texture2D>);
 		std::shared_ptr<Texture2D> GetTexture() { return m_pTexture; }
 
 	private:

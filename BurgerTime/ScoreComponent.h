@@ -2,8 +2,14 @@
 #include "Component.h"
 #include "Subject.h"
 #include "SoundManager.h"
+
+
+#include "SDLSoundSystem.h"
+
+
 namespace dae
 {
+	struct SoundData;
 	class ScoreComponent final : public Component
 	{
 	public:
@@ -19,8 +25,8 @@ namespace dae
 		{ 
 			m_pActorGainedScoreEvent->NotifyObservers({ "Score Gained" });
 
-			SoundData soundToPlay{ 1, 0.1f,"Gain_score.mp3",dae::SoundData::SoundType::SoundEffect };
-			SoundManager::GetInstance().NotifyQueue(soundToPlay);
+			SoundData soundToPlay{ 1, 0.1f,"Gain_score.mp3",  SoundData::SoundType::SoundEffect,false };
+			SoundManager::GetInstance().GetSoundSystem()->NotifyQueue(soundToPlay);
 		}
 
 		Subject* GetScoreGainedSubject() const { return m_pActorGainedScoreEvent.get(); }

@@ -1,12 +1,16 @@
 #include "DirectionComponent.h"
 #include <memory>
+#include "ImageObjectComponent.h"
+#include "Transform.h"
+#include "StateComponent.h"
 
 dae::DirectionComponent::DirectionComponent(std::weak_ptr<GameObject> pOwner):
 	Component(pOwner), m_pOwner{ pOwner }
 {
 	auto pCommandOwner = m_pOwner.lock().get();
-	m_ImageObjectComponent = pCommandOwner->GetComponent<ImageObjectComponent>().get();
-	m_TransformComponent = pCommandOwner->GetComponent<TransformComponent>().get();
+	m_pImageObjectComponent = pCommandOwner->GetComponent<ImageObjectComponent>().get();
+	m_pTransformComponent = pCommandOwner->GetComponent<TransformComponent>().get();
+	m_pStateComponent = pCommandOwner->GetComponent<StateComponent>().get();
 
 
 	auto& resourceManager = ResourceManager::GetInstance();
@@ -22,31 +26,35 @@ void dae::DirectionComponent::Update()
 
 	switch (m_CurrentDirection)
 	{
-	case Up:
+	case PlayerDirection::Up:
 		movement.y = -1.f;
 		break;
-	case Right:
+	case PlayerDirection::Right:
 		movement.x = 1.f;
 		break;
-	case Down:
+	case PlayerDirection::Down:
 		movement.y = 1.f;
 		break;
-	case Left:
+	case PlayerDirection::Left:
 		movement.x = -1.f;
 		break;
 	default:
 		break;
 	}
 
-	if (movement.x + movement.y != 0)
-	{
-		movement *= m_Timer.GetDeltaTime() * m_movementSpeed;
-		m_TransformComponent->AddToLocalPosition(movement.x, movement.y ,0);
-	}
+	if (movement.x + movement.y == 0)
+		return;
+
+
+	movement *= m_Timer.GetDeltaTime() * m_movementSpeed;
+	m_pTransformComponent->AddToLocalPosition(movement.x, movement.y ,0);
+
+	if (m_pStateComponent->GetCurrentState() != State::Walking)
+		m_pStateComponent->SetCurrentState(State::Walking);
 }
 
 void dae::DirectionComponent::SetDirectionImage()
 {
-	if(m_CurrentDirection != None)
-		m_ImageObjectComponent->SetTexture(m_DirectionTextures[static_cast<int>(m_CurrentDirection)]);
+	if(m_CurrentDirection != PlayerDirection::None)
+		m_pImageObjectComponent->SetTexture(m_DirectionTextures[static_cast<int>(m_CurrentDirection)]);
 }
