@@ -25,6 +25,9 @@ public:
 	void Update() override;
 	void UpdateMovement();
 
+	void SetMovementSpeed(float movementSpeed) { m_movementSpeed = movementSpeed; }
+	float GetMovementSpeed() { return m_movementSpeed; }
+
 	void SetEnemyType(EnemyType type);
 
 private:
@@ -32,8 +35,6 @@ private:
 	StateComponent* m_pStateComponent = nullptr;
 
 	float m_movementSpeed{ 100.f };
-	float m_ChangeDirectionTimeInterval{ 1.f };
-	float m_ChangeDirectionTimer{};
 
 	float m_TimeToBeStunned{ 3.f };
 	float m_StunnedTime{};

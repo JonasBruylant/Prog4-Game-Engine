@@ -27,13 +27,15 @@ void dae::DirectionComponent::Update()
 	switch (m_CurrentDirection)
 	{
 	case PlayerDirection::Up:
-		movement.y = -1.f;
+		if(m_pStateComponent->GetCurrentState() == State::CanClimb) // Can only move up or down when there is collision with a ladder
+			movement.y = -1.f;
 		break;
 	case PlayerDirection::Right:
 		movement.x = 1.f;
 		break;
 	case PlayerDirection::Down:
-		movement.y = 1.f;
+		if (m_pStateComponent->GetCurrentState() == State::CanClimb) // Can only move up or down when there is collision with a ladder
+			movement.y = 1.f;
 		break;
 	case PlayerDirection::Left:
 		movement.x = -1.f;
@@ -43,7 +45,11 @@ void dae::DirectionComponent::Update()
 	}
 
 	if (movement.x + movement.y == 0)
+	{
+		if (m_pStateComponent->GetCurrentState() != State::Idle)
+			m_pStateComponent->SetCurrentState(State::Idle);
 		return;
+	}
 
 
 	movement *= m_Timer.GetDeltaTime() * m_movementSpeed;

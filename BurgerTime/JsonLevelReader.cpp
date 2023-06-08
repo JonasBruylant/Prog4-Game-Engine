@@ -90,7 +90,7 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 				imageObjComp->SetTexture(texture);
 
 			}
-			else if (blockIDs[row][col] == 2)
+			if (blockIDs[row][col] == 2)
 			{
 				texture = resourceManager.LoadTexture("Slab.png");
 				imageObjComp->SetTexture(texture);
@@ -98,15 +98,16 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 				collisionComponent->SetTag("LevelPlatform");
 
 			}
-			else if (blockIDs[row][col] == 3)
+			go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset , 0 });
+			if (blockIDs[row][col] == 3)
 			{
 				texture = resourceManager.LoadTexture("Ladder.png");
 				collisionComponent->SetDebugColor({145,245,18});
 				imageObjComp->SetTexture(texture);
-
+				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset + 10));
 				collisionComponent->SetTag("Ladder");
+				go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset - 10 , 0});
 			}
-			go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset , 0});
 
 			level->AddChild(go);
 		}

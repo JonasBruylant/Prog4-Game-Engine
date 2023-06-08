@@ -15,6 +15,7 @@ enum class State
 {
 	Idle,
 	Walking,
+	CanClimb,
 	Climbing,
 	Attacking,
 	Damaged,

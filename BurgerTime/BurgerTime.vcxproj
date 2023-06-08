@@ -173,6 +173,7 @@
     <ClCompile Include="..\3rdParty\imgui-1.89.4\imgui_widgets.cpp" />
     <ClCompile Include="AttackCommand.cpp" />
     <ClCompile Include="AttackComponent.cpp" />
+    <ClCompile Include="BlockingVolumeComponent.cpp" />
     <ClCompile Include="ChangeDirectionCommand.cpp" />
     <ClCompile Include="DieCommand.cpp" />
     <ClCompile Include="DirectionComponent.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="LivesRemainingUIComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PepperComponent.cpp" />
+    <ClCompile Include="PlayerCollideCheckComponent.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreUIComponent.cpp" />
@@ -202,6 +204,7 @@
     <ClInclude Include="..\3rdParty\imgui-1.89.4\imstb_truetype.h" />
     <ClInclude Include="AttackCommand.h" />
     <ClInclude Include="AttackComponent.h" />
+    <ClInclude Include="BlockingVolumeComponent.h" />
     <ClInclude Include="ChangeDirectionCommand.h" />
     <ClInclude Include="DieCommand.h" />
     <ClInclude Include="DirectionComponent.h" />
@@ -211,6 +214,7 @@
     <ClInclude Include="JsonLevelReader.h" />
     <ClInclude Include="LivesRemainingUIComponent.h" />
     <ClInclude Include="PepperComponent.h" />
+    <ClInclude Include="PlayerCollideCheckComponent.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreUIComponent.h" />

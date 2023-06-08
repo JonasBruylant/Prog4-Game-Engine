@@ -48,7 +48,7 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath)
+dae::Minigin::Minigin(const std::string &dataPath, float windowWidth, float windowHeight)
 {
 	PrintSDLVersion();
 	
@@ -60,10 +60,10 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	g_window = SDL_CreateWindow(
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
-		SDL_WINDOW_OPENGL
+		SDL_WINDOWPOS_CENTERED,									
+		static_cast<int>(windowWidth),											
+		static_cast<int>(windowHeight),											
+		SDL_WINDOW_OPENGL										
 	);
 	if (g_window == nullptr) 
 	{

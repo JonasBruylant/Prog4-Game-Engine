@@ -48,16 +48,6 @@ void dae::EnemyComponent::UpdateMovement()
 	if (!m_ChangedDebugColor)
 		GetOwner().lock().get()->GetComponent<CollisionComponent>()->SetDebugColor({ 255.f,255.f,0.f });
 
-	m_ChangeDirectionTimer += m_Timer.GetDeltaTime();
-
-	if (m_ChangeDirectionTimer > m_ChangeDirectionTimeInterval)
-	{
-		m_movementSpeed *= -1.f;
-		m_ChangeDirectionTimer = 0.f;
-		//std::cout << "Timer Reset" << std::endl;
-		//std::cout << m_movementSpeed << std::endl;
-	}
-
 	m_direction.x = m_Timer.GetDeltaTime() * m_movementSpeed;
 	m_pTransformComponent->AddToLocalPosition(m_direction.x, m_direction.y, 0);
 

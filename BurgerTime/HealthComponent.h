@@ -23,7 +23,7 @@ namespace dae
 		void SetHealth(int health) { m_Health = health; }
 
 		void OnEnemyHit(dae::CollisionComponent* otherCollision);
-
+		void TakeDamage(int damage);
 		Subject* GetPlayerDiedEventSubject() const { return m_pGameObjectDiedEvent.get(); }
 	private:
 		std::unique_ptr<Subject> m_pGameObjectDiedEvent = std::make_unique<Subject>();
@@ -33,7 +33,6 @@ namespace dae
 		float m_HitTimer{ m_CooldownForNextHit };
 
 		Timer& m_Timer = Timer::GetInstance();
-		void TakeDamage(int damage);
 	};
 }
 
