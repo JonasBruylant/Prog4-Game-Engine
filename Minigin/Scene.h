@@ -21,6 +21,8 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
+		void SetIsActive(bool isActive) { m_IsActive = isActive; }
+		bool GetIsActive() { return m_IsActive; }
 		std::vector<GameObject*> HandleCollision(GameObject* pGameObject);
 	private: 
 		explicit Scene(const std::string& name);
@@ -28,6 +30,8 @@ namespace dae
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 		static unsigned int m_idCounter; 
+
+		bool m_IsActive{ false };
 	};
 
 }

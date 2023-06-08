@@ -12,6 +12,7 @@ dae::ChangeDirectionCommand::ChangeDirectionCommand(std::weak_ptr<GameObject> pO
 
 void dae::ChangeDirectionCommand::Execute()
 {   
+	
 	m_pDirectionComponent->SetCurrentDirection(m_CurrentDirection);
 	m_pDirectionComponent->SetDirectionImage();
 }
