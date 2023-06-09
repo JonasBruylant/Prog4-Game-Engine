@@ -17,6 +17,9 @@ public:
 	PlayerCollideCheckComponent& operator=(PlayerCollideCheckComponent&& other) = delete;
 
 	void OnGameObjectCollision(CollisionComponent* otherColComp, GameObject* otherCollision);
+
+private:
+
 };
 
 }

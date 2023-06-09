@@ -64,7 +64,11 @@ namespace dae
 
 			return newComponent;
 		}
-
+		else
+		{
+			std::cout << "Component already exists. \n";
+		}
+		
 		return gottenComponent;
 	
 

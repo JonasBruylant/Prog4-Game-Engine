@@ -12,7 +12,7 @@ dae::PlayerCollideCheckComponent::PlayerCollideCheckComponent(std::weak_ptr<Game
 {
 }
 
-void dae::PlayerCollideCheckComponent::OnGameObjectCollision(dae::CollisionComponent* otherColComp, dae::GameObject* otherCollision)
+void dae::PlayerCollideCheckComponent::OnGameObjectCollision(dae::CollisionComponent* otherColComp, dae::GameObject* )
 {
 	auto pOwner = GetOwner().lock();
 	if (otherColComp->GetTag() == "Enemy")
@@ -26,17 +26,5 @@ void dae::PlayerCollideCheckComponent::OnGameObjectCollision(dae::CollisionCompo
 	{
 		pOwner->GetComponent<StateComponent>()->SetCurrentState(State::CanClimb);
 		std::cout << "Player Colliding with Ladder \n";
-	}
-	else if (otherColComp->GetTag() == "LevelPlatform")
-	{
-		auto transform = pOwner->GetTransform();
-		auto localTransform = transform->GetLocalPosition();
-		auto otherWorldPos = otherCollision->GetTransform()->GetWorldPosition();
-
-		auto textureSize = pOwner->GetComponent<dae::ImageObjectComponent>()->GetTexture()->GetSize();
-
-		transform->SetLocalPosition(localTransform.x, otherWorldPos.y - textureSize.y - 1.f, localTransform.z);
-
-		std::cout << "Player colliding with platform \n";
 	}
 }
