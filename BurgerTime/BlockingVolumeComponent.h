@@ -20,7 +20,6 @@ namespace dae {
 		void SetWindowSize(glm::vec2 size) { m_windowSize = size; }
 	private:
 		glm::vec2 m_windowSize{ 0.f,0.f };
-		glm::vec2 m_textureSize{ 0.f,0.f };
 
 	};
 

@@ -79,20 +79,21 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 
 			auto imageObjComp = go->AddComponent<ImageObjectComponent>();
 			go->AddComponent<ImageRenderComponent>();
-			
+			auto collisionComponent = go->AddComponent<CollisionComponent>();
+			collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
 			auto texture = resourceManager.LoadTexture("Platform.png");
 			
 			if (blockIDs[row][col] == 1)
 			{
 				texture = resourceManager.LoadTexture("Platform.png");
 				imageObjComp->SetTexture(texture);
+				collisionComponent->SetTag("LevelPlatform");
 
 			}
 			if (blockIDs[row][col] == 2)
 			{
 				texture = resourceManager.LoadTexture("Slab.png");
 				imageObjComp->SetTexture(texture);
-
 
 			}
 			go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset , 0 });
@@ -102,26 +103,26 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 				imageObjComp->SetTexture(texture);
 
 				//Ladder Middle
-				auto collisionComponent = go->AddComponent<CollisionComponent>();
+				
 				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
 
 				collisionComponent->SetDebugColor({145,245,18});
-				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset ));
+				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset +10));
 				collisionComponent->SetTag("Ladder");
-				go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset, 0});
+				go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset - 10, 0});
 
 
 
-				collisionComponent = go->AddComponent<CollisionComponent>();
-				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
-
-				collisionComponent->SetDebugColor({ 132,235,58 });
-				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(10));
-				collisionComponent->SetTag("LadderTop");
-				go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset - 10 , 0 });
+				//collisionComponent = go->AddComponent<CollisionComponent>();
+				//collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
+				//
+				//collisionComponent->SetDebugColor({ 132,235,58 });
+				//collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(10));
+				//collisionComponent->SetTag("LadderTop");
+				//go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset - 10 , 0 });
 			}
 
-			level->AddChild(go);
+			go->SetParent(level, true);
 		}
 		totalHeightOffset += heightOffset;
 		//std::cout << std::endl;

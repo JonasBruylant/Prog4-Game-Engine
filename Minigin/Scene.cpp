@@ -17,14 +17,7 @@ std::vector<GameObject*> Scene::HandleCollision(GameObject* pGameObject)
 
 	for (auto& currentObject : m_objects)
 	{
-		auto currentCollisionComp = currentObject->GetComponent<CollisionComponent>();
-		if (!currentCollisionComp || (collisionComponent == currentCollisionComp)) //if it doesn't exist, or it's his own collison, continue
-			continue;
-
-		if (!collisionComponent->IsBoxOverlapping(currentObject.get()))
-			continue;
-
-		currentCollisions.emplace_back(currentObject.get());
+		CheckGameObjectCollision(currentCollisions, currentObject, collisionComponent);
 	}
 
 	return currentCollisions;
@@ -32,6 +25,30 @@ std::vector<GameObject*> Scene::HandleCollision(GameObject* pGameObject)
 
 
 Scene::Scene(const std::string& name) : m_name(name) {}
+
+void dae::Scene::CheckGameObjectCollision(std::vector<GameObject*>& currentCollisions, std::shared_ptr < GameObject> pGameObject, std::shared_ptr<CollisionComponent>& pCurrentCollisionComponent)
+{
+	auto goCollision = pGameObject->GetComponent<CollisionComponent>();
+	if (!goCollision || (pCurrentCollisionComponent == goCollision)) //if it doesn't exist, or it's his own collison, continue
+		return;
+
+	if (!pCurrentCollisionComponent->IsBoxOverlapping(pGameObject.get()))
+		return;
+
+	if (goCollision->GetTag() == pCurrentCollisionComponent->GetTag())
+		return;
+		
+	currentCollisions.emplace_back(pGameObject.get());
+
+	auto& children = pGameObject->GetChildren();
+	if (children.size() == 0)
+		return;
+
+	for (auto& child : children)
+	{
+		CheckGameObjectCollision(currentCollisions, child, pCurrentCollisionComponent);
+	}
+}
 
 Scene::~Scene() = default;
 

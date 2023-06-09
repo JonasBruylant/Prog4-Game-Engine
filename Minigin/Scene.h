@@ -4,6 +4,9 @@
 namespace dae
 {
 	class GameObject;
+	class CollisionComponent;
+
+
 	class Scene final
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
@@ -26,6 +29,8 @@ namespace dae
 		std::vector<GameObject*> HandleCollision(GameObject* pGameObject);
 	private: 
 		explicit Scene(const std::string& name);
+
+		void CheckGameObjectCollision(std::vector<GameObject*>& currentCollisions, std::shared_ptr <GameObject> pGameObject, std::shared_ptr<CollisionComponent>& pCurrentCollisionComponent);
 
 		std::string m_name;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};

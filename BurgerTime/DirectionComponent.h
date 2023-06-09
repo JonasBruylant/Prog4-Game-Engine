@@ -28,7 +28,7 @@ namespace dae {
 	
 		void SetDirectionImage();
 		void SetMovementSpeed(int speed) { m_movementSpeed = speed; }
-	
+		void SetDirectionStateComponent(StateComponent* pComponent) { m_pStateComponent = pComponent; }
 	private:
 		PlayerDirection m_CurrentDirection = PlayerDirection::None;
 		ImageObjectComponent* m_pImageObjectComponent = nullptr;

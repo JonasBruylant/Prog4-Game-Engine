@@ -7,11 +7,9 @@
 dae::DirectionComponent::DirectionComponent(std::weak_ptr<GameObject> pOwner):
 	Component(pOwner), m_pOwner{ pOwner }
 {
-	auto pCommandOwner = m_pOwner.lock().get();
-	m_pImageObjectComponent = pCommandOwner->GetComponent<ImageObjectComponent>().get();
-	m_pTransformComponent = pCommandOwner->GetComponent<TransformComponent>().get();
-	m_pStateComponent = pCommandOwner->GetComponent<StateComponent>().get();
-
+	auto pLockedOwner = m_pOwner.lock().get();
+	m_pImageObjectComponent = pLockedOwner->GetComponent<ImageObjectComponent>().get();
+	m_pTransformComponent = pLockedOwner->GetComponent<TransformComponent>().get();
 
 	auto& resourceManager = ResourceManager::GetInstance();
 	m_DirectionTextures.emplace_back(resourceManager.LoadTexture("MrPepperUp.png"));

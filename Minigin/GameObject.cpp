@@ -63,6 +63,8 @@ void dae::GameObject::SetParent(std::weak_ptr<GameObject> pParent, bool keepWorl
 	m_pParent = pParent;
 	if (!m_pParent.expired())
 		m_pParent.lock()->AddChild(shared_from_this());
+
+	
 }
 
 void dae::GameObject::RemoveChild(std::shared_ptr<GameObject> pChild)
@@ -73,6 +75,6 @@ void dae::GameObject::RemoveChild(std::shared_ptr<GameObject> pChild)
 
 void dae::GameObject::AddChild(std::shared_ptr<GameObject> pChild)
 {
-
+	pChild->SetScene(m_pCurrentScene);
 	m_pChildrenList.emplace_back(pChild);
 }

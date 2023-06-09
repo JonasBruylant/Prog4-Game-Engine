@@ -38,6 +38,11 @@ void dae::TransformComponent::SetLocalPosition(const glm::vec3& position)
 void dae::TransformComponent::SetPositionDirty()
 {
 	m_positionIsDirty = true;
+
+	for (auto& child : GetOwner().lock()->GetChildren())
+	{
+		child->GetTransform()->SetPositionDirty();
+	}
 }
 
 void dae::TransformComponent::UpdateWorldPosition()

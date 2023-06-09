@@ -17,8 +17,6 @@ namespace dae
 		void Update();
 		void Render() const;
 		void Initialize();
-		void AddChild(std::shared_ptr<GameObject> pChild);
-		void RemoveChild(std::shared_ptr<GameObject> pChild);
 
 		template <typename T> std::shared_ptr<T> AddComponent();
 		template <typename T> std::shared_ptr<T> GetComponent();
@@ -26,9 +24,14 @@ namespace dae
 
 		void SetParent(std::weak_ptr<GameObject> pParent, bool keepWorldPosition);
 		std::weak_ptr<GameObject> GetParent() const { return m_pParent; }
+
 		std::shared_ptr<TransformComponent> GetTransform() { return m_pPosition; }
+
 		Scene* GetScene() { return m_pCurrentScene;}
 		void SetScene(Scene* scene) { m_pCurrentScene = scene; }
+
+		const std::vector<std::shared_ptr<GameObject>>& GetChildren() const { return m_pChildrenList; }
+
 
 		GameObject() = default;
 		~GameObject();
@@ -41,6 +44,11 @@ namespace dae
 		bool GetMarkedForDelete() { return m_isMarkedForDelete; }
 
 	private:
+
+		void AddChild(std::shared_ptr<GameObject> pChild);
+		void RemoveChild(std::shared_ptr<GameObject> pChild);
+
+
 		std::vector<std::shared_ptr<Component>> m_pComponentList;
 		std::weak_ptr<GameObject> m_pParent;
 		std::vector<std::shared_ptr<GameObject>> m_pChildrenList;
