@@ -175,6 +175,7 @@
     <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="BlockingVolumeComponent.cpp" />
     <ClCompile Include="BurgerPieceComponent.cpp" />
+    <ClCompile Include="BurgerPlateComponent.cpp" />
     <ClCompile Include="ChangeDirectionCommand.cpp" />
     <ClCompile Include="DieCommand.cpp" />
     <ClCompile Include="DirectionComponent.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BlockingVolumeComponent.h" />
     <ClInclude Include="BurgerPieceComponent.h" />
+    <ClInclude Include="BurgerPlateComponent.h" />
     <ClInclude Include="ChangeDirectionCommand.h" />
     <ClInclude Include="DieCommand.h" />
     <ClInclude Include="DirectionComponent.h" />

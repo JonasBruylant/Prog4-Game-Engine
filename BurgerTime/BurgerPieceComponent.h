@@ -7,7 +7,7 @@ namespace dae {
 	class TransformComponent;
 	//class ImageObjectComponent;
 
-class BurgerPieceComponent : public Component
+class BurgerPieceComponent final : public Component
 {
 public:
 	BurgerPieceComponent(GameObject* pOwner, const std::string& filePath);
@@ -24,9 +24,9 @@ public:
 	void SetIsFalling(bool falling) { m_IsFalling = falling; }
 
 	void SetPlayer(GameObject* player) { m_pPlayer = player; }
+	void SetIsFinished(bool isFinished) { m_IsFinished = isFinished; }
 
 	std::vector<std::pair<bool, GameObject*>>& GetBurgerDivisions() { return m_BurgerDivisions; }
-
 	std::shared_ptr<Texture2D> GetTexture() { return m_pBurgerPieceTexture; }
 
 	void PushChildrenDown();
@@ -41,6 +41,8 @@ private:
 	GameObject* m_pPlayer{ nullptr };
 
 	int m_srcRectWidth{};
+
+	bool m_IsFinished{ false };
 
 	float m_FallSpeed{ 40.f };
 	bool m_IsFalling{ false };

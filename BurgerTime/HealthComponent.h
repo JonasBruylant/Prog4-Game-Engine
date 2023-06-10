@@ -29,7 +29,7 @@ namespace dae
 		std::unique_ptr<Subject> m_pGameObjectDiedEvent = std::make_unique<Subject>();
 		int m_MaxHealth{ 1 };
 		int m_Health{ 1 };
-		float m_CooldownForNextHit{ 0.5f };
+		float m_CooldownForNextHit{ 1.f };
 		float m_HitTimer{ m_CooldownForNextHit };
 
 		Timer& m_Timer = Timer::GetInstance();

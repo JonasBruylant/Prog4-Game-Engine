@@ -54,10 +54,19 @@ dae::BurgerPieceComponent::BurgerPieceComponent(GameObject* pOwner, const std::s
 				{
 					if (m_IsFalling)
 					{
-						otherGOCol->SetMarkedForDelete();
-						m_pPlayer->GetComponent<dae::ScoreComponent>()->GainScore(otherGOCol->GetComponent<EnemyComponent>()->GetEnemyType());
+						if (!otherGOCol->GetMarkedForDelete())
+						{
+							otherGOCol->SetMarkedForDelete();
+							m_pPlayer->GetComponent<dae::ScoreComponent>()->GainScore(otherGOCol->GetComponent<EnemyComponent>()->GetEnemyType());
+						}
 
 					}
+				}
+
+				if (otherColComp->GetTag() == "LevelPlatform")
+				{
+					if (m_IsFalling)
+						m_IsFalling = false;
 				}
 			});																					  
 																								  
@@ -95,6 +104,7 @@ void dae::BurgerPieceComponent::Update()
 	if (hasAllBeenSteppedOn)
 	{
 		m_IsFalling = true;
+		m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 12,0 });
 		for (int j = 0; j < m_BurgerDivisions.size(); ++j) //Iterate over children																					   
 		{
 
@@ -138,7 +148,7 @@ void dae::BurgerPieceComponent::PushChildrenDown()
 		return;
 
 
-	m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 10,0});
+	m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 12,0});
 	for (int j = 0; j < m_BurgerDivisions.size(); ++j) //Iterate over children																					   
 	{
 		
