@@ -19,13 +19,16 @@ namespace dae
 		void Initialize();
 
 		template <typename T> std::shared_ptr<T> AddComponent();
+		template <typename T> std::shared_ptr<T> AddComponent(const std::shared_ptr<T>& pComponent);
+	
 		template <typename T> std::shared_ptr<T> GetComponent();
+		template <typename T> std::shared_ptr<T> GetComponent(const std::shared_ptr<T>& pComponent);
 		template <typename T> void RemoveComponent();
 
-		void SetParent(std::weak_ptr<GameObject> pParent, bool keepWorldPosition);
-		std::weak_ptr<GameObject> GetParent() const { return m_pParent; }
+		void SetParent(GameObject* pParent, bool keepWorldPosition);
+		GameObject* GetParent() const { return m_pParent; }
 
-		std::shared_ptr<TransformComponent> GetTransform() { return m_pPosition; }
+		TransformComponent* GetTransform() { return m_pPosition; }
 
 		Scene* GetScene() { return m_pCurrentScene;}
 		void SetScene(Scene* scene) { m_pCurrentScene = scene; }
@@ -50,9 +53,9 @@ namespace dae
 
 
 		std::vector<std::shared_ptr<Component>> m_pComponentList;
-		std::weak_ptr<GameObject> m_pParent;
+		GameObject* m_pParent;
 		std::vector<std::shared_ptr<GameObject>> m_pChildrenList;
-		std::shared_ptr<TransformComponent> m_pPosition;
+		TransformComponent* m_pPosition;
 
 		Scene* m_pCurrentScene;
 		bool m_isMarkedForDelete{ false };
@@ -66,7 +69,7 @@ namespace dae
 
 		if (gottenComponent == nullptr)
 		{
-			auto newComponent = std::make_shared<T>(shared_from_this());
+			auto newComponent = std::make_shared<T>(this);
 
 			m_pComponentList.push_back(newComponent);
 
@@ -83,6 +86,25 @@ namespace dae
 	}
 
 	template<typename T>
+	inline std::shared_ptr<T> GameObject::AddComponent(const std::shared_ptr<T>& pComponent)
+	{
+		auto gottenComponent = GetComponent(pComponent);
+
+		if (gottenComponent == nullptr)
+		{
+			m_pComponentList.push_back(pComponent);
+
+			return pComponent;
+		}
+		else
+		{
+			std::cout << "Component already exists. \n";
+		}
+
+		return gottenComponent;
+	}
+
+	template<typename T>
 	inline std::shared_ptr<T> GameObject::GetComponent()
 	{
 		auto it = std::find_if(m_pComponentList.begin(), m_pComponentList.end(),
@@ -90,6 +112,21 @@ namespace dae
 			{
 				return typeid(*component.get()).name() == typeid(T).name();
 			});
+
+		if (it == m_pComponentList.end())
+			return nullptr;
+
+		return std::static_pointer_cast<T>(*it);
+	}
+
+	template<typename T>
+	inline std::shared_ptr<T> GameObject::GetComponent(const std::shared_ptr<T>& pComponent)
+	{
+		auto it = std::find_if(m_pComponentList.begin(), m_pComponentList.end(),
+			[&](std::shared_ptr<Component> component)
+			{																			   
+				return typeid(*component.get()).name() == typeid(pComponent.get()).name();
+			});																			   
 
 		if (it == m_pComponentList.end())
 			return nullptr;

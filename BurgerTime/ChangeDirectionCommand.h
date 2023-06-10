@@ -10,7 +10,7 @@ namespace dae
 	class ChangeDirectionCommand final : public Command
 	{
 	public:
-		ChangeDirectionCommand(std::weak_ptr<GameObject> pOwner);
+		ChangeDirectionCommand(GameObject* pOwner);
 	
 		~ChangeDirectionCommand() = default;
 	
@@ -19,7 +19,7 @@ namespace dae
 	private:
 		DirectionComponent* m_pDirectionComponent{ nullptr };
 		TransformComponent* m_pTransformComponent{ nullptr };
-		std::weak_ptr<GameObject> m_pOwner;
+		//GameObject* m_pOwner;
 
 		PlayerDirection m_CurrentDirection;
 	};

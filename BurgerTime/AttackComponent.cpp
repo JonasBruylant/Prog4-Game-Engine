@@ -11,12 +11,11 @@
 #include "Texture2D.h"
 #include "Peppercomponent.h"
 
-dae::AttackComponent::AttackComponent(std::weak_ptr<GameObject> pOwner):
+dae::AttackComponent::AttackComponent(GameObject* pOwner):
 	Component(pOwner)
 {
-	auto owner = pOwner.lock().get();
-	m_pStateComponent = owner->GetComponent<StateComponent>().get();
-	m_pCurrentScene = owner->GetScene();
+	m_pStateComponent = pOwner->GetComponent<StateComponent>().get();
+	m_pCurrentScene = pOwner->GetScene();
 }
 
 void dae::AttackComponent::Attack()
@@ -29,7 +28,7 @@ void dae::AttackComponent::SpawnPepper()
 {
 	auto pPepper = std::make_shared<GameObject>();
 	pPepper->Initialize();
-	pPepper->GetComponent<TransformComponent>()->SetLocalPosition(GetOwner().lock()->GetComponent<TransformComponent>()->GetWorldPosition());
+	pPepper->GetComponent<TransformComponent>()->SetLocalPosition(GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition());
 
 	auto& resourceManager = ResourceManager::GetInstance();
 	auto texture = resourceManager.LoadTexture("Pepper.png");
@@ -37,13 +36,12 @@ void dae::AttackComponent::SpawnPepper()
 	pPepper->AddComponent<dae::ImageRenderComponent>();
 	auto pepperComponent = pPepper->AddComponent<dae::PepperComponent>();
 	
-	//Will stay indefinitely
+	
 	m_pCurrentScene->Add(pPepper);
 
 
 	//Colision component set up
 	auto collisionComp = pPepper->AddComponent<CollisionComponent>();
-	auto worldPosition = pPepper->GetComponent<dae::TransformComponent>()->GetWorldPosition();
 	auto Texture = pPepper->AddComponent<dae::ImageObjectComponent>()->GetTexture().get();
 	auto textureSize = Texture->GetSize();
 	dae::Box boxCollision{ static_cast<float>(textureSize.x), static_cast<float>(textureSize.y) };

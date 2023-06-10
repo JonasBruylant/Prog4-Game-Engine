@@ -2,10 +2,10 @@
 #include "TextObjectComponent.h"
 #include "Event.h"
 
-dae::LivesRemainingUIComponent::LivesRemainingUIComponent(std::weak_ptr<GameObject> pOwner):
+dae::LivesRemainingUIComponent::LivesRemainingUIComponent(GameObject* pOwner):
 	Component(pOwner)
 {
-	m_pTextObjectHealthComponent = GetOwner().lock()->GetComponent<TextObjectComponent>().get();
+	m_pTextObjectHealthComponent = GetOwner()->GetComponent<TextObjectComponent>().get();
 	m_pTextObjectHealthComponent->SetText("Lives remaining: " + std::to_string(m_Lives));
 }
 

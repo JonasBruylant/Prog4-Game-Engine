@@ -5,6 +5,7 @@
 namespace dae
 {
 	class Texture2D;
+	
 	/**
 	 * Simple RAII wrapper for the SDL renderer
 	 */
@@ -22,7 +23,7 @@ namespace dae
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
-
+		void RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& dstRect) const;
 		void RenderCollisionRectangle(float x, float y, float width, float height, float r, float g, float b) const;
 
 		SDL_Renderer* GetSDLRenderer() const;

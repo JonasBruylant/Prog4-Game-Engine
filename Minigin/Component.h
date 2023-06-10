@@ -14,16 +14,18 @@ namespace dae
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
 
+
 		virtual void Render() const {};
 		virtual void RenderImGUI(){};
 		virtual void Update() {}
+
 	
 	protected:
-		explicit Component(std::weak_ptr<GameObject> owner) : m_pComponentOwner{owner}{}
-		std::weak_ptr<GameObject> GetOwner() const { return m_pComponentOwner; }
+		explicit Component(GameObject* owner) : m_pComponentOwner{owner}{}
+		GameObject* GetOwner() const { return m_pComponentOwner; }
 
 	private:
-		std::weak_ptr<GameObject> m_pComponentOwner;
+		GameObject* m_pComponentOwner;
 	};
 
 }

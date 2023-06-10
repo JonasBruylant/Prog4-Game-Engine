@@ -3,12 +3,13 @@
 #include "Timer.h"
 
 namespace dae
-
 {
+	class TextObjectComponent;
+
 	class FPSCountComponent final : public Component
 	{
 	public:
-		FPSCountComponent(std::weak_ptr<GameObject> pOwner);
+		FPSCountComponent(GameObject* pOwner);
 
 		~FPSCountComponent() = default;
 
@@ -24,6 +25,7 @@ namespace dae
 	private:
 		float m_FPS;
 		Timer& m_Timer = Timer::GetInstance();
+		TextObjectComponent* m_pTextObjectComponent{ nullptr };
 	};
 }
 

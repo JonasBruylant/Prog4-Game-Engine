@@ -42,27 +42,27 @@ void dae::GameObject::Render() const
 
 void dae::GameObject::Initialize()
 {
-	m_pPosition = AddComponent<TransformComponent>();
+	m_pPosition = AddComponent<TransformComponent>().get();
 }
 
-void dae::GameObject::SetParent(std::weak_ptr<GameObject> pParent, bool keepWorldPosition)
+void dae::GameObject::SetParent(GameObject* pParent, bool keepWorldPosition)
 {
 	if (m_isMarkedForDelete)
 		return;
 
-	if (m_pParent.expired())
-		m_pPosition.get()->SetLocalPosition(m_pPosition.get()->GetWorldPosition());
+	if (!m_pParent)
+		m_pPosition->SetLocalPosition(m_pPosition->GetWorldPosition());
 	else
 	{
 		if (keepWorldPosition)
-			m_pPosition.get()->SetLocalPosition(m_pPosition.get()->GetLocalPosition() - pParent.lock()->m_pPosition.get()->GetWorldPosition());
-		m_pPosition.get()->SetPositionDirty();
+			m_pPosition->SetLocalPosition(m_pPosition->GetLocalPosition() - pParent->m_pPosition->GetWorldPosition());
+		m_pPosition->SetPositionDirty();
 	}
-	if (!m_pParent.expired())
-		m_pParent.lock()->RemoveChild(shared_from_this());
+	if (m_pParent)
+		m_pParent->RemoveChild(shared_from_this());
 	m_pParent = pParent;
-	if (!m_pParent.expired())
-		m_pParent.lock()->AddChild(shared_from_this());
+	if (m_pParent)
+		m_pParent->AddChild(shared_from_this());
 
 	
 }

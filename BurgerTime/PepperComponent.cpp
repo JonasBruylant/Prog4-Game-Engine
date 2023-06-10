@@ -5,7 +5,7 @@
 #include "StateComponent.h"
 
 
-dae::PepperComponent::PepperComponent(std::weak_ptr<GameObject> pOwner):
+dae::PepperComponent::PepperComponent(GameObject* pOwner):
 	Component(pOwner)
 {
 }
@@ -14,7 +14,7 @@ void dae::PepperComponent::OnEnemyHit(dae::CollisionComponent* otherCollision, G
 {
 	if (otherCollision->GetTag() == "Enemy")
 	{
-		GetOwner().lock().get()->SetMarkedForDelete();
+		GetOwner()->SetMarkedForDelete();
 		otherObject->GetComponent<StateComponent>()->SetCurrentState(State::Stunned);
 	}
 			
@@ -27,5 +27,5 @@ void dae::PepperComponent::Update()
 	if (m_TimeAlive < m_MaxTimeAlive)
 		return;
 
-	GetOwner().lock()->SetMarkedForDelete();
+	GetOwner()->SetMarkedForDelete();
 }

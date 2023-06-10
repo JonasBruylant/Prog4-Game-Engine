@@ -5,7 +5,7 @@
 #include "Texture2D.h"
 #include "Gameobject.h"
 
-dae::TextObjectComponent::TextObjectComponent(std::weak_ptr<GameObject> pOwner):
+dae::TextObjectComponent::TextObjectComponent(GameObject* pOwner):
 	Component(pOwner),
 	m_needsUpdate{false}
 {

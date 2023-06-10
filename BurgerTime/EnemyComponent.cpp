@@ -4,10 +4,10 @@
 #include "CollisionComponent.h"
 #include "ImageObjectComponent.h"
 
-dae::EnemyComponent::EnemyComponent(std::weak_ptr<GameObject> pOwner):
+dae::EnemyComponent::EnemyComponent(GameObject* pOwner):
 	Component(pOwner)
 {
-	auto owner = pOwner.lock();
+	auto owner = pOwner;
 	m_pTransformComponent = owner->GetComponent<TransformComponent>().get();
 	m_pStateComponent = owner->GetComponent<StateComponent>().get();
 }
@@ -24,7 +24,7 @@ void dae::EnemyComponent::Update()
 
 	if (!m_ChangedDebugColor)
 	{
-		GetOwner().lock().get()->GetComponent<CollisionComponent>()->SetDebugColor({ 255.f,255.f,255.f });
+		GetOwner()->GetComponent<CollisionComponent>()->SetDebugColor({ 255.f,255.f,255.f });
 		m_ChangedDebugColor = true;
 	}
 
@@ -46,7 +46,7 @@ void dae::EnemyComponent::UpdateMovement()
 		return;
 
 	if (!m_ChangedDebugColor)
-		GetOwner().lock().get()->GetComponent<CollisionComponent>()->SetDebugColor({ 255.f,255.f,0.f });
+		GetOwner()->GetComponent<CollisionComponent>()->SetDebugColor({ 255.f,255.f,0.f });
 
 	m_direction.x = m_Timer.GetDeltaTime() * m_movementSpeed;
 	m_pTransformComponent->AddToLocalPosition(m_direction.x, m_direction.y, 0);
@@ -71,5 +71,5 @@ void dae::EnemyComponent::SetEnemyType(EnemyType type)
 		break;
 	}
 
-	GetOwner().lock()->GetComponent<ImageObjectComponent>()->SetTexture(m_EnemyTexture);
+	GetOwner()->GetComponent<ImageObjectComponent>()->SetTexture(m_EnemyTexture);
 }

@@ -8,7 +8,7 @@ namespace dae
 class AttackComponent final : public Component
 {
 public:
-	AttackComponent(std::weak_ptr<GameObject> pOwner);
+	AttackComponent(GameObject* pOwner);
 
 	~AttackComponent() = default;
 	AttackComponent(const AttackComponent& other) = delete;

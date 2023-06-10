@@ -8,7 +8,7 @@ namespace dae
 	class StateComponent final : public Component
 	{
 	public:
-		StateComponent(std::weak_ptr<GameObject> pOwner);
+		StateComponent(GameObject* pOwner);
 
 		~StateComponent() = default;
 		StateComponent(const StateComponent& other) = delete;

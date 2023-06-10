@@ -2,8 +2,8 @@
 
 
 
-dae::TransformComponent::TransformComponent(std::weak_ptr<GameObject> pOwner):
-	Component(pOwner), m_positionIsDirty{ false }
+dae::TransformComponent::TransformComponent(GameObject* pOwner):
+	Component(pOwner), m_positionIsDirty{ false }, m_pOwner{pOwner}
 {
 }
 
@@ -39,7 +39,7 @@ void dae::TransformComponent::SetPositionDirty()
 {
 	m_positionIsDirty = true;
 
-	for (auto& child : GetOwner().lock()->GetChildren())
+	for (auto& child : m_pOwner->GetChildren())
 	{
 		child->GetTransform()->SetPositionDirty();
 	}
@@ -47,12 +47,11 @@ void dae::TransformComponent::SetPositionDirty()
 
 void dae::TransformComponent::UpdateWorldPosition()
 {
-	auto componentOwner = GetOwner().lock();
-	if (componentOwner->GetParent().expired())
+	if (!m_pOwner->GetParent())
 		m_WorldPosition = m_LocalPosition;
 	else
 	{
-		const auto parentTransform = componentOwner->GetParent().lock()->GetTransform();
+		const auto parentTransform = m_pOwner->GetParent()->GetTransform();
 
 		m_WorldPosition = parentTransform->GetWorldPosition() + m_LocalPosition;
 	}

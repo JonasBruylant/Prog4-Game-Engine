@@ -46,10 +46,13 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 	const rapidjson::Value& platformWidth = jsonDoc["PlatformWidth"];
 	const rapidjson::Value& ladderHeight = jsonDoc["LadderHeight"];
 	const rapidjson::Value& platformHeight = jsonDoc["PlatformHeight"];
+	const rapidjson::Value& playerHeight = jsonDoc["PlayerHeight"];
 
 	int actualPlatformWidth = platformWidth.GetInt();
 	int actualPlatformHeight = platformHeight.GetInt();
 	int actualLadderHeight = ladderHeight.GetInt();
+	int actualPlayerHeight = playerHeight.GetInt();
+
 
 
 	assert(blockIDs.IsArray() && "Level has no content.");
@@ -57,6 +60,9 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 	auto& sceneLevel = SceneManager::GetInstance().CreateScene(levelName.GetString());
 	auto& resourceManager = ResourceManager::GetInstance();
 	auto level = std::make_shared<GameObject>();
+	level->Initialize();
+	
+
 	int totalHeightOffset{ 50 };
 	int initialWidthOffset{ 20 };
 	for (int row = 0; row < static_cast<int>(blockIDs.GetArray().Size()); ++row)
@@ -78,11 +84,10 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 
 
 			auto imageObjComp = go->AddComponent<ImageObjectComponent>();
-			go->AddComponent<ImageRenderComponent>();
 			auto collisionComponent = go->AddComponent<CollisionComponent>();
 			collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
 			auto texture = resourceManager.LoadTexture("Platform.png");
-			
+
 			if (blockIDs[row][col] == 1)
 			{
 				texture = resourceManager.LoadTexture("Platform.png");
@@ -103,30 +108,38 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 				imageObjComp->SetTexture(texture);
 
 				//Ladder Middle
-				
+
 				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
 
-				collisionComponent->SetDebugColor({145,245,18});
-				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset +10));
+				collisionComponent->SetDebugColor({ 145,245,18 });
+				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
 				collisionComponent->SetTag("Ladder");
-				go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset - 10, 0});
+				go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset, 0 });
 
 
+				auto ladderTop = std::make_shared<GameObject>();
+				ladderTop->Initialize();
+				ladderTop->SetParent(go.get(), false);
 
-				//collisionComponent = go->AddComponent<CollisionComponent>();
-				//collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
-				//
-				//collisionComponent->SetDebugColor({ 132,235,58 });
-				//collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(10));
-				//collisionComponent->SetTag("LadderTop");
-				//go->GetTransform()->SetLocalPosition({ initialWidthOffset + (actualPlatformWidth * col), totalHeightOffset - 10 , 0 });
+				collisionComponent = ladderTop->AddComponent<CollisionComponent>();
+				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(heightOffset));
+
+				collisionComponent->SetDebugColor({ 132,235,58 });
+				collisionComponent->SetMeasurements(static_cast<float>(actualPlatformWidth), static_cast<float>(actualPlatformHeight));
+				collisionComponent->SetTag("LadderTop");
+				collisionComponent->SetDrawDebug(true);
+				ladderTop->GetTransform()->SetLocalPosition({ 0, -actualPlayerHeight , 0 });
+				//actualPlayerHeight
 			}
-
-			go->SetParent(level, true);
+			go->AddComponent<ImageRenderComponent>();
+			go->SetParent(level.get(), true);
 		}
 		totalHeightOffset += heightOffset;
 		//std::cout << std::endl;
+
 	}
+
+	sceneLevel.Add(level);
 
 	return sceneLevel;
 }

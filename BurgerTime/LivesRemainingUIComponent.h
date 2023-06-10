@@ -10,7 +10,7 @@ namespace dae
 	class LivesRemainingUIComponent final : public Component, public Observer
 	{
 	public:
-		LivesRemainingUIComponent(std::weak_ptr<GameObject> pOwner);
+		LivesRemainingUIComponent(GameObject* pOwner);
 		~LivesRemainingUIComponent() = default;
 
 		LivesRemainingUIComponent(const LivesRemainingUIComponent& other) = delete;

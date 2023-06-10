@@ -1,6 +1,6 @@
 #include "StateComponent.h"
 
-dae::StateComponent::StateComponent(std::weak_ptr<GameObject> pOwner):
+dae::StateComponent::StateComponent(GameObject* pOwner):
 	Component(pOwner)
 {
 	

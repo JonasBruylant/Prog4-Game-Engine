@@ -8,7 +8,7 @@
 
 #include "Texture2D.h"
 
-dae::BlockingVolumeComponent::BlockingVolumeComponent(std::weak_ptr<GameObject> pOwner):
+dae::BlockingVolumeComponent::BlockingVolumeComponent(GameObject* pOwner):
 	Component(pOwner)
 {
 }
@@ -16,8 +16,8 @@ dae::BlockingVolumeComponent::BlockingVolumeComponent(std::weak_ptr<GameObject> 
 void dae::BlockingVolumeComponent::OnGameObjectHit(CollisionComponent* otherColComp, GameObject* otherCollision)
 {
 	const auto transform = otherCollision->GetTransform();
-	const auto ownerTag = GetOwner().lock()->GetComponent<CollisionComponent>()->GetTag();
-	const auto collisionSize = GetOwner().lock()->GetComponent<CollisionComponent>()->GetMeasurements();
+	const auto ownerTag = GetOwner()->GetComponent<CollisionComponent>()->GetTag();
+	const auto collisionSize = GetOwner()->GetComponent<CollisionComponent>()->GetMeasurements();
 
 	const auto textureSize = otherColComp->GetMeasurements();
 	
@@ -27,9 +27,9 @@ void dae::BlockingVolumeComponent::OnGameObjectHit(CollisionComponent* otherColC
 		enemyComp->SetMovementSpeed(enemyComp->GetMovementSpeed() * -1.f);
 	}
 
-	if (ownerTag == "BlockingVolumeLeft")
+	if (ownerTag == "BlockingVolumeLeft" && otherColComp->GetTag() == "Player")
 		transform->SetLocalPosition(collisionSize.width, transform->GetWorldPosition().y, transform->GetWorldPosition().z);
 
-	if(ownerTag == "BlockingVolumeRight")
+	if (ownerTag == "BlockingVolumeRight" && otherColComp->GetTag() == "Player")
 		transform->SetLocalPosition(m_windowSize.x - collisionSize.width - textureSize.width, transform->GetWorldPosition().y, transform->GetWorldPosition().z);
 }

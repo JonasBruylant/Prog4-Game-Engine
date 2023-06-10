@@ -9,7 +9,7 @@ namespace dae {
 	{
 
 	public:
-		MoveCommand(std::weak_ptr<GameObject> pOwner);
+		MoveCommand(GameObject* pOwner);
 	
 		~MoveCommand() = default;
 	
@@ -23,7 +23,6 @@ namespace dae {
 		int m_movementSpeed = 10;
 		TransformComponent* m_pTransformComponent{nullptr};
 
-		std::weak_ptr<GameObject> m_pOwner;
 
 		Timer& m_Timer = Timer::GetInstance();
 	};

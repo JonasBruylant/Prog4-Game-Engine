@@ -8,7 +8,7 @@ namespace dae {
 	class BlockingVolumeComponent final : public Component
 	{
 	public:
-		BlockingVolumeComponent(std::weak_ptr<GameObject> pOwner);
+		BlockingVolumeComponent(GameObject* pOwner);
 	
 		~BlockingVolumeComponent() = default;
 		BlockingVolumeComponent(const BlockingVolumeComponent& other) = delete;

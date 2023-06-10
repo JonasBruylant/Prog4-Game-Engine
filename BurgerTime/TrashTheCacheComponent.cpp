@@ -7,7 +7,7 @@
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl2.h>
 
-dae::TrashTheCacheComponent::TrashTheCacheComponent(std::weak_ptr<GameObject> pOwner) 
+dae::TrashTheCacheComponent::TrashTheCacheComponent(GameObject* pOwner) 
 	: Component(pOwner)
 {
 

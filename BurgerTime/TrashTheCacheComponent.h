@@ -38,7 +38,7 @@ namespace dae {
 	class TrashTheCacheComponent final : public Component
 	{
 	public:
-		TrashTheCacheComponent(std::weak_ptr<GameObject> pOwner);
+		TrashTheCacheComponent(GameObject* pOwner);
 	
 	
 		~TrashTheCacheComponent() = default;

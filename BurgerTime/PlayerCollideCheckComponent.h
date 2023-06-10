@@ -12,7 +12,7 @@ namespace dae {
 	class PlayerCollideCheckComponent final : public Component
 	{
 	public:
-		PlayerCollideCheckComponent(std::weak_ptr<GameObject> pOwner);
+		PlayerCollideCheckComponent(GameObject* pOwner);
 		~PlayerCollideCheckComponent() = default;
 
 		PlayerCollideCheckComponent(const PlayerCollideCheckComponent& other) = delete;

@@ -10,7 +10,7 @@ namespace dae
 	class TextRenderComponent final : public Component
 	{
 	public:
-		TextRenderComponent(std::weak_ptr<GameObject> pOwner);
+		TextRenderComponent(GameObject* pOwner);
 
 		~TextRenderComponent();
 		TextRenderComponent(const TextRenderComponent& other) = delete;
@@ -22,8 +22,8 @@ namespace dae
 
 
 	private:
-		std::weak_ptr<TransformComponent> m_transformPosition;
-		std::weak_ptr<TextObjectComponent> m_textTexture;
+		TransformComponent* m_transformPosition;
+		TextObjectComponent* m_textTexture;
 	};
 
 

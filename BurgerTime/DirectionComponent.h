@@ -13,7 +13,7 @@ namespace dae {
 	class DirectionComponent : public Component
 	{
 	public:
-		DirectionComponent(std::weak_ptr<GameObject> pOwner);
+		DirectionComponent(GameObject* pOwner);
 	
 		~DirectionComponent() = default;
 		DirectionComponent(const DirectionComponent& other) = delete;
@@ -35,7 +35,7 @@ namespace dae {
 		TransformComponent* m_pTransformComponent = nullptr;
 		StateComponent* m_pStateComponent = nullptr;
 	
-		std::weak_ptr<GameObject> m_pOwner;
+		GameObject* m_pOwner;
 		std::vector<std::shared_ptr<Texture2D>> m_DirectionTextures;
 
 		int m_movementSpeed = 10;

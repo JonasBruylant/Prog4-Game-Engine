@@ -114,6 +114,7 @@ namespace dae
 
 		auto returnPtr = command.get();
 		m_controllerCommands.insert({ controllerInput, std::move(command) });
+		//m_controllerCommands.insert({ controllerInput, returnPtr });
 
 		return returnPtr;
 	}

@@ -4,12 +4,11 @@
 #include "Transform.h"
 #include "StateComponent.h"
 
-dae::DirectionComponent::DirectionComponent(std::weak_ptr<GameObject> pOwner):
+dae::DirectionComponent::DirectionComponent(GameObject* pOwner):
 	Component(pOwner), m_pOwner{ pOwner }
 {
-	auto pLockedOwner = m_pOwner.lock().get();
-	m_pImageObjectComponent = pLockedOwner->GetComponent<ImageObjectComponent>().get();
-	m_pTransformComponent = pLockedOwner->GetComponent<TransformComponent>().get();
+	m_pImageObjectComponent = pOwner->GetComponent<ImageObjectComponent>().get();
+	m_pTransformComponent = pOwner->GetComponent<TransformComponent>().get();
 
 	auto& resourceManager = ResourceManager::GetInstance();
 	m_DirectionTextures.emplace_back(resourceManager.LoadTexture("MrPepperUp.png"));
@@ -32,7 +31,7 @@ void dae::DirectionComponent::Update()
 		movement.x = 1.f;
 		break;
 	case PlayerDirection::Down:
-		if (m_pStateComponent->GetCurrentState() == State::CanClimb) // Can only move up or down when there is collision with a ladder
+		if (m_pStateComponent->GetCurrentState() == State::CanClimb || m_pStateComponent->GetCurrentState() == State::CanClimbDown) // Can only move up or down when there is collision with a ladder
 			movement.y = 1.f;
 		break;
 	case PlayerDirection::Left:

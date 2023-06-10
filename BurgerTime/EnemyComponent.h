@@ -14,7 +14,7 @@ namespace dae {
 class EnemyComponent final : public Component
 {
 public:
-	EnemyComponent(std::weak_ptr<GameObject> pOwner);
+	EnemyComponent(GameObject* pOwner);
 
 	~EnemyComponent() = default;
 	EnemyComponent(const EnemyComponent& other) = delete;

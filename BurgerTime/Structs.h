@@ -16,6 +16,7 @@ enum class State
 	Idle,
 	Walking,
 	CanClimb,
+	CanClimbDown,
 	Climbing,
 	Attacking,
 	Damaged,
@@ -31,6 +32,15 @@ enum class EnemyType
 	Pickle,
 
 	Count
+};
+
+enum class BurgerPieceType
+{
+	TopBun,
+	Cheese,
+	Meat,
+	Salad,
+	BottomBun
 };
 
 

@@ -2,7 +2,7 @@
 #include "CollisionComponent.h"
 #include "Timer.h"
 
-dae::HealthComponent::HealthComponent(std::weak_ptr<GameObject> pOwner):
+dae::HealthComponent::HealthComponent(GameObject* pOwner):
 Component(pOwner)
 {
 }

@@ -9,7 +9,14 @@ namespace dae
 	class TransformComponent final : public Component
 	{
 	public:
-		TransformComponent(std::weak_ptr<GameObject> pOwner);
+		TransformComponent(GameObject* pOwner);
+
+		~TransformComponent() = default;
+		TransformComponent(const TransformComponent& other) = delete;
+		TransformComponent(TransformComponent&& other) = delete;
+		TransformComponent& operator=(const TransformComponent& other) = delete;
+		TransformComponent& operator=(TransformComponent&& other) = delete;
+
 		const glm::vec3& GetLocalPosition() const;
 		const glm::vec3& GetWorldPosition();
 
@@ -25,5 +32,7 @@ namespace dae
 		glm::vec3 m_LocalPosition{0,0,0};
 		glm::vec3 m_WorldPosition{0,0,0};
 		bool m_positionIsDirty;
+
+		GameObject* m_pOwner;
 	};
 }

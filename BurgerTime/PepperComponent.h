@@ -9,7 +9,7 @@ namespace dae {
 class PepperComponent final : public Component
 {
 public:
-	PepperComponent(std::weak_ptr<GameObject> pOwner);
+	PepperComponent(GameObject* pOwner);
 
 	~PepperComponent() = default;
 	PepperComponent(const PepperComponent& other) = delete;

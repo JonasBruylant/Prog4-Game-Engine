@@ -18,7 +18,7 @@ class CollisionComponent final : public Component
 {
 public:
 
-	CollisionComponent(std::weak_ptr<GameObject> pOwner);
+	CollisionComponent(GameObject* pOwner);
 	~CollisionComponent() = default;
 
 	CollisionComponent(const CollisionComponent& other) = delete;
@@ -52,7 +52,7 @@ private:
 	std::string m_tag;
 
 	std::function<void(CollisionComponent* otherCollision, GameObject*)> m_onTriggerCallback{};
-	std::weak_ptr<TransformComponent> m_pOwnerTransform;
+	TransformComponent* m_pOwnerTransform;
 
 	Scene* m_pCurrentScene;
 	glm::vec3 m_DebugRectColor;

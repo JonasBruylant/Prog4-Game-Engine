@@ -1,13 +1,15 @@
 #include "ImageRenderComponent.h"
-#include "Transform.h"
 #include "ImageObjectComponent.h"
+#include "Transform.h"
+#include "Texture2D.h"
 
-dae::ImageRenderComponent::ImageRenderComponent(std::weak_ptr<GameObject> pOwner):
+dae::ImageRenderComponent::ImageRenderComponent(GameObject* pOwner):
 	Component(pOwner)
 {
 
-	m_pTransformPosition = GetOwner().lock()->GetComponent<TransformComponent>();
-	m_pImageTexture = GetOwner().lock()->GetComponent<ImageObjectComponent>();
+	m_pTransformPosition = GetOwner()->GetComponent<TransformComponent>().get();
+	m_pImageTexture = GetOwner()->GetComponent<ImageObjectComponent>().get();
+	m_pTexture = m_pImageTexture->GetTexture();
 }
 
 dae::ImageRenderComponent::~ImageRenderComponent()
@@ -17,7 +19,6 @@ dae::ImageRenderComponent::~ImageRenderComponent()
 void dae::ImageRenderComponent::Render() const
 {
 
-	auto transformPosition = m_pTransformPosition.lock()->GetWorldPosition();
-	auto texture = m_pImageTexture.lock()->GetTexture();
-	Renderer::GetInstance().RenderTexture(*texture, transformPosition.x, transformPosition.y);
+	auto& transformPosition = m_pTransformPosition->GetWorldPosition();
+	Renderer::GetInstance().RenderTexture(*m_pTexture, transformPosition.x, transformPosition.y);
 }

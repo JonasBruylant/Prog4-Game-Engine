@@ -2,12 +2,11 @@
 #include "GameObject.h"
 
 
-dae::ChangeDirectionCommand::ChangeDirectionCommand(std::weak_ptr<GameObject> pOwner) :
-	Command(), m_pOwner{ pOwner }
+dae::ChangeDirectionCommand::ChangeDirectionCommand(GameObject* pOwner) :
+	Command()
 {
-	auto pCommandOwner = m_pOwner.lock().get();
-	m_pDirectionComponent = pCommandOwner->GetComponent<DirectionComponent>().get();
-	m_pTransformComponent = pCommandOwner->GetComponent<TransformComponent>().get();
+	m_pDirectionComponent = pOwner->GetComponent<DirectionComponent>().get();
+	m_pTransformComponent = pOwner->GetTransform();
 }
 
 void dae::ChangeDirectionCommand::Execute()

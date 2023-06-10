@@ -9,7 +9,7 @@ namespace dae
 	class ImageObjectComponent final : public Component
 	{
 	public:
-		ImageObjectComponent(std::weak_ptr<GameObject> pOwner);
+		ImageObjectComponent(GameObject* pOwner);
 		~ImageObjectComponent() = default;
 
 
@@ -18,7 +18,8 @@ namespace dae
 		ImageObjectComponent& operator=(const ImageObjectComponent& other) = delete;
 		ImageObjectComponent& operator=(ImageObjectComponent&& other) = delete;
 
-		void SetTexture(std::shared_ptr<Texture2D>);
+		void SetTexture(std::shared_ptr<Texture2D> texture);
+
 		std::shared_ptr<Texture2D> GetTexture() { return m_pTexture; }
 
 	private:

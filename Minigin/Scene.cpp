@@ -5,6 +5,7 @@
 using namespace dae;
 
 unsigned int Scene::m_idCounter = 0;
+Scene::Scene(const std::string& name) : m_name(name) {}
 
 std::vector<GameObject*> Scene::HandleCollision(GameObject* pGameObject)
 {
@@ -24,7 +25,6 @@ std::vector<GameObject*> Scene::HandleCollision(GameObject* pGameObject)
 }
 
 
-Scene::Scene(const std::string& name) : m_name(name) {}
 
 void dae::Scene::CheckGameObjectCollision(std::vector<GameObject*>& currentCollisions, std::shared_ptr < GameObject> pGameObject, std::shared_ptr<CollisionComponent>& pCurrentCollisionComponent)
 {
@@ -32,22 +32,21 @@ void dae::Scene::CheckGameObjectCollision(std::vector<GameObject*>& currentColli
 	if (!goCollision || (pCurrentCollisionComponent == goCollision)) //if it doesn't exist, or it's his own collison, continue
 		return;
 
-	if (!pCurrentCollisionComponent->IsBoxOverlapping(pGameObject.get()))
-		return;
-
 	if (goCollision->GetTag() == pCurrentCollisionComponent->GetTag())
 		return;
-		
-	currentCollisions.emplace_back(pGameObject.get());
 
+		
 	auto& children = pGameObject->GetChildren();
-	if (children.size() == 0)
-		return;
 
 	for (auto& child : children)
 	{
 		CheckGameObjectCollision(currentCollisions, child, pCurrentCollisionComponent);
 	}
+
+	if (!pCurrentCollisionComponent->IsBoxOverlapping(pGameObject.get()))
+		return;
+	currentCollisions.emplace_back(pGameObject.get());
+
 }
 
 Scene::~Scene() = default;

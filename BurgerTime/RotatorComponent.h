@@ -10,7 +10,7 @@ namespace dae
 	class RotatorComponent final : public Component
 	{
 	public:
-		RotatorComponent(std::weak_ptr<GameObject> pOwner);
+		RotatorComponent(GameObject* pOwner);
 	
 		~RotatorComponent() = default;
 		RotatorComponent(const RotatorComponent& other) = delete;
@@ -26,7 +26,7 @@ namespace dae
 	protected:
 	
 	private:
-		std::shared_ptr<TransformComponent> m_pTransformComponent;
+		TransformComponent* m_pTransformComponent;
 		glm::vec3 m_pPivotPoint{0,0,0};
 		float m_UnitCircleValue{0.f};
 		float m_CircleSize{30.f};

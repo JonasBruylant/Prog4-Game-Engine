@@ -2,17 +2,17 @@
 #include "Transform.h"
 
 
-dae::RotatorComponent::RotatorComponent(std::weak_ptr<GameObject> pOwner) : Component(pOwner)
+dae::RotatorComponent::RotatorComponent(GameObject* pOwner) : Component(pOwner)
 {
-	m_pTransformComponent = GetOwner().lock()->GetTransform();
+	m_pTransformComponent = GetOwner()->GetTransform();
 }
 
 void dae::RotatorComponent::Update()
 {
 	m_UnitCircleValue += m_Timer.GetDeltaTime() * m_MovementSpeed;
-	auto parent = GetOwner().lock()->GetParent();
+	auto parent = GetOwner()->GetParent();
 	glm::vec3 rotationPosition = {cos(m_UnitCircleValue) * m_CircleSize, sin(m_UnitCircleValue) * m_CircleSize, 0};
-	if (!parent.expired()) //If parent
+	if (parent) //If parent
 		m_pTransformComponent->SetLocalPosition(rotationPosition);
 	else //If no parent
 		m_pTransformComponent->SetLocalPosition(rotationPosition + m_pPivotPoint);

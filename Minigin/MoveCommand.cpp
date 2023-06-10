@@ -3,11 +3,10 @@
 
 namespace dae
 {
-	MoveCommand::MoveCommand(std::weak_ptr<GameObject> pOwner) :
-		Command(), m_pOwner{pOwner}
+	MoveCommand::MoveCommand(GameObject* pOwner) :
+		Command()
 	{
-		auto pCommandOwner = m_pOwner.lock().get();
-		m_pTransformComponent = pCommandOwner->GetComponent<TransformComponent>().get();
+		m_pTransformComponent = pOwner->GetTransform();
 
 	}
 

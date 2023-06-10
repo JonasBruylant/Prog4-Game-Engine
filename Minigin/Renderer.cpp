@@ -93,6 +93,11 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void dae::Renderer::RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& dstRect) const
+{
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dstRect);
+}
+
 void dae::Renderer::RenderCollisionRectangle(float x, float y, float width, float height, float r, float g, float b) const
 {
 	//SDL_Surface* pSurface = SDL_GetWindowSurface(m_window);

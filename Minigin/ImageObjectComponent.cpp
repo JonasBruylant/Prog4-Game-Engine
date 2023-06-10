@@ -1,6 +1,6 @@
 #include "ImageObjectComponent.h"
 
-dae::ImageObjectComponent::ImageObjectComponent(std::weak_ptr<GameObject> pOwner) : Component(pOwner)
+dae::ImageObjectComponent::ImageObjectComponent(GameObject* pOwner) : Component(pOwner)
 {
 }
 

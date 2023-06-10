@@ -3,10 +3,10 @@
 #include "TextObjectComponent.h"
 #include "Event.h"
 
-dae::ScoreUIComponent::ScoreUIComponent(std::weak_ptr<GameObject> pOwner):
+dae::ScoreUIComponent::ScoreUIComponent(GameObject* pOwner):
 	Component(pOwner)
 {
-	m_pTextObjectHealthComponent = GetOwner().lock()->GetComponent<TextObjectComponent>().get();
+	m_pTextObjectHealthComponent = GetOwner()->GetComponent<TextObjectComponent>().get();
 	m_pTextObjectHealthComponent->SetText("Score: " + std::to_string(m_displayScore));
 }
 
