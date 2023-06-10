@@ -21,13 +21,10 @@ dae::PlayerCollideCheckComponent::PlayerCollideCheckComponent(GameObject* pOwner
 
 void dae::PlayerCollideCheckComponent::OnGameObjectCollision(dae::CollisionComponent* otherColComp, dae::GameObject* otherCollision)
 {
-	
 	if (otherColComp->GetTag() == "Enemy")
 	{
-		m_pHealthComponent->TakeDamage(m_pHealthComponent->GetHealth() - 1);
+		
 	}
-
-
 	if (otherColComp->GetTag() == "Ladder")
 	{
 		m_pStateComponent->SetCurrentState(State::CanClimb);

@@ -11,17 +11,20 @@ dae::ScoreUIComponent::ScoreUIComponent(GameObject* pOwner):
 }
 
 void dae::ScoreUIComponent::Notify(Event event)
-{
-	if (strcmp(event.eventName.c_str(), "Score Gained") == 0)
-		UpdateScore();
+{															   
+	if (strcmp(event.eventName.c_str(), "Bean Died") == 0)	   
+		UpdateScore(100);									   
+	if (strcmp(event.eventName.c_str(), "Pickle Died") == 0)   
+		UpdateScore(200);									   
+	if (strcmp(event.eventName.c_str(), "Egg Died") == 0)	   
+		UpdateScore(300);
 }
 
 
 
-void dae::ScoreUIComponent::UpdateScore()
+void dae::ScoreUIComponent::UpdateScore(int score)
 {
-	m_displayScore += 100;
-	//How do I link the value of the display score to the score of the component?
+	m_displayScore += score;
 	m_pTextObjectHealthComponent->SetText("Score: " + std::to_string(m_displayScore));
 
 }

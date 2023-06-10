@@ -1,6 +1,7 @@
 #include "HealthComponent.h"
 #include "CollisionComponent.h"
 #include "Timer.h"
+#include "StateComponent.h"
 
 dae::HealthComponent::HealthComponent(GameObject* pOwner):
 Component(pOwner)
@@ -8,7 +9,8 @@ Component(pOwner)
 }
 
 void dae::HealthComponent::TakeDamage(int damage)
-{																													
+{						
+
 	m_Health -= damage;																								
 																													
 	if (m_Health >= 0)																								
@@ -19,9 +21,9 @@ void dae::HealthComponent::TakeDamage(int damage)
 																													
 }																													
 																													
-void dae::HealthComponent::OnEnemyHit(dae::CollisionComponent * otherCollision)										
+void dae::HealthComponent::OnEnemyHit(dae::CollisionComponent * otherCollision, dae::GameObject* otherGO)
 {																													
-	if (otherCollision->GetTag() == "Enemy")																		
+	if (otherCollision->GetTag() == "Enemy" && otherGO->GetComponent<StateComponent>()->GetCurrentState() != State::Stunned)																		
 	{		
 		m_HitTimer += m_Timer.GetDeltaTime();
 		if (m_HitTimer < m_CooldownForNextHit)

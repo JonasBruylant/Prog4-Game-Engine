@@ -42,7 +42,7 @@ void dae::AttackComponent::SpawnPepper()
 
 	//Colision component set up
 	auto collisionComp = pPepper->AddComponent<CollisionComponent>();
-	auto Texture = pPepper->AddComponent<dae::ImageObjectComponent>()->GetTexture().get();
+	auto Texture = pPepper->GetComponent<dae::ImageObjectComponent>()->GetTexture().get();
 	auto textureSize = Texture->GetSize();
 	dae::Box boxCollision{ static_cast<float>(textureSize.x), static_cast<float>(textureSize.y) };
 	collisionComp->SetTag("Pepper");

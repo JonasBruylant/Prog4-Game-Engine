@@ -23,7 +23,7 @@ namespace dae
 	private:
 		int m_displayScore{ 0 };
 		TextObjectComponent* m_pTextObjectHealthComponent{ nullptr };
-		void UpdateScore();
+		void UpdateScore(int score);
 
 	};
 }

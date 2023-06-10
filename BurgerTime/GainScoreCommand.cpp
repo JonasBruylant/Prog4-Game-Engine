@@ -1,5 +1,6 @@
 #include "GainScoreCommand.h"
 #include "ScoreComponent.h"
+#include "Structs.h"
 
 dae::GainScoreCommand::GainScoreCommand(ScoreComponent* pOwnerComponent)
 {
@@ -8,5 +9,5 @@ dae::GainScoreCommand::GainScoreCommand(ScoreComponent* pOwnerComponent)
 
 void dae::GainScoreCommand::Execute()
 {
-	m_pOwnerScoreComponent->GainScore();
+	m_pOwnerScoreComponent->GainScore(EnemyType::Egg);
 }

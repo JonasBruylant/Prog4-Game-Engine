@@ -43,12 +43,16 @@ void dae::CollisionComponent::Update()
 
 	if (objectsCollidingWith.empty())
 		return;
+	if (!m_onTriggerCallback)
+		return;
 
 	for (auto& currentCollision : objectsCollidingWith)
 	{
-		if(m_onTriggerCallback)
+
 			m_onTriggerCallback(currentCollision->GetComponent<CollisionComponent>().get(), currentCollision);
 	}
+
+
 }
 
 void dae::CollisionComponent::Render() const

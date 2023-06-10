@@ -19,9 +19,15 @@ float dae::Timer::GetDeltaTime() const
 	return m_DeltaTime;
 }
 
+float dae::Timer::GetTotalTime() const
+{
+	return m_TotalTime;
+}
+
 void dae::Timer::SetDeltaTime(float deltaTime)
 {
 	m_DeltaTime = deltaTime;
+	m_TotalTime += deltaTime;
 }
 
 int dae::Timer::GetFrameTimeMS() const

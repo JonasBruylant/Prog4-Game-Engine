@@ -17,11 +17,13 @@ namespace dae
 		void Update();
 
 		float GetDeltaTime() const;
+		float GetTotalTime() const;
 		void SetDeltaTime(float deltaTime);
 		int GetFrameTimeMS() const;
 	private:
 
 		float m_DeltaTime;
+		float m_TotalTime;
 
 		const int m_DesiredFPS{ 144 };
 		const int m_FrameTimeMS{ 1000 / m_DesiredFPS };

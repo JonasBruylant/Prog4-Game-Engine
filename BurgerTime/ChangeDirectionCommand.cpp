@@ -11,7 +11,10 @@ dae::ChangeDirectionCommand::ChangeDirectionCommand(GameObject* pOwner) :
 
 void dae::ChangeDirectionCommand::Execute()
 {   
-	
-	m_pDirectionComponent->SetCurrentDirection(m_CurrentDirection);
-	m_pDirectionComponent->SetDirectionImage();
+	if (m_pDirectionComponent->GetCurrentDirection() != m_CurrentDirection)
+	{
+		m_pDirectionComponent->SetCurrentDirection(m_CurrentDirection);
+		m_pDirectionComponent->SetDirectionImage();
+
+	}
 }

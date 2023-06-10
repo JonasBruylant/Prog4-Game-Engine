@@ -12,7 +12,6 @@ std::vector<GameObject*> Scene::HandleCollision(GameObject* pGameObject)
 	std::vector<GameObject*> currentCollisions;
 
 	auto collisionComponent = pGameObject->GetComponent<CollisionComponent>();
-
 	if(!collisionComponent)
 		return currentCollisions;
 
@@ -23,17 +22,14 @@ std::vector<GameObject*> Scene::HandleCollision(GameObject* pGameObject)
 
 	return currentCollisions;
 }
-
-
-
 void dae::Scene::CheckGameObjectCollision(std::vector<GameObject*>& currentCollisions, std::shared_ptr < GameObject> pGameObject, std::shared_ptr<CollisionComponent>& pCurrentCollisionComponent)
 {
 	auto goCollision = pGameObject->GetComponent<CollisionComponent>();
 	if (!goCollision || (pCurrentCollisionComponent == goCollision)) //if it doesn't exist, or it's his own collison, continue
 		return;
 
-	if (goCollision->GetTag() == pCurrentCollisionComponent->GetTag())
-		return;
+	//if (goCollision->GetTag() == pCurrentCollisionComponent->GetTag())
+	//	return;
 
 		
 	auto& children = pGameObject->GetChildren();

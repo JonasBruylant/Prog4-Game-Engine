@@ -71,7 +71,7 @@ namespace dae
 		{
 			auto newComponent = std::make_shared<T>(this);
 
-			m_pComponentList.push_back(newComponent);
+			m_pComponentList.emplace_back(newComponent);
 
 			return newComponent;
 		}
@@ -92,7 +92,7 @@ namespace dae
 
 		if (gottenComponent == nullptr)
 		{
-			m_pComponentList.push_back(pComponent);
+			m_pComponentList.emplace_back(pComponent);
 
 			return pComponent;
 		}

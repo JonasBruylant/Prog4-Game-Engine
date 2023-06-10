@@ -22,7 +22,7 @@ namespace dae
 		int GetHealth() const { return m_Health; };
 		void SetHealth(int health) { m_Health = health; }
 
-		void OnEnemyHit(dae::CollisionComponent* otherCollision);
+		void OnEnemyHit(dae::CollisionComponent* otherCollision, dae::GameObject* otherGO);
 		void TakeDamage(int damage);
 		Subject* GetPlayerDiedEventSubject() const { return m_pGameObjectDiedEvent.get(); }
 	private:

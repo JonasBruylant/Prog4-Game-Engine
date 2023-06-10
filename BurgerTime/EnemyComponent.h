@@ -24,18 +24,20 @@ public:
 
 	void Update() override;
 	void UpdateMovement();
+	void UpdateStunnedBehavior();
 
 	void SetMovementSpeed(float movementSpeed) { m_movementSpeed = movementSpeed; }
-	float GetMovementSpeed() { return m_movementSpeed; }
+	float GetMovementSpeed() const { return m_movementSpeed; }
 
 	void SetEnemyType(EnemyType type);
+	EnemyType GetEnemyType() const { return m_Type;}
 
 private:
 	TransformComponent* m_pTransformComponent = nullptr;
 	StateComponent* m_pStateComponent = nullptr;
 
-	float m_movementSpeed{ 100.f };
-
+	float m_movementSpeed{ 50.f };
+	float m_TimeSinceLastStateChange{ 0.f };
 	float m_TimeToBeStunned{ 3.f };
 	float m_StunnedTime{};
 
@@ -43,10 +45,12 @@ private:
 	Timer& m_Timer = Timer::GetInstance();
 
 	bool m_ChangedDebugColor{ false };
+	bool m_ClimbLadder{ false };
 	EnemyType m_Type{ EnemyType::Egg };
 
 	ResourceManager& m_ResourceManager = ResourceManager::GetInstance();
 	std::shared_ptr<Texture2D> m_EnemyTexture;
+
 };
 
 }

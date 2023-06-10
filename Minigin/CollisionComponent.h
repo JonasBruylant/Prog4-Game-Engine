@@ -27,7 +27,7 @@ public:
 	CollisionComponent& operator=(CollisionComponent&& other) = delete;
 
 	void SetTag(std::string tag) { m_tag = tag; }
-	std::string GetTag() { return m_tag; }
+	std::string GetTag() const { return m_tag; }
 
 	void SetMeasurements(Box measurements) { m_collisionBox = measurements; }
 	void SetMeasurements(float width, float height) { 
@@ -36,7 +36,7 @@ public:
 		m_collisionBox.width = width;
 		m_collisionBox.height = height;
 	}
-	Box GetMeasurements() { return m_collisionBox; }
+	Box GetMeasurements() const { return m_collisionBox; }
 
 	bool IsBoxOverlapping(float xPos, float yPos, Box otherBox);
 	bool IsBoxOverlapping(GameObject* otherGameObject);
@@ -57,7 +57,7 @@ private:
 	Scene* m_pCurrentScene;
 	glm::vec3 m_DebugRectColor;
 
-	bool m_DrawDebug{ false };
+	bool m_DrawDebug{ true };
 };
 
 }

@@ -59,5 +59,7 @@ void dae::DirectionComponent::Update()
 void dae::DirectionComponent::SetDirectionImage()
 {
 	if(m_CurrentDirection != PlayerDirection::None)
+	{ 
 		m_pImageObjectComponent->SetTexture(m_DirectionTextures[static_cast<int>(m_CurrentDirection)]);
+	}
 }

@@ -5,6 +5,7 @@
 
 
 #include "SDLSoundSystem.h"
+#include "Structs.h"
 
 
 namespace dae
@@ -21,9 +22,20 @@ namespace dae
 		ScoreComponent& operator=(const ScoreComponent& other) = delete;
 		ScoreComponent& operator=(ScoreComponent&& other) = delete;
 
-		void GainScore() 
+		void GainScore(EnemyType enemyType) 
 		{ 
-			m_pActorGainedScoreEvent->NotifyObservers({ "Score Gained" });
+			switch (enemyType)
+			{
+			case EnemyType::Egg:
+				m_pActorGainedScoreEvent->NotifyObservers({ "Egg Died" });
+				break;
+			case EnemyType::Bean:
+				m_pActorGainedScoreEvent->NotifyObservers({ "Bean Died" });
+				break;
+			case EnemyType::Pickle:
+				m_pActorGainedScoreEvent->NotifyObservers({ "Pickle Died" });
+				break;
+			}
 
 			SoundData soundToPlay{ 1, 0.1f,"Gain_score.mp3",  SoundData::SoundType::SoundEffect,false };
 			SoundManager::GetInstance().GetSoundSystem()->NotifyQueue(soundToPlay);
