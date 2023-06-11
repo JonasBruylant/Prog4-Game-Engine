@@ -19,5 +19,7 @@ void dae::TextRenderComponent::Render() const
 {
 	auto transformPosition = m_transformPosition->GetWorldPosition();
 	auto texture = m_textTexture->GetTexture();
+	if (!texture)
+		return;
 	Renderer::GetInstance().RenderTexture(*texture, transformPosition.x, transformPosition.y);
 }

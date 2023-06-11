@@ -213,12 +213,14 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)..\Data\" /E /R /Y</Command>
     <ClCompile Include="ButtonIndexManagerComponent.cpp" />
     <ClCompile Include="ChangeButtonIndexCommand.cpp" />
     <ClCompile Include="ChangeDirectionCommand.cpp" />
+    <ClCompile Include="CheckLevelFinishedComponent.cpp" />
     <ClCompile Include="DieCommand.cpp" />
     <ClCompile Include="DirectionComponent.cpp" />
     <ClCompile Include="EnemyCollisionCheckComponent.cpp" />
     <ClCompile Include="EnemyComponent.cpp" />
     <ClCompile Include="GainScoreCommand.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HighscoreManager.cpp" />
     <ClCompile Include="JsonLevelReader.cpp" />
     <ClCompile Include="LivesRemainingUIComponent.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -253,6 +255,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)..\Data\" /E /R /Y</Command>
     <ClInclude Include="ButtonIndexManagerComponent.h" />
     <ClInclude Include="ChangeButtonIndexCommand.h" />
     <ClInclude Include="ChangeDirectionCommand.h" />
+    <ClInclude Include="CheckLevelFinishedComponent.h" />
     <ClInclude Include="CurrentGameState.h" />
     <ClInclude Include="DieCommand.h" />
     <ClInclude Include="DirectionComponent.h" />
@@ -260,6 +263,7 @@ xcopy "$(SolutionDir)Data\" "$(OutputPath)..\Data\" /E /R /Y</Command>
     <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="GainScoreCommand.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HighscoreManager.h" />
     <ClInclude Include="JsonLevelReader.h" />
     <ClInclude Include="LivesRemainingUIComponent.h" />
     <ClInclude Include="MenuButtonComponent.h" />

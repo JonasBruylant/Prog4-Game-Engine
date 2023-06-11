@@ -85,7 +85,7 @@ void dae::DirectionComponent::Update()
 
 	movement *= m_Timer.GetDeltaTime() * m_movementSpeed;
 	m_pTransformComponent->AddToLocalPosition(movement.x, movement.y ,0);
-
+	std::cout << "World Position: " << m_pTransformComponent->GetWorldPosition().x << " " << m_pTransformComponent->GetWorldPosition().y << std::endl;
 	if (m_pStateComponent->GetCurrentState() != State::Walking)
 		m_pStateComponent->SetCurrentState(State::Walking);
 }

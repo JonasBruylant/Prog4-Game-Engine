@@ -12,6 +12,7 @@
 #include "SoundManager.h"
 #include "ResourceManager.h"
 #include "../BurgerTime/JsonLevelReader.h"
+#include "../BurgerTime/HighscoreManager.h"
 
 #include "Renderer.h"
 #include "Timer.h"
@@ -74,6 +75,7 @@ dae::Minigin::Minigin(const std::string &dataPath, float windowWidth, float wind
 
 	ResourceManager::GetInstance().Init(dataPath);
 	JsonLevelReader::GetInstance().Init(dataPath);
+	HighscoreManager::GetInstance().Init(dataPath);
 	SoundManager::GetInstance().SetSoundSystem(std::make_unique<SDLSoundSystem>());
 	SoundManager::GetInstance().Initialize(dataPath);
 }

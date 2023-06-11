@@ -50,7 +50,7 @@ void dae::InputManager::ProcessControllerInput()
 		controller->Update();
 	}
 
-	auto activeSceneName = m_SceneManager.GetSceneName();
+	auto activeSceneName = m_SceneManager.GetActiveSceneName();
 	for (auto& command : m_controllerCommands)
 	{
 		//Individual elements of the ControllerKey (pair) variable
@@ -97,7 +97,7 @@ void dae::InputManager::ProcessControllerInput()
 
 void dae::InputManager::ProcessKeyBoardInput()
 {
-	auto activeSceneName = m_SceneManager.GetSceneName();
+	auto activeSceneName = m_SceneManager.GetActiveSceneName();
 	for (auto& command : m_keyboardCommands)
 	{
 

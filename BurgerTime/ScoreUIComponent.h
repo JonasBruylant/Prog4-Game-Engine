@@ -19,7 +19,7 @@ namespace dae
 		ScoreUIComponent& operator=(ScoreUIComponent&& other) = delete;
 
 		void Notify(Event event) override;
-
+		int GetDisplayScore() const { return m_displayScore; }
 	private:
 		int m_displayScore{ 0 };
 		TextObjectComponent* m_pTextObjectHealthComponent{ nullptr };

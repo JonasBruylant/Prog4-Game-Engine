@@ -132,14 +132,11 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 				//actualPlayerHeight
 			}
 			go->AddComponent<ImageRenderComponent>();
-			go->SetParent(level.get(), true);
 		}
 		totalHeightOffset += heightOffset;
 		//std::cout << std::endl;
 
 	}
-
-	sceneLevel.Add(level);
 
 	return sceneLevel;
 }

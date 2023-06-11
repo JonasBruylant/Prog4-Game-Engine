@@ -48,7 +48,7 @@ dae::Scene& dae::SceneManager::GetSceneByName(const std::string& name)
 																									
 }
 
-std::string dae::SceneManager::GetSceneName() const
+std::string dae::SceneManager::GetActiveSceneName() const
 {
 	return m_ActiveScene->GetName();
 }

@@ -109,7 +109,7 @@ dae::BurgerPieceComponent::BurgerPieceComponent(GameObject* pOwner, const std::s
 			if (otherBurgerPiece->GetIsFinished())
 			{
 				m_IsFinished = true;
-				std::cout << m_IsFinished << std::endl;
+				m_pFinishedEvent->NotifyObservers({ "Piece Finished" });
 				return;
 			}
 
@@ -121,11 +121,6 @@ dae::BurgerPieceComponent::BurgerPieceComponent(GameObject* pOwner, const std::s
 	);
 
 
-
-}
-
-dae::BurgerPieceComponent::~BurgerPieceComponent()
-{
 
 }
 
@@ -166,6 +161,14 @@ void dae::BurgerPieceComponent::Update()
 
 	//auto scene = GetOwner()->GetScene();
 	//scene
+}
+
+void dae::BurgerPieceComponent::SetIsFinished(bool isFinished)
+{
+	m_IsFinished = isFinished;
+
+	if(m_IsFinished)
+		m_pFinishedEvent->NotifyObservers({ "Piece Finished" });
 }
 
 void dae::BurgerPieceComponent::PushChildrenDown()

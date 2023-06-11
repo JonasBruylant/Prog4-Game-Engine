@@ -20,10 +20,12 @@ namespace dae
 
 		void Render() const override;
 
+		std::string m_nameTag{};
 
 	private:
 		TransformComponent* m_transformPosition;
 		TextObjectComponent* m_textTexture;
+
 	};
 
 

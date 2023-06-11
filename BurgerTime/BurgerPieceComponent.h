@@ -3,6 +3,9 @@
 #include "Texture2D.h"
 #include <glm/glm.hpp>
 #include "Timer.h"
+#include "Subject.h"
+
+
 namespace dae {
 	class TransformComponent;
 	//class ImageObjectComponent;
@@ -12,7 +15,7 @@ class BurgerPieceComponent final : public Component
 public:
 	BurgerPieceComponent(GameObject* pOwner, const std::string& filePath);
 
-	~BurgerPieceComponent();
+	~BurgerPieceComponent() = default;
 	BurgerPieceComponent(const BurgerPieceComponent& other) = delete;
 	BurgerPieceComponent(BurgerPieceComponent&& other) = delete;
 	BurgerPieceComponent& operator=(const BurgerPieceComponent& other) = delete;
@@ -25,7 +28,7 @@ public:
 
 	void SetPlayer(GameObject* player) { m_pPlayer = player; }
 
-	void SetIsFinished(bool isFinished) { m_IsFinished = isFinished; }
+	void SetIsFinished(bool isFinished);
 	bool GetIsFinished() const { return m_IsFinished; }
 
 	std::vector<std::pair<bool, GameObject*>>& GetBurgerDivisions() { return m_BurgerDivisions; }
@@ -33,9 +36,12 @@ public:
 
 	void SetIndex(int idx) { m_burgerPieceIdx = idx; }
 	int GetIndex() { return m_burgerPieceIdx; }
+
+	Subject* GetBurgerPieceFinishedSubject() const { return m_pFinishedEvent.get(); }
+
 	void PushChildrenDown();
 private:
-
+	std::unique_ptr<Subject> m_pFinishedEvent = std::make_unique<Subject>();
 	std::shared_ptr<Texture2D> m_pBurgerPieceTexture;
 	TransformComponent* m_pOwnerTransform{ nullptr };
 	static const int m_nrOfSubdivision{ 4 };

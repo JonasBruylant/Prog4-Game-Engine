@@ -12,7 +12,5 @@ void dae::BurgerPlateComponent::OnBurgerPieceHit(CollisionComponent* otherColCom
 	if (otherColComp->GetTag() == "MainBurgerPiece" && !otherGOCol->GetComponent<BurgerPieceComponent>()->GetIsFinished())
 	{
 		otherGOCol->GetComponent<BurgerPieceComponent>()->SetIsFinished(true);
-
-		std::cout << otherGOCol->GetComponent<BurgerPieceComponent>()->GetIsFinished() << std::endl;
 	}
 }
