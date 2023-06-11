@@ -12,8 +12,6 @@ namespace dae
 	public:
 		ChangeDirectionCommand(GameObject* pOwner);
 	
-		~ChangeDirectionCommand() = default;
-	
 		void Execute() override;
 		void SetDirection(PlayerDirection direction) { m_CurrentDirection = direction; }
 	private:

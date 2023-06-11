@@ -56,6 +56,7 @@ void dae::TextObjectComponent::SetFont(std::shared_ptr<dae::Font> font)
 void dae::TextObjectComponent::SetColor(int r, int g, int b)
 {
 	m_color = {static_cast<Uint8>(r),static_cast<Uint8>(g),static_cast<Uint8>(b)};
+	m_needsUpdate = true;
 }
 
 

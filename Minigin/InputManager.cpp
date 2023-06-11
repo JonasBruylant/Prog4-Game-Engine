@@ -1,6 +1,10 @@
 #include <SDL.h>
 #include "InputManager.h"
 
+
+#include "SceneManager.h"
+#include "Scene.h"
+
 #include "imgui.h"
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl2.h>
@@ -40,20 +44,29 @@ bool dae::InputManager::ProcessInput()
 
 void dae::InputManager::ProcessControllerInput()
 {
+
 	for (auto& controller : m_controllers)
 	{
 		controller->Update();
 	}
 
+	auto activeSceneName = m_SceneManager.GetSceneName();
 	for (auto& command : m_controllerCommands)
 	{
 		//Individual elements of the ControllerKey (pair) variable
 		const unsigned int& index = command.first.controllerIdx;
 		const Controller::ControllerButton& button = command.first.button;
 		const ButtonState buttonState = command.first.buttonState;
+		const auto& sceneName = command.first.sceneName;
 		//Command is unique pointer, so it can't be copied, take a reference to the adress instead.
 		const auto& actualCommand = command.second.get();
-		
+
+
+
+		if (sceneName != activeSceneName)
+			continue;
+
+
 		switch (buttonState)
 		{
 			case ButtonState::Down:
@@ -84,15 +97,20 @@ void dae::InputManager::ProcessControllerInput()
 
 void dae::InputManager::ProcessKeyBoardInput()
 {
+	auto activeSceneName = m_SceneManager.GetSceneName();
 	for (auto& command : m_keyboardCommands)
 	{
 
 		const unsigned& keyboardInput = command.first.keyboardButton;
 		const ButtonState keyboardButtonState = command.first.buttonState;
+		const auto& sceneName = command.first.sceneName;
 
 
 		//Command is unique pointer, so it can't be copied, take a reference to the adress instead.
 		const auto& actualCommand = command.second.get();
+
+		if (sceneName != activeSceneName)
+			continue;
 
 		switch (keyboardButtonState)
 		{
@@ -116,9 +134,6 @@ void dae::InputManager::ProcessKeyBoardInput()
 				break;
 			}
 		}
-
-
-
 	}
 }
 

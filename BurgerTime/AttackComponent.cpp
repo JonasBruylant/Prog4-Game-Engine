@@ -20,8 +20,13 @@ dae::AttackComponent::AttackComponent(GameObject* pOwner):
 
 void dae::AttackComponent::Attack()
 {
-	m_pStateComponent->SetCurrentState(State::Attacking);
-	SpawnPepper();
+	if (m_attacksLeft > 0)
+	{
+		m_pStateComponent->SetCurrentState(State::Attacking);
+		SpawnPepper();
+		m_pPepperAttackUsedEvent->NotifyObservers({ "Pepper Used" });
+		--m_attacksLeft;
+	}
 }
 
 void dae::AttackComponent::SpawnPepper()

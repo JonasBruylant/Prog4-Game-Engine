@@ -81,6 +81,46 @@ dae::BurgerPieceComponent::BurgerPieceComponent(GameObject* pOwner, const std::s
 	}
 
 
+	auto goCollisionComponent = pOwner->AddComponent<CollisionComponent>();
+	goCollisionComponent->SetTag("MainBurgerPiece");
+	goCollisionComponent->SetMeasurements(static_cast<float>(m_pBurgerPieceTexture->GetSize().x), static_cast<float>(m_pBurgerPieceTexture->GetSize().y));
+	//goCollisionComponent->SetDrawDebug(true);
+	//auto goCollisionComponent = go->AddComponent<CollisionComponent>();
+	goCollisionComponent->SetOnTriggerEvent([&](CollisionComponent* otherColComp, GameObject* otherGOCol)
+		{
+			if (m_IsFinished)
+				return;
+
+
+			if (otherColComp->GetTag() != "MainBurgerPiece")
+				//std::cout << "BunTop!! Other tag is not MainBurgerPiece, it's: " + otherColComp->GetTag() << std::endl;
+				return;
+
+			//std::cout << "Other collision is another BurgerPiece\n";
+
+
+			auto otherBurgerPiece = otherGOCol->GetComponent<BurgerPieceComponent>();
+			if (!otherBurgerPiece)
+				return;
+			
+			if (otherBurgerPiece->GetIndex() < m_burgerPieceIdx)
+				return;
+
+			if (otherBurgerPiece->GetIsFinished())
+			{
+				m_IsFinished = true;
+				std::cout << m_IsFinished << std::endl;
+				return;
+			}
+
+			//std::cout << "Other collision has BurgerPieceComponent\n";
+
+			otherBurgerPiece->PushChildrenDown();
+
+		}
+	);
+
+
 
 }
 
@@ -91,6 +131,7 @@ dae::BurgerPieceComponent::~BurgerPieceComponent()
 
 void dae::BurgerPieceComponent::Update()
 {
+	
 	bool hasAllBeenSteppedOn{ true };
 	m_pOwnerWorldPos = m_pOwnerTransform->GetWorldPosition();
 	for (int i = 0; i < m_nrOfSubdivision; ++i)
@@ -105,7 +146,7 @@ void dae::BurgerPieceComponent::Update()
 	if (hasAllBeenSteppedOn && !m_IsFinished)
 	{
 		m_IsFalling = true;
-		m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 12,0 });
+		m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 16,0 });
 		for (int j = 0; j < m_BurgerDivisions.size(); ++j) //Iterate over children																					   
 		{
 
@@ -114,12 +155,13 @@ void dae::BurgerPieceComponent::Update()
 
 		}
 	}
+
 	if (m_IsFalling && !m_IsFinished)
 	{
 		
 		m_FallPreventionTimer += m_Timer.GetDeltaTime();
 		//std::cout << m_FallPreventionTimer << std::endl;
-		m_pOwnerTransform->AddToLocalPosition({0,m_FallSpeed * Timer::GetInstance().GetDeltaTime(),0});
+		m_pOwnerTransform->AddToLocalPosition({0,m_FallSpeed * m_Timer.GetDeltaTime(),0});
 	}
 
 	//auto scene = GetOwner()->GetScene();
@@ -152,7 +194,7 @@ void dae::BurgerPieceComponent::PushChildrenDown()
 		return;
 
 
-	m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 12,0});
+	m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 16,0});
 	for (int j = 0; j < m_BurgerDivisions.size(); ++j) //Iterate over children																					   
 	{
 		

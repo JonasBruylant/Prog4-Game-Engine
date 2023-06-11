@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "StateComponent.h"
+#include "Structs.h"
 
 
 dae::PepperComponent::PepperComponent(GameObject* pOwner):
@@ -15,7 +16,10 @@ void dae::PepperComponent::OnEnemyHit(dae::CollisionComponent* otherCollision, G
 	if (otherCollision->GetTag() == "Enemy")
 	{
 		GetOwner()->SetMarkedForDelete();
-		otherObject->GetComponent<StateComponent>()->SetCurrentState(State::Stunned);
+		if(dae::GameStateLookUp::g_CurrentGameState != GameState::Versus)
+			otherObject->GetComponent<StateComponent>()->SetCurrentState(State::Stunned);
+		else
+			otherObject->GetChildren().back()->GetComponent<StateComponent>()->SetCurrentState(State::Stunned);
 	}
 			
 }

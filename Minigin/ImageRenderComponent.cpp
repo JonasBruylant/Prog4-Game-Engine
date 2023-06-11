@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Texture2D.h"
 
+
 dae::ImageRenderComponent::ImageRenderComponent(GameObject* pOwner):
 	Component(pOwner)
 {

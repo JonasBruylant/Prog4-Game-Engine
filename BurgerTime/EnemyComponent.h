@@ -10,6 +10,7 @@ namespace dae {
 
 	class TransformComponent;
 	class StateComponent;
+	class ImageObjectComponent;
 
 class EnemyComponent final : public Component
 {
@@ -35,7 +36,9 @@ public:
 private:
 	TransformComponent* m_pTransformComponent = nullptr;
 	StateComponent* m_pStateComponent = nullptr;
+	ImageObjectComponent* m_pImageObjectComponent = nullptr;
 
+	std::vector<std::shared_ptr<Texture2D>> m_StateTextures;
 	float m_movementSpeed{ 50.f };
 	float m_TimeSinceLastStateChange{ 0.f };
 	float m_TimeToBeStunned{ 3.f };
@@ -49,7 +52,7 @@ private:
 	EnemyType m_Type{ EnemyType::Egg };
 
 	ResourceManager& m_ResourceManager = ResourceManager::GetInstance();
-	std::shared_ptr<Texture2D> m_EnemyTexture;
+	//std::shared_ptr<Texture2D> m_EnemyTexture;
 
 };
 

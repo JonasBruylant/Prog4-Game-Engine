@@ -31,13 +31,15 @@ public:
 	std::vector<std::pair<bool, GameObject*>>& GetBurgerDivisions() { return m_BurgerDivisions; }
 	std::shared_ptr<Texture2D> GetTexture() { return m_pBurgerPieceTexture; }
 
+	void SetIndex(int idx) { m_burgerPieceIdx = idx; }
+	int GetIndex() { return m_burgerPieceIdx; }
 	void PushChildrenDown();
 private:
 
 	std::shared_ptr<Texture2D> m_pBurgerPieceTexture;
 	TransformComponent* m_pOwnerTransform{ nullptr };
 	static const int m_nrOfSubdivision{ 4 };
-	std::vector<std::pair<bool, GameObject*>> m_BurgerDivisions;
+	std::vector<std::pair<bool, GameObject*>> m_BurgerDivisions{};
 	glm::vec3 m_pOwnerWorldPos{};
 
 	GameObject* m_pPlayer{ nullptr };
@@ -53,6 +55,8 @@ private:
 	float m_FallPreventionTimer{ 0.f };
 	float m_LastFallTime{};
 	Timer& m_Timer = Timer::GetInstance();
+
+	int m_burgerPieceIdx{ 0 };
 };
 
 }

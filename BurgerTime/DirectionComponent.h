@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "Structs.h"
 #include "ResourceManager.h"
 #include "Timer.h"
 
@@ -9,11 +8,12 @@ namespace dae {
 	class TransformComponent;
 	class ImageObjectComponent;
 	class StateComponent;
-
+	enum class PlayerDirection;
+	enum class GameState;
 	class DirectionComponent : public Component
 	{
 	public:
-		DirectionComponent(GameObject* pOwner);
+		DirectionComponent(GameObject* pOwner, bool isPlayerTwo, GameState gameState);
 	
 		~DirectionComponent() = default;
 		DirectionComponent(const DirectionComponent& other) = delete;
@@ -23,14 +23,14 @@ namespace dae {
 	
 		void Update() override;
 
-		void SetCurrentDirection(PlayerDirection direction) {m_CurrentDirection = direction;}
-		PlayerDirection GetCurrentDirection() { return m_CurrentDirection; }
+		void SetCurrentDirection(PlayerDirection direction);
+		PlayerDirection GetCurrentDirection();
 	
 		void SetDirectionImage();
 		void SetMovementSpeed(int speed) { m_movementSpeed = speed; }
 		void SetDirectionStateComponent(StateComponent* pComponent) { m_pStateComponent = pComponent; }
 	private:
-		PlayerDirection m_CurrentDirection = PlayerDirection::None;
+		PlayerDirection m_CurrentDirection;
 		ImageObjectComponent* m_pImageObjectComponent = nullptr;
 		TransformComponent* m_pTransformComponent = nullptr;
 		StateComponent* m_pStateComponent = nullptr;
@@ -40,6 +40,8 @@ namespace dae {
 
 		int m_movementSpeed = 10;
 		Timer& m_Timer = Timer::GetInstance();
+		float m_timeStunned{};
+		bool m_isPlayerTwo{ false };
 	};
 
 }

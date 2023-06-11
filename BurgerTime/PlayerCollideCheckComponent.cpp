@@ -35,7 +35,7 @@ void dae::PlayerCollideCheckComponent::OnGameObjectCollision(dae::CollisionCompo
 	}
 	else if (otherColComp->GetTag() == "LevelPlatform")
 	{
-		std::cout << "Colliding with platform \n";
+		//std::cout << "Colliding with platform \n";
 		auto localTransform = m_pParentTransformComponent->GetLocalPosition();
 		auto otherWorldPos = otherCollision->GetTransform()->GetWorldPosition();
 

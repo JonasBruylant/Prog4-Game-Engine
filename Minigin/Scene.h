@@ -27,6 +27,7 @@ namespace dae
 		void SetIsActive(bool isActive) { m_IsActive = isActive; }
 		bool GetIsActive() { return m_IsActive; }
 		std::vector<GameObject*> HandleCollision(GameObject* pGameObject);
+		std::string GetName() { return m_name; }
 	private: 
 		explicit Scene(const std::string& name);
 

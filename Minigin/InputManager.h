@@ -3,12 +3,13 @@
 #include <memory>
 #include <vector>
 #include <utility>
+#include <string>
 
 #include "Singleton.h"
 #include "Controller.h"
 #include "Command.h"
 
-
+#include "SceneManager.h"
 
 namespace dae
 {
@@ -23,6 +24,7 @@ namespace dae
 		unsigned int controllerIdx;
 		Controller::ControllerButton button;
 		ButtonState buttonState;
+		std::string sceneName;
 
 		bool operator<(const ControllerInput& other) const
 		{
@@ -38,9 +40,14 @@ namespace dae
 
 			if (buttonState < other.buttonState)
 				return true;
+			else if (buttonState > other.buttonState)
+				return false;
+			
+
+			if (sceneName > other.sceneName)
+				return true;
 			else
 				return false;
-
 		}
 	};
 
@@ -48,6 +55,7 @@ namespace dae
 	{
 		SDL_Scancode keyboardButton;
 		ButtonState buttonState;
+		std::string sceneName;
 
 		bool operator<(const KeyBoardInput& other) const
 		{
@@ -58,9 +66,13 @@ namespace dae
 
 			if (buttonState < other.buttonState)
 				return true;
-			else
+			else if (buttonState > other.buttonState)
 				return false;
 
+			if (sceneName > other.sceneName)
+				return true;
+			else
+				return false;
 		}
 	};
 
@@ -89,7 +101,7 @@ namespace dae
 		std::vector<bool> m_currentState= std::vector<bool>(322, false);
 		std::vector<bool> m_previousState= std::vector<bool>(322, false);
 
-
+		SceneManager& m_SceneManager = SceneManager::GetInstance();
 
 	public:
 		bool ProcessInput();
@@ -113,7 +125,7 @@ namespace dae
 		}
 
 		auto returnPtr = command.get();
-		m_controllerCommands.insert({ controllerInput, std::move(command) });
+		m_controllerCommands[controllerInput] = std::move(command);
 		//m_controllerCommands.insert({ controllerInput, returnPtr });
 
 		return returnPtr;
@@ -127,7 +139,7 @@ namespace dae
 		static_assert(std::is_base_of<Command, T>::value && "T isn't inherited from Command.");
 
 		auto returnPtr = command.get();
-		m_keyboardCommands.insert({ keyboardInput, std::move(command) });
+		m_keyboardCommands[keyboardInput] = std::move(command);
 
 		return returnPtr;
 	}

@@ -79,12 +79,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Build\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Build\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Build\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Build\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -102,6 +108,13 @@
       <AdditionalDependencies>Minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)Data\" "$(OutputPath)..\Data\" /E /R /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -123,6 +136,13 @@
       <AdditionalDependencies>Minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)Data\" "$(OutputPath)..\Data\" /E /R /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -140,6 +160,13 @@
       <AdditionalDependencies>Minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)Data\" "$(OutputPath)..\Data\" /E /R /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -161,6 +188,13 @@
       <AdditionalDependencies>Minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutputPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
+xcopy "$(SolutionDir)Data\" "$(OutputPath)..\Data\" /E /R /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.89.4\backends\imgui_impl_opengl2.cpp" />
@@ -176,6 +210,8 @@
     <ClCompile Include="BlockingVolumeComponent.cpp" />
     <ClCompile Include="BurgerPieceComponent.cpp" />
     <ClCompile Include="BurgerPlateComponent.cpp" />
+    <ClCompile Include="ButtonIndexManagerComponent.cpp" />
+    <ClCompile Include="ChangeButtonIndexCommand.cpp" />
     <ClCompile Include="ChangeDirectionCommand.cpp" />
     <ClCompile Include="DieCommand.cpp" />
     <ClCompile Include="DirectionComponent.cpp" />
@@ -186,12 +222,16 @@
     <ClCompile Include="JsonLevelReader.cpp" />
     <ClCompile Include="LivesRemainingUIComponent.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MenuButtonComponent.cpp" />
+    <ClCompile Include="MenuButtonPressCommand.cpp" />
     <ClCompile Include="PepperComponent.cpp" />
+    <ClCompile Include="PepperUsesUIComponent.cpp" />
     <ClCompile Include="PlayerCollideCheckComponent.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreUIComponent.cpp" />
     <ClCompile Include="StateComponent.cpp" />
+    <ClCompile Include="Structs.cpp" />
     <ClCompile Include="TrashTheCacheComponent.cpp" />
     <ClCompile Include="TutorialComponent.cpp" />
   </ItemGroup>
@@ -210,7 +250,10 @@
     <ClInclude Include="BlockingVolumeComponent.h" />
     <ClInclude Include="BurgerPieceComponent.h" />
     <ClInclude Include="BurgerPlateComponent.h" />
+    <ClInclude Include="ButtonIndexManagerComponent.h" />
+    <ClInclude Include="ChangeButtonIndexCommand.h" />
     <ClInclude Include="ChangeDirectionCommand.h" />
+    <ClInclude Include="CurrentGameState.h" />
     <ClInclude Include="DieCommand.h" />
     <ClInclude Include="DirectionComponent.h" />
     <ClInclude Include="EnemyCollisionCheckComponent.h" />
@@ -219,7 +262,10 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="JsonLevelReader.h" />
     <ClInclude Include="LivesRemainingUIComponent.h" />
+    <ClInclude Include="MenuButtonComponent.h" />
+    <ClInclude Include="MenuButtonPressCommand.h" />
     <ClInclude Include="PepperComponent.h" />
+    <ClInclude Include="PepperUsesUIComponent.h" />
     <ClInclude Include="PlayerCollideCheckComponent.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreComponent.h" />
