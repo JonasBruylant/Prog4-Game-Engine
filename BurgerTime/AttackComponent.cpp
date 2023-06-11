@@ -44,9 +44,9 @@ void dae::AttackComponent::SpawnPepper()
 	auto collisionComp = pPepper->AddComponent<CollisionComponent>();
 	auto Texture = pPepper->GetComponent<dae::ImageObjectComponent>()->GetTexture().get();
 	auto textureSize = Texture->GetSize();
-	dae::Box boxCollision{ static_cast<float>(textureSize.x), static_cast<float>(textureSize.y) };
+	//dae::Box boxCollision{ static_cast<float>(textureSize.x), static_cast<float>(textureSize.y) };
 	collisionComp->SetTag("Pepper");
-	collisionComp->SetMeasurements(boxCollision);
+	collisionComp->SetMeasurements(static_cast<float>(textureSize.x), static_cast<float>(textureSize.y));
 	collisionComp->SetDebugColor({ 0,255,255 });
 
 	//Bind the method with what variable will call it and an X amount of parameters.

@@ -12,6 +12,7 @@
 dae::BurgerPieceComponent::BurgerPieceComponent(GameObject* pOwner, const std::string& filePath):
 	Component(pOwner)
 {
+	m_FilePath = filePath;
 	m_pBurgerPieceTexture = ResourceManager::GetInstance().LoadTexture(filePath);
 	m_srcRectWidth = m_pBurgerPieceTexture->GetSize().x / m_nrOfSubdivision;
 	auto textureHeight = m_pBurgerPieceTexture->GetSize().y;
@@ -100,8 +101,8 @@ void dae::BurgerPieceComponent::Update()
 			break;
 		}
 	}
-
-	if (hasAllBeenSteppedOn)
+	//std::cout << m_FilePath + " " << m_IsFinished << std::endl;
+	if (hasAllBeenSteppedOn && !m_IsFinished)
 	{
 		m_IsFalling = true;
 		m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 12,0 });
@@ -113,7 +114,7 @@ void dae::BurgerPieceComponent::Update()
 
 		}
 	}
-	if (m_IsFalling)
+	if (m_IsFalling && !m_IsFinished)
 	{
 		
 		m_FallPreventionTimer += m_Timer.GetDeltaTime();
@@ -127,7 +128,10 @@ void dae::BurgerPieceComponent::Update()
 
 void dae::BurgerPieceComponent::PushChildrenDown()
 {				
-	
+	if (m_IsFinished)
+		return;
+
+
 	if (m_IsFalling == true)
 	{
 		m_LastFallTime = m_Timer.GetTotalTime();

@@ -24,7 +24,9 @@ public:
 	void SetIsFalling(bool falling) { m_IsFalling = falling; }
 
 	void SetPlayer(GameObject* player) { m_pPlayer = player; }
+
 	void SetIsFinished(bool isFinished) { m_IsFinished = isFinished; }
+	bool GetIsFinished() const { return m_IsFinished; }
 
 	std::vector<std::pair<bool, GameObject*>>& GetBurgerDivisions() { return m_BurgerDivisions; }
 	std::shared_ptr<Texture2D> GetTexture() { return m_pBurgerPieceTexture; }
@@ -39,6 +41,8 @@ private:
 	glm::vec3 m_pOwnerWorldPos{};
 
 	GameObject* m_pPlayer{ nullptr };
+
+	std::string m_FilePath{};
 
 	int m_srcRectWidth{};
 

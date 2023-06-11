@@ -9,7 +9,7 @@ dae::BurgerPlateComponent::BurgerPlateComponent(GameObject* pOwner):
 
 void dae::BurgerPlateComponent::OnBurgerPieceHit(CollisionComponent* otherColComp, GameObject* otherGOCol)
 {
-	if (otherColComp->GetTag() == "MainBurgerPiece")
+	if (otherColComp->GetTag() == "MainBurgerPiece" && !otherGOCol->GetComponent<BurgerPieceComponent>()->GetIsFinished())
 	{
 		otherGOCol->GetComponent<BurgerPieceComponent>()->SetIsFinished(true);
 	}

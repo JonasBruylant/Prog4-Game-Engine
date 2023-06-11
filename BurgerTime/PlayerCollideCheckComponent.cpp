@@ -21,10 +21,10 @@ dae::PlayerCollideCheckComponent::PlayerCollideCheckComponent(GameObject* pOwner
 
 void dae::PlayerCollideCheckComponent::OnGameObjectCollision(dae::CollisionComponent* otherColComp, dae::GameObject* otherCollision)
 {
-	if (otherColComp->GetTag() == "Enemy")
-	{
-		
-	}
+	//if (otherColComp->GetTag() == "Enemy")
+	//{
+	//	
+	//}
 	if (otherColComp->GetTag() == "Ladder")
 	{
 		m_pStateComponent->SetCurrentState(State::CanClimb);
@@ -35,7 +35,7 @@ void dae::PlayerCollideCheckComponent::OnGameObjectCollision(dae::CollisionCompo
 	}
 	else if (otherColComp->GetTag() == "LevelPlatform")
 	{
-		
+		std::cout << "Colliding with platform \n";
 		auto localTransform = m_pParentTransformComponent->GetLocalPosition();
 		auto otherWorldPos = otherCollision->GetTransform()->GetWorldPosition();
 
