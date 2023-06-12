@@ -38,6 +38,8 @@ public:
 	virtual bool CheckIsSoundLoaded(unsigned short id) = 0;
 
 	virtual void NotifyQueue(SoundData soundData) = 0;
+
+	virtual void Mute() = 0;
 };
 
 

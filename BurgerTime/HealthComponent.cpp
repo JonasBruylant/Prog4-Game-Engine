@@ -3,7 +3,8 @@
 #include "Timer.h"
 #include "StateComponent.h"
 #include "Structs.h"
-
+#include "SoundSystem.h"
+#include "SoundManager.h"
 
 dae::HealthComponent::HealthComponent(GameObject* pOwner):
 Component(pOwner)
@@ -34,6 +35,8 @@ void dae::HealthComponent::OnEnemyHit(dae::CollisionComponent * otherCollision, 
 				return;
 
 			m_HitTimer = 0.f;
+			dae::SoundData soundEffect = SoundData{ 2, 0.2f,"03_Player_Hurt.mp3",  SoundData::SoundType::SoundEffect,false };
+			SoundManager::GetInstance().GetSoundSystem()->NotifyQueue(soundEffect);
 			//std::cout << "Player has been hit by enemy. \n";															
 			TakeDamage(1);																								
 		}																												
@@ -47,6 +50,9 @@ void dae::HealthComponent::OnEnemyHit(dae::CollisionComponent * otherCollision, 
 				return;
 
 			m_HitTimer = 0.f;
+
+			dae::SoundData soundEffect = SoundData{ 2, 0.2f,"03_Player_Hurt.mp3",  SoundData::SoundType::SoundEffect,false };
+			SoundManager::GetInstance().GetSoundSystem()->NotifyQueue(soundEffect);
 			//std::cout << "Player has been hit by enemy. \n";															
 			TakeDamage(1);
 		}

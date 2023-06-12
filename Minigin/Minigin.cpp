@@ -11,7 +11,7 @@
 #include "SceneManager.h"
 #include "SoundManager.h"
 #include "ResourceManager.h"
-#include "../BurgerTime/JsonLevelReader.h"
+#include "../BurgerTime/JsonFileReader.h"
 #include "../BurgerTime/HighscoreManager.h"
 
 #include "Renderer.h"
@@ -74,8 +74,8 @@ dae::Minigin::Minigin(const std::string &dataPath, float windowWidth, float wind
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
-	JsonLevelReader::GetInstance().Init(dataPath);
-	HighscoreManager::GetInstance().Init(dataPath);
+	JsonFileReader::GetInstance().Init(dataPath);
+	HighscoreManager::GetInstance().Init("Highscores.json");
 	SoundManager::GetInstance().SetSoundSystem(std::make_unique<SDLSoundSystem>());
 	SoundManager::GetInstance().Initialize(dataPath);
 }
@@ -84,6 +84,9 @@ dae::Minigin::~Minigin()
 {
 	Renderer::GetInstance().Destroy();
 	SoundManager::GetInstance().Quit();
+	SceneManager::GetInstance().Quit();
+	HighscoreManager::GetInstance().Quit();
+
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();

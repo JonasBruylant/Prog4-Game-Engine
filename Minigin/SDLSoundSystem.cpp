@@ -20,8 +20,10 @@ namespace dae
 		void PlaySound(unsigned short id, SoundData::SoundType soundType, float volume);
 		void LoadSound(unsigned short id, const std::string& filePath);
 		bool CheckIsSoundLoaded(unsigned short id);
+
+		void Mute();
 	private:
-	
+		bool m_isMuted{ false };
 		std::unordered_map<unsigned short, Mix_Chunk*> m_LoadedSounds;
 	};
 
@@ -43,6 +45,18 @@ namespace dae
 	void SDLSoundSystem::SDLSoundSystemImpl::Quit()
 	{
 		Mix_CloseAudio();
+	}
+
+	void SDLSoundSystem::SDLSoundSystemImpl::Mute()
+	{
+		m_isMuted = !m_isMuted;
+
+		if(m_isMuted)
+			for (int i = 0; i < 4; ++i)
+				Mix_Volume(i, 0);
+		else
+			for (int i = 0; i < 4; ++i)
+				Mix_Volume(i, 128);
 	}
 
 	void SDLSoundSystem::SDLSoundSystemImpl::PlaySound(unsigned short id, SoundData::SoundType soundType, float volume)
@@ -106,7 +120,7 @@ namespace dae
 	SDLSoundSystem::~SDLSoundSystem()
 	{
 	}
-
+	//Worked on/Collaborated with Aaron Frans
 	void SDLSoundSystem::Init(const std::string& dataPath)
 	{
 		m_dataPath = dataPath;
@@ -129,6 +143,7 @@ namespace dae
 	{
 		m_pSoundImpl->LoadSound(data.id, data.filePath);
 	}
+	//Worked on/Collaborated with Aaron Frans
 	void SDLSoundSystem::PlaySound(SoundData data)
 	{
 		if (!CheckIsSoundLoaded(data.id))
@@ -136,11 +151,16 @@ namespace dae
 
 		m_pSoundImpl->PlaySound(data.id, data.soundType, data.volume);
 	}
+	//Worked on/Collaborated with Aaron Frans
 	bool SDLSoundSystem::CheckIsSoundLoaded(unsigned short id)
 	{
 		return m_pSoundImpl->CheckIsSoundLoaded(id);
 	}
-
+	void SDLSoundSystem::Mute()
+	{
+		m_pSoundImpl->Mute();
+	}
+	//Worked on/Collaborated with Aaron Frans
 	void SDLSoundSystem::NotifyQueue(SoundData data)
 	{
 		std::lock_guard<std::mutex> guardLock(m_mutex);
@@ -149,7 +169,7 @@ namespace dae
 
 		m_queueCondition.notify_all();
 	}
-	
+	//Worked on/Collaborated with Aaron Frans
 	void dae::SDLSoundSystem::RunThread()
 	{
 		while (m_isThreadRunning)

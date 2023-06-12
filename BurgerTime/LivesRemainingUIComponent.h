@@ -25,7 +25,6 @@ namespace dae
 		TextObjectComponent* m_pTextObjectHealthComponent{nullptr};
 
 		//TODO: Use to actually trrigger game over.
-		std::unique_ptr<Subject> m_pGameOverEvent = std::make_unique<Subject>();
 		int m_Lives{ 3 };
 	};
 }

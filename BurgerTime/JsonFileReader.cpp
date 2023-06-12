@@ -1,4 +1,4 @@
-#include "JsonLevelReader.h"
+#include "JsonFileReader.h"
 
 #pragma warning(push)
 #pragma warning(disable : 5232)
@@ -8,6 +8,8 @@
 #include "rapidjson.h"
 #include "document.h"
 #include "stream.h"
+#include "stringbuffer.h"
+#include "writer.h"
 #include "filereadstream.h"
 #include "IStreamWrapper.h"
 #pragma warning(pop)
@@ -24,11 +26,7 @@
 #include "ResourceManager.h"
 #include "Texture2D.h"
 
-dae::JsonLevelReader::JsonLevelReader()
-{
-}
-
-dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
+dae::Scene& dae::JsonFileReader::ReadAndLoadLevel(const std::string& file)
 {
 	auto filePath = m_BasePath + file;
 	std::ifstream is{ filePath };
@@ -139,4 +137,57 @@ dae::Scene& dae::JsonLevelReader::ReadAndLoadLevel(const std::string& file)
 	}
 
 	return sceneLevel;
+}
+
+void dae::JsonFileReader::WriteHighscores(const std::string& path, std::vector<int>& scores)
+{
+	auto totalPath = m_BasePath + path;
+	//Credit to Aaron Frans 
+	if (std::ofstream os{ totalPath })
+	{
+		using namespace rapidjson;
+		Document document;
+		document.SetArray();
+
+
+		for (const int num : scores) {
+			rapidjson::Value value;
+			value.SetInt(num);
+			document.PushBack(value, document.GetAllocator());
+		}
+
+		StringBuffer buffer;
+		Writer<StringBuffer> writer(buffer);
+		document.Accept(writer);
+
+
+		std::string jsonString = buffer.GetString();
+
+		os << jsonString;
+
+	}
+}
+
+std::vector<int> dae::JsonFileReader::ReadHighscores(const std::string& path)
+{
+	std::vector<int> readScores{};
+
+	auto filePath = m_BasePath + path;
+	std::ifstream is{ filePath };
+
+	assert(!is.fail() && "File not found.");
+
+	rapidjson::IStreamWrapper isw{ is };
+
+	rapidjson::Document jsonDoc;
+	jsonDoc.ParseStream(isw);
+
+	//For loop explained by Aaron Frans ^^
+	for (rapidjson::SizeType i = 0; i < jsonDoc.Size(); i++) {
+		assert(jsonDoc[i].IsInt() && "The highscores json needs to be an array of ints");
+		readScores.push_back(jsonDoc[i].GetInt());
+	}
+
+
+	return readScores;
 }

@@ -14,6 +14,8 @@ public:
 	void PlaySound(SoundData) override{}
 	bool CheckIsSoundLoaded(unsigned short) override { return false; }
 	void NotifyQueue(SoundData) override {}
+
+	void Mute() override {}
 };
 
 

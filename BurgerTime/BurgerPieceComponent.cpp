@@ -6,6 +6,7 @@
 #include "CollisionComponent.h"
 #include "ScoreComponent.h"
 #include "EnemyComponent.h"
+#include "StateComponent.h"
 
 #include "Timer.h"
 
@@ -42,7 +43,7 @@ dae::BurgerPieceComponent::BurgerPieceComponent(GameObject* pOwner, const std::s
 		//childColComp->SetDrawDebug(true);
 		childColComp->SetOnTriggerEvent([=](CollisionComponent* otherColComp, GameObject* otherGOCol)
 			{
-				if (otherColComp->GetTag() == "Player" || otherColComp->GetTag() == "PlayerLevelCheck")
+				if (otherColComp->GetTag() == "Player")
 				{
 					m_BurgerDivisions[i].first = true;
 					auto burgerChildTransform = m_BurgerDivisions[i].second->GetTransform();
@@ -53,15 +54,21 @@ dae::BurgerPieceComponent::BurgerPieceComponent(GameObject* pOwner, const std::s
 				
 				if (otherColComp->GetTag() == "Enemy")
 				{
-					if (m_IsFalling)
+					if (!m_IsFalling)
+						return;
+					if (GameStateLookUp::g_CurrentGameState != GameState::Versus)
 					{
 						if (!otherGOCol->GetMarkedForDelete())
 						{
 							otherGOCol->SetMarkedForDelete();
 							m_pPlayer->GetComponent<dae::ScoreComponent>()->GainScore(otherGOCol->GetComponent<EnemyComponent>()->GetEnemyType());
 						}
-
 					}
+					else
+					{
+						otherGOCol->GetChildren().back()->GetComponent<dae::StateComponent>()->SetCurrentState(State::Stunned);
+					}
+
 				}
 
 				if (otherColComp->GetTag() == "LevelPlatform")
@@ -142,7 +149,7 @@ void dae::BurgerPieceComponent::Update()
 	{
 		m_IsFalling = true;
 		m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 16,0 });
-		for (int j = 0; j < m_BurgerDivisions.size(); ++j) //Iterate over children																					   
+		for (int j = 0; j < static_cast<int>(m_BurgerDivisions.size()); ++j) //Iterate over children																					   
 		{
 
 			m_BurgerDivisions[j].first = false;
@@ -182,7 +189,7 @@ void dae::BurgerPieceComponent::PushChildrenDown()
 		m_LastFallTime = m_Timer.GetTotalTime();
 		m_IsFalling = false;
 		m_FallPreventionTimer = 0.f;
-		for (int j = 0; j < m_BurgerDivisions.size(); ++j) //Iterate over children																					   
+		for (int j = 0; j < static_cast<int>(m_BurgerDivisions.size()); ++j) //Iterate over children																					   
 		{
 
 			m_BurgerDivisions[j].first = false;
@@ -198,7 +205,7 @@ void dae::BurgerPieceComponent::PushChildrenDown()
 
 
 	m_pOwnerTransform->SetLocalPosition({ m_pOwnerWorldPos.x, m_pOwnerWorldPos.y + 16,0});
-	for (int j = 0; j < m_BurgerDivisions.size(); ++j) //Iterate over children																					   
+	for (int j = 0; j < static_cast<int>(m_BurgerDivisions.size()); ++j) //Iterate over children																					   
 	{
 		
 		m_BurgerDivisions[j].first = true;

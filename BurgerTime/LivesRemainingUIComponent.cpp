@@ -2,6 +2,11 @@
 #include "TextObjectComponent.h"
 #include "Event.h"
 
+#include "HighscoreManager.h"
+#include "SceneManager.h"
+#include "HighscoreDisplayComponent.h"
+
+
 dae::LivesRemainingUIComponent::LivesRemainingUIComponent(GameObject* pOwner):
 	Component(pOwner)
 {
@@ -17,8 +22,14 @@ void dae::LivesRemainingUIComponent::Notify(Event event)
 
 void dae::LivesRemainingUIComponent::UpdateText()
 {
-	if(m_Lives > 0)
-		--m_Lives;
+	--m_Lives;
 	
 	m_pTextObjectHealthComponent->SetText("Lives remaining: " + std::to_string(m_Lives));
+
+	if (m_Lives >= 0)
+		return;
+
+	auto pHighscoreDisplayComp = HighscoreManager::GetInstance().GetHighScoreDisplayComp();
+	pHighscoreDisplayComp->UpdateHighScore();
+	SceneManager::GetInstance().SetActiveSceneByName("Highscore Scene");
 }

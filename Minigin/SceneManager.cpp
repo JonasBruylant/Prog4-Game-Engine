@@ -1,6 +1,12 @@
+
+#include <SDL.h>
 #include "SceneManager.h"
 #include "Scene.h"
 #include <cassert>
+
+#include "MuteSoundCommand.h"
+#include "InputManager.h"
+
 
 void dae::SceneManager::Update()
 {
@@ -19,6 +25,12 @@ void dae::SceneManager::Render()
 	//}
 
 	m_ActiveScene->Render();
+}
+
+void dae::SceneManager::Quit()
+{
+	m_scenes.clear();
+	m_ActiveScene = nullptr;
 }
 
 void dae::SceneManager::SetActiveSceneByName(const std::string& name)								
@@ -58,6 +70,7 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
 	m_scenes.push_back(scene);
 
+	InputManager::GetInstance().AddKeyboardCommandToMap<dae::MuteSoundCommand>(dae::KeyBoardInput{SDL_SCANCODE_F2, dae::ButtonState::Down, name}, std::make_unique<dae::MuteSoundCommand>());
 	//if (m_ActiveScene)
 	//{
 	//	m_ActiveScene->SetIsActive(false);
@@ -65,4 +78,15 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 	//scene->SetIsActive(true);
 	//m_ActiveScene = scene;
 	return *scene;
+}
+
+void dae::SceneManager::RemoveSceneByName(const std::string& name)
+{
+
+	auto lambda = [&](std::shared_ptr<Scene> scene)
+	{
+		return scene->GetName() == name;
+	};
+	m_scenes.erase(std::remove_if(m_scenes.begin(), m_scenes.end(), lambda), m_scenes.end());
+
 }

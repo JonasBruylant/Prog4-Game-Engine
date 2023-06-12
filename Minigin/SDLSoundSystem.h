@@ -31,6 +31,8 @@ public:
 	void PlaySound(SoundData data) override;
 	bool CheckIsSoundLoaded(unsigned short id) override;
 
+	void Mute() override;
+
 	void NotifyQueue(SoundData data);
 	void RunThread();
 

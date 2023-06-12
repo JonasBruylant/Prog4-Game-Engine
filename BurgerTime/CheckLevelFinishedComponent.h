@@ -5,6 +5,7 @@
 namespace dae
 {
 	class ScoreUIComponent;
+
 class CheckLevelFinishedComponent final : public Component, public Observer
 {
 public:
@@ -17,6 +18,7 @@ public:
 	CheckLevelFinishedComponent& operator=(CheckLevelFinishedComponent&& other) = delete;
 
 	void Notify(Event event) override;
+	void GoToNextScene();
 	void Update() override;
 	void IncrementUncompletedPieces();
 
